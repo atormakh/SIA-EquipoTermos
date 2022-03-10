@@ -1,40 +1,48 @@
 from tree import Node , Tree
 from collections import deque
-
+from treeGraph import TreeGraph
 class Dfs:
     
     frontierNodes= deque()
-    exploredNodes= set()
-    
+    exploredStates= set()
+
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
         self.game = game
     
     def start(self):
+        treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
+        treeGraph.addNode(self.tree.root)
         while len(self.frontierNodes)>0:
-            ## Extraer el primer nodo n de F (frontierNodes) segun el algoritmo
+            ## Extraer el primer node n de F (frontierNodes)
             node = self.frontierNodes.pop()
             ## Si n no esta en los explorados, agregarlo
-            if(not node in self.exploredNodes):
-                self.exploredNodes.add(node)
-            ## Si n esta etiquetado con un estado objetivo  #PREGUNTAR MANANA SI VA ANIDADO O NO
-            if(node.state.isGoal):
-                ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
-                return self.returnSolution(node)
-            ## Expandir el nodo n, guardando los sucesores en F y en A
-            possibleMoves = self.game.possibleMoves(node.state)
-            for move in possibleMoves:
-                ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
-                auxNode = Node( node , move )
-                if(not auxNode in self.exploredNodes):
-                    node.addChild(auxNode)
-                    self.frontierNodes.append(auxNode)
+            if(not node.state in self.exploredStates):
+                self.exploredStates.add(node.state)
+                ## Si n esta etiquetado con un estado objetivo  #PREGUNTAR MANANA SI VA ANIDADO O NO
+                
+                ## Expandir el nodo n, guardando los sucesores en F y en A
+                possibleMoves = self.game.possibleMoves(node.state)
+                for move in possibleMoves:
+                    
+                    ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
+                    auxNode = Node( node , move )
+                    if(not auxNode in self.exploredStates):
+                        treeGraph.addNode(auxNode)
+                        treeGraph.addEdge(node,auxNode)
+                        node.addChild(auxNode)
+                        self.frontierNodes.append(auxNode)
+                    if(auxNode.state.isGoal):
+                        solution = self.returnSolution(auxNode)
+                        treeGraph.show("graph.html")
+                        ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
+                        return solution
         return None
                     
                     
 
-    def returnSolution(self ,node):
+    def returnSolution(self ,node ):
         if(node == self.tree.root):
             return [node]
         l = self.returnSolution(node.parent)

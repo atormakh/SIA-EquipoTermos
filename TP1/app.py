@@ -10,7 +10,7 @@ def main():
     hanoi_towers = HanoiTowers(3)
     initial_state = hanoi_towers.generateInitialState() #State([tower1,tower2,tower3],False)
     print(hanoi_towers.validateState(ilegal_state))
-    bfs = Bfs(initial_state,hanoi_towers)
+    bfs = Dfs(initial_state,hanoi_towers)
     solution = bfs.start()
     for sol in solution:
         print(sol)
