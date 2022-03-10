@@ -20,7 +20,7 @@ class Node:
         return self.__str__()
     
     def __hash__(self):
-        return hash(self.state)
+        return hash(tuple([self.state,self.parent]))
 
     def createChild(self,state):
         self.children.add(Node(self,state))
