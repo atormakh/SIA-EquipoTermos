@@ -1,0 +1,24 @@
+var options = {
+  "edges": {
+    "color": {
+      "inherit": true
+    },
+    "smooth": false
+  },
+  "layout": {
+    "hierarchical": {
+      "enabled": true,
+      "levelSeparation": 200,
+      "nodeSpacing": 60,
+      "direction": "UD",
+      "sortMethod": "directed"
+    }
+  },
+  "physics": {
+    "hierarchicalRepulsion": {
+      "centralGravity": 0
+    },
+    "minVelocity": 0.75,
+    "solver": "hierarchicalRepulsion"
+  }
+}
