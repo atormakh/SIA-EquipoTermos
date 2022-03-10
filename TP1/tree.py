@@ -5,6 +5,10 @@ class Node:
     def __init__(self,parent,state):
         self.parent = parent
         self.state = state
+        if(parent is None):
+            self.level =0
+        else:
+            self.level =parent.level+1
 
     def __eq__(self, other):
         return self.state == other.state
