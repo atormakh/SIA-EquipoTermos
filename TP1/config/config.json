@@ -1,0 +1,16 @@
+{
+    "search_properties" : {
+        "search_method" : "BPA",
+        "heuristic_function" : ""
+    },
+    "game_properties" : {
+        "disk_count" : 3,
+        "initial_state" : {
+            "tower_1" : [3,2,1],
+            "tower_2" : [],
+            "tower_3" : []
+        },
+        "destination_tower" : 2
+    }
+
+}

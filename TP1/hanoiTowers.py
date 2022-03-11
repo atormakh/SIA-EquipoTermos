@@ -2,8 +2,9 @@ from state import State
 
 
 class HanoiTowers:
-    def __init__(self,numberOfDisks):
+    def __init__(self,numberOfDisks,destinationTower):
         self.numberOfDisks=numberOfDisks
+        self.destinationTower=destinationTower
 
     def generateInitialState(self):
         firstTower = []
@@ -22,8 +23,8 @@ class HanoiTowers:
             return tower[length-1]
 
     def areWinningTowers(self,towers):
-        for i in range(len(towers) - 1):
-            if( i > 0 and len(towers[i]) == self.numberOfDisks):
+        for i in range(len(towers)):
+            if( i == (self.destinationTower-1) and len(towers[i]) == self.numberOfDisks):
                 return True 
 
         return False
@@ -56,14 +57,31 @@ class HanoiTowers:
 
         top = newTowers[startingTower].pop()
         newTowers[endingTower].append(top)
-        return State(newTowers , self.areWinningTowers(newTowers))  
+        return State(newTowers , self.areWinningTowers(newTowers))
+
+
+    ##Se creo un metodo para validar que es un disco valido (int y entre 1 y el maximo)
+
+    def validDisk(self,disk):
+        return isinstance(disk,int) and disk>=1 and disk<=self.numberOfDisks 
 
     def validTower(self,tower):
-        if(len(tower) == 0 or len(tower) == 1):
+        if(len(tower) == 0 or (len(tower) == 1 and self.validDisk(tower[0]))):
             return True
 
-        return all(tower[i] >= tower[i + 1] for i in range(len(tower)-1))
+        return all((self.validDisk(tower[i]) and tower[i] > tower[i + 1]) for i in range(len(tower)-1))
 
  
     def validateState(self , state):
-        return all( self.validTower(state.towers[i]) for i in range(len(state.towers)-1))
+        
+        ##Esto es para verificar que la cantidad de discos sea la especificada
+        
+        # totalLengthTowers = 0
+        # print(len(state.towers))
+        # for tower in state.towers:
+        #     print(str(len(tower)))
+        #     totalLengthTowers+=(totalLengthTowers+len(tower))
+        #     print("Total length : "+str(totalLengthTowers))
+        # print(str(totalLengthTowers))
+        # return (totalLengthTowers==self.numberOfDisks) and all( self.validTower(state.towers[i]) for i in range(len(state.towers)))
+        return all( self.validTower(state.towers[i]) for i in range(len(state.towers)))
