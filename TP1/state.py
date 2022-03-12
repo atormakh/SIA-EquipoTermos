@@ -1,15 +1,14 @@
 class State:
-
-
-    def __init__(self,towers,isGoal):
+    def __init__(self,towers,isGoal,heuristic=None):
         tupledTowers = []
         for tower in towers:
             tupledTowers.append(tuple(tower))
         self.towers = tuple(tupledTowers) 
         self.isGoal = isGoal
+        self.heuristic=heuristic
     
     def __str__(self):
-        return f'{{Towers: {str(self.towers)}, isGoal: {str(self.isGoal)} }}'
+        return f'{{Towers: {str(self.towers)}, isGoal: {str(self.isGoal)}{f", heuristic={self.heuristic}" if self.heuristic is not None else ""} }}'
 #, {[f"towerLen {i}: {len(tower)}" for i, tower in enumerate(self.towers)]}
     def __repr__(self):
         return self.__str__()

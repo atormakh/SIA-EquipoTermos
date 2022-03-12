@@ -29,7 +29,7 @@ class HanoiTowers:
 
         return False
 
-    def possibleMoves(self , state):
+    def possibleMoves(self , state,heuristic=False):
 
         if(not self.validateState(state)):
             print("State is invalid")
@@ -46,10 +46,10 @@ class HanoiTowers:
                     if( i != j ): #Me fijo en las otras torres si puedo pasar mi ficha de arriba
                         if(top < self.peek(towers[j])):      
                             #Crear un nuevo estado donde esta poppeado y pasa a la otra torre
-                            moves.append(self.createNewState(state.mutableState(), i , j))
+                            moves.append(self.createNewState(state.mutableState(), i , j,heuristic))
         return moves
 
-    def createNewState(self,towers, startingTower , endingTower):
+    def createNewState(self,towers, startingTower , endingTower,heuristic=False):
         #Copio l
         newTowers = []
         for tower in towers:
@@ -57,8 +57,11 @@ class HanoiTowers:
 
         top = newTowers[startingTower].pop()
         newTowers[endingTower].append(top)
-        return State(newTowers , self.areWinningTowers(newTowers))
+        return State(newTowers , self.areWinningTowers(newTowers),self.calculateHeuristic(newTowers) if heuristic else None)
 
+    def calculateHeuristic(self,towers):
+        return 1
+    
 
     ##Se creo un metodo para validar que es un disco valido (int y entre 1 y el maximo)
 
