@@ -1,9 +1,11 @@
+from output import Output
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
 from state import State
 from hanoiTowers import HanoiTowers
 from helpers.configHelper import ConfigHelper
 from helpers.searchHelper import SearchHelper
+import time
 
 def main():
     print("proyectazo de SIA")
@@ -20,32 +22,16 @@ def main():
         hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower,heuristicFunction)
         ##Get the search method used
         searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers)
+        initialTime=time.perf_counter()
         ##Start the game
         solution = searchMethod.start()
+        finishTime=time.perf_counter()
         if(solution is not None):
-            for sol in solution:
-                print(sol)
-            print( "se llego en " + str(len(solution)))
+            
+            output=Output(configHelper.searchMethod,finishTime-initialTime,solution)
+            print(output)
         else:
             print('No solution was found :(')
-
-
-    
-    # ilegal_state = State([[3,2,1],[],[]],False)
-
-    # hanoi_towers = HanoiTowers(3)
-    # initial_state = hanoi_towers.generateInitialState() #State([tower1,tower2,tower3],False)
-    # print(hanoi_towers.validateState(ilegal_state))
-    # bfs = Dfs(initial_state,hanoi_towers)
-    # solution = bfs.start()
-    # for sol in solution:
-    #     print(sol)
-    # print( "se llego en " + str(len(solution)))
-    # configHelper = ConfigHelper()
-    # configHelper.print()
-
-
-
 
 #Variable que existe 
 ## python3 app.py => settea el name a main ( para ejectuarlo )
