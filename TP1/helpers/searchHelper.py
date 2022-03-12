@@ -1,8 +1,8 @@
 from heuristicFunctions.secondHeuristicFunction import SecondHeuristicFunction
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
-from searchAlgorithms.localHeuristic import LocalHeuristic
-from searchAlgorithms.globalHeuristic import GlobalHeuristic
+from searchAlgorithms.localHeuristicRecursive import LocalHeuristic
+from searchAlgorithms.localHeuristicIterative import GlobalHeuristic
 from heuristicFunctions.firstHeuristicFunction import FirstHeuristicFunction
 
 class SearchHelper:

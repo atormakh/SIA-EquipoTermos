@@ -22,7 +22,7 @@ class GlobalHeuristic:
             #Si el estado no fue previamente explorado
             if(not node.state in self.exploredStates):
                 # Expandir el nodo n, insertando en A y en F, y ordenando esta ultima segun la heuristica utilizada
-                possibleMoves = sorted(self.game.possibleMoves(node.state,True),key=lambda x: x.heuristic)
+                possibleMoves = sorted(self.game.possibleMoves(node.state,True),key=lambda x: x.heuristic,reverse=True)
                 for move in possibleMoves:
                     auxNode= Node(node,move)
                     self.frontierNodes.append(auxNode)
