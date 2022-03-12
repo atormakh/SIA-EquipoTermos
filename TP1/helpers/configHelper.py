@@ -5,7 +5,7 @@ from state import State
 class ConfigHelper:
     
     possibleSearchMethods = tuple(['BPP','BPA','BPPV','HG','HL','A*'])
-    possibleHeuristicFunctions = tuple()
+    possibleHeuristicFunctions = tuple(['FHF'])
     MIN_DISK_COUNT = 3
     MAX_DISK_COUNT = 7
     MAX_TOWERS_COUNT = 3
@@ -29,8 +29,8 @@ class ConfigHelper:
         return self.__validateSearchProperties() and self.__validateGameProperties()
 
     def __validateSearchProperties(self):
-        # return self.__validateSearchMethod() and self.__validateHeuristicFunction()
-        return self.__validateSearchMethod()
+        return self.__validateSearchMethod() and self.__validateHeuristicFunction()
+        # return self.__validateSearchMethod()
 
 
     def __validateGameProperties(self):
@@ -55,7 +55,7 @@ class ConfigHelper:
         return isValid
 
     def __validateInitialState(self):
-        hanoiTowers = HanoiTowers(self.diskCount,self.destinationTower)
+        hanoiTowers = HanoiTowers(self.diskCount,self.destinationTower,None)
         isValid = hanoiTowers.validateState(self.initialState)
         if(not isValid):
             print("Illegal initial state")

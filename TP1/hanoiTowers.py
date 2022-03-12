@@ -2,9 +2,10 @@ from state import State
 
 
 class HanoiTowers:
-    def __init__(self,numberOfDisks,destinationTower):
+    def __init__(self,numberOfDisks,destinationTower,heuristicFunction):
         self.numberOfDisks=numberOfDisks
         self.destinationTower=destinationTower
+        self.heuristicFunction=heuristicFunction
 
     def generateInitialState(self):
         firstTower = []
@@ -57,11 +58,8 @@ class HanoiTowers:
 
         top = newTowers[startingTower].pop()
         newTowers[endingTower].append(top)
-        return State(newTowers , self.areWinningTowers(newTowers),self.calculateHeuristic(newTowers) if heuristic else None)
+        return State(newTowers , self.areWinningTowers(newTowers),self.heuristicFunction.calculateHeuristic(newTowers) if heuristic else None)
 
-    def calculateHeuristic(self,towers):
-        return 1
-    
 
     ##Se creo un metodo para validar que es un disco valido (int y entre 1 y el maximo)
 

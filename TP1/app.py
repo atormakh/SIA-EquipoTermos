@@ -14,8 +14,10 @@ def main():
 
     ##First,check if parameters are ok
     if(configHelper.validateConfigurationProperties()):
-        ##Start the Hanoi with the specified disk count
-        hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower)
+        ##Get the heuristic function used
+        heuristicFunction = searchHelper.getHeuristicFunction(configHelper.heuristicFunction,configHelper.diskCount,configHelper.destinationTower)
+        ##Start the Hanoi with the specified disk count and the heuristic function
+        hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower,heuristicFunction)
         ##Get the search method used
         searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers)
         ##Start the game
