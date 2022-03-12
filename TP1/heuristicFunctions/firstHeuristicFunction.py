@@ -10,11 +10,11 @@ class FirstHeuristicFunction:
         destinationTower = towers[destinationTowerIndex]
         if(len(destinationTower)==0 or len(destinationTower)==1):
             return self.numberOfDisks - len(destinationTower)
-        cantWellPositionedDisks = 0
+        disksWellPositionedCount = 0
         i = 0
-        while(i != len(destinationTower)-1 and (destinationTower[i]>destinationTower[i+1])):
-            cantWellPositionedDisks += 1
+        while(i != len(destinationTower)-1 and (destinationTower[i]==destinationTower[i+1]+1)):
+            disksWellPositionedCount += 1
             i += 1
         if(i == len(destinationTower)-1):
-            cantWellPositionedDisks += 1
-        return self.numberOfDisks - cantWellPositionedDisks 
+            disksWellPositionedCount += 1
+        return self.numberOfDisks - disksWellPositionedCount

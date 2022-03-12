@@ -1,3 +1,4 @@
+from heuristicFunctions.secondHeuristicFunction import SecondHeuristicFunction
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
 from searchAlgorithms.localHeuristic import LocalHeuristic
@@ -17,5 +18,7 @@ class SearchHelper:
             return GlobalHeuristic(initialState,game)
 
     def getHeuristicFunction(self,heuristicFunction,numberOfDisks,destinationTower):
-        if(heuristicFunction=='FHF'):
+        if(heuristicFunction == 'FHF'):
             return FirstHeuristicFunction(numberOfDisks,destinationTower)
+        elif(heuristicFunction == 'SHF'):
+            return SecondHeuristicFunction(numberOfDisks,destinationTower)

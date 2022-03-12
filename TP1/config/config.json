@@ -1,7 +1,7 @@
 {
     "search_properties" : {
         "search_method" : "HL",
-        "heuristic_function" : "FHF"
+        "heuristic_function" : "SHF"
     },
     "game_properties" : {
         "disk_count" : 3,
