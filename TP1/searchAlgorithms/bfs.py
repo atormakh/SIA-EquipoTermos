@@ -21,11 +21,7 @@ class Bfs:
             if(not node.state in self.exploredStates):
                 self.exploredStates.add(node.state)
                 ## Si n esta etiquetado con un estado objetivo  #PREGUNTAR MANANA SI VA ANIDADO O NO
-                if(node.state.isGoal):
-                    solution = self.returnSolution(node)
-                    treeGraph.show("graph.html")
-                    ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
-                    return solution
+          
                 ## Expandir el nodo n, guardando los sucesores en F y en A
                 possibleMoves = self.game.possibleMoves(node.state)
                 for move in possibleMoves:
@@ -36,6 +32,15 @@ class Bfs:
                         treeGraph.addEdge(node,auxNode)
                         node.addChild(auxNode)
                         self.frontierNodes.append(auxNode)
+
+                    if(auxNode.state.isGoal):
+                        solution = self.returnSolution(node)
+                        treeGraph.show("graph.html")
+                        ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
+                        return solution 
+                 
+                  
+                   
         return None
                     
                     

@@ -1,6 +1,6 @@
 {
     "search_properties" : {
-        "search_method" : "HL",
+        "search_method" : "BPA",
         "heuristic_function" : "SHF"
     },
     "game_properties" : {
