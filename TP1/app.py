@@ -22,6 +22,8 @@ def main():
         hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower,heuristicFunction)
         ##Get the search method used
         searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers)
+        if(searchMethod is None):
+            print(f'Error: could not recognize search method "{configHelper.searchmethod}"')
         initialTime=time.perf_counter()
         ##Start the game
         solution = searchMethod.start()

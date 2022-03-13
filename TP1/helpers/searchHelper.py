@@ -1,3 +1,5 @@
+from mimetypes import init
+from searchAlgorithms.f import F
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
 from searchAlgorithms.localHeuristicRecursive import LocalHeuristic
@@ -15,8 +17,12 @@ class SearchHelper:
             return Dfs(initialState,game)
         elif(usedSearchMethod == 'HL'):
             return LocalHeuristic(initialState,game)
+        elif(usedSearchMethod == 'HG'):
+            return F(initialState,game,0,1)
+        elif(usedSearchMethod == 'A*'):
+            return F(initialState,game,0.5,0.5)
         else:
-            return GlobalHeuristic(initialState,game)
+            return None
 
     def getHeuristicFunction(self,heuristicFunction,numberOfDisks,destinationTower):
         if(heuristicFunction == 'FHF'):
