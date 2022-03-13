@@ -76,13 +76,7 @@ class HanoiTowers:
     def validateState(self , state):
         
         ##Esto es para verificar que la cantidad de discos sea la especificada
-        
-        # totalLengthTowers = 0
-        # print(len(state.towers))
-        # for tower in state.towers:
-        #     print(str(len(tower)))
-        #     totalLengthTowers+=(totalLengthTowers+len(tower))
-        #     print("Total length : "+str(totalLengthTowers))
-        # print(str(totalLengthTowers))
-        # return (totalLengthTowers==self.numberOfDisks) and all( self.validTower(state.towers[i]) for i in range(len(state.towers)))
-        return all( self.validTower(state.towers[i]) for i in range(len(state.towers)))
+        totalLengthTowers = 0
+        for tower in state.towers:
+            totalLengthTowers+=len(tower)
+        return (totalLengthTowers==self.numberOfDisks) and all( self.validTower(state.towers[i]) for i in range(len(state.towers)))

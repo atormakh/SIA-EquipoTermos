@@ -5,6 +5,7 @@ class Bfs:
     frontierNodes= deque()
     exploredStates= set()
     expandedNodesCount = 0
+    frontierNodesCount = 1
     
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
@@ -30,7 +31,9 @@ class Bfs:
                 ## Expandir el nodo n, guardando los sucesores en F y en A
                 self.expandedNodesCount+=1
                 possibleMoves = self.game.possibleMoves(node.state)
+                self.frontierNodesCount-=1
                 for move in possibleMoves:
+                    self.frontierNodesCount+=1
                     ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
                     auxNode = Node( node , move )
                     if(not auxNode in self.exploredStates):
@@ -62,4 +65,4 @@ class Bfs:
         return self.expandedNodesCount
 
     def getFrontierNodesCount(self):
-        return len(self.frontierNodes)
+        return self.frontierNodesCount
