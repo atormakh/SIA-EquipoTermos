@@ -26,12 +26,13 @@ def main():
         ##Start the game
         solution = searchMethod.start()
         finishTime=time.perf_counter()
-        if(solution is not None):
-            
-            output=Output(configHelper.searchMethod,finishTime-initialTime,solution)
-            print(output)
-        else:
-            print('No solution was found :(')
+        ##Generate program output
+        searchSucceded = solution is not None
+        solutionHeight = 0
+        if(searchSucceded):
+            solutionHeight = len(solution)
+        output = Output(configHelper,searchSucceded,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
+        output.printOutput()
 
 #Variable que existe 
 ## python3 app.py => settea el name a main ( para ejectuarlo )

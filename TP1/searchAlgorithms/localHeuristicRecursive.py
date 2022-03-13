@@ -6,6 +6,7 @@ from collections import deque
 class LocalHeuristic:
     successorsNodes = deque()
     exploredStates = set()
+    expandedNodesCount = 0
 
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
@@ -48,6 +49,7 @@ class LocalHeuristic:
                     #En caso de que si, retornamos con exito
                     return node
                 # Expandir n de acuerdo a las acciones posibles para el estado que lo etiqueta
+                self.expandedNodesCount+=1
                 possibleMoves = sorted(self.game.possibleMoves(node.state,True),key=lambda x: x.heuristic)
                 # Formar una lista de nodos LSucesores con los nodos obtenidos de la expansion de n
                 for move in possibleMoves:
@@ -63,3 +65,9 @@ class LocalHeuristic:
                     #Si llego la retornamos, sino seguimos el loop
                     return returnedNode
         return None
+
+    def getExpandedNodesCount(self):
+        return self.expandedNodesCount
+
+    def getFrontierNodesCount(self):
+        return 0

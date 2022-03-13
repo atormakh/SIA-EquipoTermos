@@ -6,6 +6,7 @@ class GlobalHeuristic:
     
     frontierNodes = deque()
     exploredStates = set()
+    expandedNodesCount = 0
 
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
@@ -15,6 +16,11 @@ class GlobalHeuristic:
         treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
         treeGraph.addNode(self.tree.root)
+        ## Chequeamos el caso especial de que la raiz sea solucion
+        if(self.tree.root.state.isGoal):
+            solution = self.returnSolution(self.tree.root)
+            treeGraph.show("graph.html")
+            return solution
         #Mientras F no este vacia
         while self.frontierNodes:
             #Extraer el primer nodo de F
@@ -22,6 +28,7 @@ class GlobalHeuristic:
             #Si el estado no fue previamente explorado
             if(not node.state in self.exploredStates):
                 # Expandir el nodo n, insertando en A y en F, y ordenando esta ultima segun la heuristica utilizada
+                self.expandedNodesCount+=1
                 possibleMoves = sorted(self.game.possibleMoves(node.state,True),key=lambda x: x.heuristic,reverse=True)
                 for move in possibleMoves:
                     auxNode= Node(node,move)
@@ -42,4 +49,10 @@ class GlobalHeuristic:
             return [node]
         l = self.returnSolution(node.parent)
         l.append(node)
-        return l   
+        return l
+
+    def getExpandedNodesCount(self):
+        return self.expandedNodesCount
+
+    def getFrontierNodesCount(self):
+        return 0   

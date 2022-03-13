@@ -5,6 +5,7 @@ class Dfs:
     
     frontierNodes= deque()
     exploredStates= set()
+    expandedNodesCount = 0
 
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
@@ -14,15 +15,21 @@ class Dfs:
         treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
         treeGraph.addNode(self.tree.root)
+        ## Chequeamos el caso especial de que la raiz sea solucion
+        if(self.tree.root.state.isGoal):
+            solution = self.returnSolution(self.tree.root)
+            treeGraph.show("graph.html")
+            return solution
         while len(self.frontierNodes)>0:
             ## Extraer el primer node n de F (frontierNodes)
             node = self.frontierNodes.pop()
             ## Si n no esta en los explorados, agregarlo
             if(not node.state in self.exploredStates):
                 self.exploredStates.add(node.state)
-                ## Si n esta etiquetado con un estado objetivo  #PREGUNTAR MANANA SI VA ANIDADO O NO
+                ## Si n esta etiquetado con un estado objetivo 
                 
                 ## Expandir el nodo n, guardando los sucesores en F y en A
+                self.expandedNodesCount+=1
                 possibleMoves = self.game.possibleMoves(node.state)
                 for move in possibleMoves:
                     
@@ -47,4 +54,10 @@ class Dfs:
             return [node]
         l = self.returnSolution(node.parent)
         l.append(node)
-        return l
+        return l 
+
+    def getExpandedNodesCount(self):
+        return self.expandedNodesCount
+
+    def getFrontierNodesCount(self):
+        return len(self.frontierNodes)

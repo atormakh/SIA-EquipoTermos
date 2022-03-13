@@ -5,7 +5,7 @@ from state import State
 class ConfigHelper:
     
     possibleSearchMethods = tuple(['BPP','BPA','BPPV','HG','HL','A*'])
-    possibleHeuristicFunctions = tuple(['FHF','SHF'])
+    possibleHeuristicFunctions = tuple(['FHF','SHF','THF'])
     MIN_DISK_COUNT = 3
     MAX_DISK_COUNT = 7
     MAX_TOWERS_COUNT = 3
@@ -22,6 +22,12 @@ class ConfigHelper:
                 hanoiTowers = HanoiTowers(self.diskCount,self.destinationTower,None)
                 towers = list(data['game_properties']['initial_state'].values())
                 self.initialState = State(towers,hanoiTowers.areWinningTowers(towers))
+
+    def __str__(self):
+        return f"\t-Search method : {self.searchMethod}\n\t-Heuristic function : {self.heuristicFunction}\n\t-Disk count : {self.diskCount}\n\t-DestinationTower : {self.destinationTower}\n\t-Initial state : {self.initialState}"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def print(self):
         valid = self.validateConfigurationProperties()

@@ -1,9 +1,10 @@
-from heuristicFunctions.secondHeuristicFunction import SecondHeuristicFunction
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
 from searchAlgorithms.localHeuristicRecursive import LocalHeuristic
 from searchAlgorithms.localHeuristicIterative import GlobalHeuristic
 from heuristicFunctions.firstHeuristicFunction import FirstHeuristicFunction
+from heuristicFunctions.secondHeuristicFunction import SecondHeuristicFunction
+from heuristicFunctions.thirdHeuristicFunction import ThirdHeuristicFunction
 
 class SearchHelper:
 
@@ -22,3 +23,5 @@ class SearchHelper:
             return FirstHeuristicFunction(numberOfDisks,destinationTower)
         elif(heuristicFunction == 'SHF'):
             return SecondHeuristicFunction(numberOfDisks,destinationTower)
+        else:
+            return ThirdHeuristicFunction(numberOfDisks,destinationTower)
