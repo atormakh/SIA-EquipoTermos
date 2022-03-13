@@ -31,7 +31,7 @@ def main():
         solutionHeight = 0
         if(searchSucceded):
             solutionHeight = len(solution)
-        output = Output(configHelper,searchSucceded,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
+        output = Output(configHelper,searchSucceded,solutionHeight,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
         output.printOutput()
 
 #Variable que existe 

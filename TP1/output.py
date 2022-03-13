@@ -1,16 +1,17 @@
 class Output:
-    def __init__(self,configParams,searchSucceded,solutionHeight,expandedNodesCount,frontierNodesCount,resultSteps,executionTime):
+    def __init__(self,configParams,searchSucceded,solutionCost,solutionHeight,expandedNodesCount,frontierNodesCount,resultSteps,executionTime):
         self.configParams = configParams
         if(searchSucceded):
             self.searchResult = 'Success'
             self.solution = resultSteps
+            self.solutionCost = solutionCost
             self.solutionHeight = solutionHeight
         else:
             self.searchResult = 'Fail'
             self.solution = 'No solution available'
+            self.solutionCost = 0
             self.solutionHeight = 0
         
-        self.solutionCost = self.solutionHeight
         self.expandedNodesCount = expandedNodesCount
         self.frontierNodesCount = frontierNodesCount
         self.executionTime=executionTime
