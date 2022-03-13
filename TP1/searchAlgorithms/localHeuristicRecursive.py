@@ -7,6 +7,7 @@ class LocalHeuristic:
     successorsNodes = deque()
     exploredStates = set()
     expandedNodesCount = 0
+    frontierNodesCount = 1
 
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
@@ -51,10 +52,14 @@ class LocalHeuristic:
                 # Expandir n de acuerdo a las acciones posibles para el estado que lo etiqueta
                 self.expandedNodesCount+=1
                 possibleMoves = sorted(self.game.possibleMoves(node.state,True),key=lambda x: x.heuristic)
+                #Como expandimos el nodo, decrementamos en 1 la cantidad de nodos frontera
+                self.frontierNodesCount-=1
                 # Formar una lista de nodos LSucesores con los nodos obtenidos de la expansion de n
                 for move in possibleMoves:
                     auxNode= Node(node,move)
                     conjLSuccessors.append(auxNode)
+                    #Por cada nodo, incrementamos en 1 la cantidad de nodos frontera
+                    self.frontierNodesCount+=1
                     node.addChild(auxNode)
                     treeGraph.addNode(auxNode)
                     treeGraph.addEdge(auxNode,node)
@@ -70,4 +75,4 @@ class LocalHeuristic:
         return self.expandedNodesCount
 
     def getFrontierNodesCount(self):
-        return 0
+        return self.frontierNodesCount
