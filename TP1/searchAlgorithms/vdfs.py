@@ -16,7 +16,7 @@ class Vdfs:
         self.game = game
         ## altura actual, cota izquierda , cota derecha
         self.actualHeight = maxHeight
-        self.maxHeight = self.actualHeight
+        self.maxHeight = maxHeight
         self.growthFactor = growthFactor
 
     def start(self):
@@ -72,21 +72,21 @@ class Vdfs:
                 else:
                         self.discardedFrontier.appendleft(node)
                         
-            print("resetting frontier")
+           # print("resetting frontier")
             self.resetFrontier()
             self.actualHeight = self.incrementHeight()
             self.maxHeight = self.actualHeight
-            print(f"mi altura {self.maxHeight}")
+         #   print(f"mi altura {self.maxHeight}")
         
 
     def resetFrontier(self):
         self.discardedFrontier += self.frontierNodes ##aca son el mismo objeto
         self.frontierNodes = self.discardedFrontier                
         self.discardedFrontier = deque() #aca cambio que discarded apunte a otro objeto
-        print(f"En frontier nodes {len(self.frontierNodes)}")
+     #   print(f"En frontier nodes {len(self.frontierNodes)}")
            
     def incrementHeight(self):
-        return self.actualHeight + self.growthFactor ##sqrt(2)
+        return self.actualHeight + self.growthFactor 
             
     def returnSolutionIterative(self , node):
         solution = deque()

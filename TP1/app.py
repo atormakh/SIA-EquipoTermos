@@ -34,7 +34,6 @@ def main():
         ##Start the Hanoi with the specified disk count and the heuristic function
         hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower,heuristicFunction)
         ##Get the search method used
-        #ACA FALTA AGREGAR UN PARAMETRO
         searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers,maxHeightBppv,growthFactorBppv,weight)
         if(searchMethod is None):
             print(f'Error: could not recognize search method "{configHelper.searchmethod}"')

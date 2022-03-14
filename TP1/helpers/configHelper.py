@@ -47,7 +47,7 @@ class ConfigHelper:
                 self.initialState = State(towers,hanoiTowers.areWinningTowers(towers))
 
     def __str__(self):
-        return f"\t-Search method : {self.searchMethod}\n\t-Heuristic function : {self.heuristicFunction}\n\t-Disk count : {self.diskCount}\n\t-DestinationTower : {self.destinationTower}\n\t-Initial state : {self.initialState}"
+        return f"\t-Search method : {self.searchMethod}\n\t-Heuristic function : {self.heuristicFunction}\n\t-Disk count : {self.diskCount}\n\t-DestinationTower : {self.destinationTower}\n\t-Initial state : {self.initialState}\n\t-BPPV starting height : {self.maxHeightBppv}\n\t-BPPV growth factor : {self.growthFactorBppv}\n\t"
 
     def __repr__(self) -> str:
         return self.__str__()
