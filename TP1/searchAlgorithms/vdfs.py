@@ -11,11 +11,13 @@ class Vdfs:
     frontierNodesCount = 1
     foundASolution = False
 
-    def __init__(self,initialState,game , maxHeight):
+    def __init__(self,initialState,game , maxHeight , growthFactor):
         self.tree = Tree(initialState)
         self.game = game
         ## altura actual, cota izquierda , cota derecha
-        self.actualHeight = maxHeight 
+        self.actualHeight = maxHeight
+        self.maxHeight = self.actualHeight
+        self.growthFactor = growthFactor
 
     def start(self):
         self.frontierNodes.append(self.tree.root)
@@ -84,7 +86,7 @@ class Vdfs:
         print(f"En frontier nodes {len(self.frontierNodes)}")
            
     def incrementHeight(self):
-        return math.ceil(self.actualHeight * 1.25) ##sqrt(2)
+        return self.actualHeight + self.growthFactor ##sqrt(2)
             
     def returnSolutionIterative(self , node):
         solution = deque()

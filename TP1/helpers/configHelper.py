@@ -1,4 +1,6 @@
 import json
+from re import search
+from turtle import isvisible
 from hanoiTowers import HanoiTowers
 from state import State
 
@@ -15,8 +17,22 @@ class ConfigHelper:
                 data = json.load(config_file)
                 ##Getting search properties 
                 self.searchMethod = data['search_properties']['search_method']
-                self.heuristicFunction = data['search_properties']['heuristic_function']
-                self.maxHeightBppv = data['search_properties']['max_height_bppv']
+
+                if 'heuristic_function' in data['search_properties']:
+                    self.heuristicFunction = data['search_properties']['heuristic_function']
+                else:
+                    self.heuristicFunction = None
+
+                if 'max_height_bppv' in data['search_properties']:
+                    self.maxHeightBppv = data['search_properties']['max_height_bppv']
+                else:
+                    self.maxHeightBppv = None
+
+                if 'growth_factor_bppv' in data['search_properties']:
+                    self.growthFactorBppv = data['search_properties']['growth_factor_bppv']
+                else:
+                    self.growthFactorBppv = None
+
                 ##Getting game properties
                 self.diskCount = data['game_properties']['disk_count']
                 self.destinationTower = data['game_properties']['destination_tower']
@@ -38,7 +54,8 @@ class ConfigHelper:
         return self.__validateSearchProperties() and self.__validateGameProperties()
 
     def __validateSearchProperties(self):
-       return self.__validateSearchMethod() and self.__validateHeuristicFunction() and self.__validateMaxHeightBppv()
+      # return all(self.__validateSearchMethod(),self.__validateHeuristicFunction(),self.__validateMaxHeightBppv(),self.__validateGrowthFactorBppv())
+       return self.__validateSearchMethod() and self.__validateHeuristicFunction() and self.__validateMaxHeightBppv() and self.__validateGrowthFactorBppv() and self.__validateRequiredParameters()
         # return self.__validateSearchMethod()
 
 
@@ -52,10 +69,12 @@ class ConfigHelper:
         return isValid
     
     def __validateHeuristicFunction(self):
-        isValid = self.heuristicFunction in self.possibleHeuristicFunctions
-        if(not isValid):
-            print('Illegal heuristic function used')
-        return isValid
+        if self.heuristicFunction is not None:
+            isValid = self.heuristicFunction in self.possibleHeuristicFunctions
+            if(not isValid):
+                print('Illegal heuristic function used')
+            return isValid
+        return True
 
     def __validateDiskCount(self):
         isValid = isinstance(self.diskCount,int) and self.diskCount >= self.MIN_DISK_COUNT and self.diskCount <= self.MAX_DISK_COUNT
@@ -77,11 +96,29 @@ class ConfigHelper:
         return isValid
 
     def __validateMaxHeightBppv(self):
-        isValid = isinstance(self.maxHeightBppv,int) and self.maxHeightBppv > 0
-        if(not isValid):
-            print('Illegal max height for BPPV algorithm')
-        return isValid
+        if self.maxHeightBppv is not None:
+            isValid = isinstance(self.maxHeightBppv,int) and self.maxHeightBppv > 0
+            if(not isValid):
+                print('Illegal max height for BPPV algorithm')
+            return isValid
+        return True
 
+    def __validateGrowthFactorBppv(self):
+        if self.growthFactorBppv is not None:
+            isValid = isinstance(self.growthFactorBppv,int) and self.growthFactorBppv > 0
+            if(not isValid):
+                print('Illegal growth factor for BPPV algorithm')
+            return isValid
+        return True
 
-    
-
+    def __validateRequiredParameters(self):
+        if self.searchMethod in ['HG','HL','A*']:
+            isValid = self.heuristicFunction is not None
+            if(not isValid):
+                print('A heuristic function is required to this method, add the field \"heuristic_function\" into your search options')
+            return isValid
+        if self.searchMethod in ['BPPV', 'BPPVO']:
+            isValid = self.growthFactorBppv is not None and self.maxHeightBppv is not None
+            if(not isValid):
+                print('the fields \"growth_factor\" and \"max_height_bppv\" are required in the search options for the BPPV algorith family')
+        return True

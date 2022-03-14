@@ -12,13 +12,14 @@ class VdfsOptimo:
     frontierNodesCount = 1
     foundASolution = False
 
-    def __init__(self,initialState,game , maxHeight):
+    def __init__(self,initialState,game , maxHeight , growthFactor):
         self.tree = Tree(initialState)
         self.game = game
         ## altura actual, cota izquierda , cota derecha
         self.maxHeight = maxHeight
         self.actualHeight = maxHeight 
         self.lowHeight = 0
+        self.growthFactor = growthFactor
 
     def start(self):
         self.frontierNodes.append(self.tree.root)
@@ -120,7 +121,7 @@ class VdfsOptimo:
             
            
     def incrementHeight(self):
-        return self.actualHeight + 2 ##sqrt(2)
+        return self.actualHeight + self.growthFactor
             
     def returnSolution(self ,node ):
         if(node == self.tree.root):

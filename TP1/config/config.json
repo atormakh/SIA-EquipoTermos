@@ -1,8 +1,8 @@
 {
   "search_properties": {
-    "search_method": "A*",
-    "heuristic_function": "THF",
-    "max_height_bppv": 5
+    "search_method": "BPPVO",
+    "max_height_bppv": 10,
+    "growth_factor_bppv": 1
   },
   "game_properties": {
     "disk_count": 3,

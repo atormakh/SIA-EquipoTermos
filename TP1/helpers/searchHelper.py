@@ -11,15 +11,15 @@ from heuristicFunctions.thirdHeuristicFunction import ThirdHeuristicFunction
 
 class SearchHelper:
 
-    def getSearchMethod(self,usedSearchMethod,initialState,game,maxHeightBppv=None):
+    def getSearchMethod(self,usedSearchMethod,initialState,game,maxHeightBppv=None , growthFactorBppv = None):
         if(usedSearchMethod == 'BPA'):
             return Bfs(initialState,game)
         elif(usedSearchMethod == 'BPP'):
             return Dfs(initialState,game)
         elif(usedSearchMethod == 'BPPV'):
-            return Vdfs(initialState,game,maxHeightBppv)
+            return Vdfs(initialState,game,maxHeightBppv , growthFactorBppv)
         elif(usedSearchMethod == 'BPPVO'):
-            return VdfsOptimo(initialState,game,maxHeightBppv)
+            return VdfsOptimo(initialState,game,maxHeightBppv , growthFactorBppv)
         elif(usedSearchMethod == 'HL'):
             return LocalHeuristic(initialState,game)
         elif(usedSearchMethod == 'HG'):
@@ -30,6 +30,8 @@ class SearchHelper:
             return None
 
     def getHeuristicFunction(self,heuristicFunction,numberOfDisks,destinationTower):
+        if(heuristicFunction is None):
+            return None
         if(heuristicFunction == 'FHF'):
             return FirstHeuristicFunction(numberOfDisks,destinationTower)
         elif(heuristicFunction == 'SHF'):
