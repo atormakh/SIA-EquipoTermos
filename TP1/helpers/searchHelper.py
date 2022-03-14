@@ -5,7 +5,6 @@ from searchAlgorithms.dfs import Dfs
 from searchAlgorithms.vdfs import Vdfs
 from searchAlgorithms.vdfsOptimo import VdfsOptimo
 from searchAlgorithms.localHeuristicRecursive import LocalHeuristic
-from searchAlgorithms.localHeuristicIterative import GlobalHeuristic
 from heuristicFunctions.firstHeuristicFunction import FirstHeuristicFunction
 from heuristicFunctions.secondHeuristicFunction import SecondHeuristicFunction
 from heuristicFunctions.thirdHeuristicFunction import ThirdHeuristicFunction

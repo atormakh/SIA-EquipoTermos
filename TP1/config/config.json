@@ -1,13 +1,13 @@
 {
     "search_properties" : {
-        "search_method" : "BPPVO",
+        "search_method" : "BPA",
         "heuristic_function" : "SHF",
         "max_height_bppv" : 50
     },
     "game_properties" : {
-        "disk_count" : 7,
+        "disk_count" : 4,
         "initial_state" : {
-            "tower_1" : [7,6,5,4,3,2,1],
+            "tower_1" : [4,3,2,1],
             "tower_2" : [],
             "tower_3" : []
         },
