@@ -11,7 +11,7 @@ from heuristicFunctions.thirdHeuristicFunction import ThirdHeuristicFunction
 
 class SearchHelper:
 
-    def getSearchMethod(self,usedSearchMethod,initialState,game,maxHeightBppv=None , growthFactorBppv = None):
+    def getSearchMethod(self,usedSearchMethod,initialState,game,maxHeightBppv=None , growthFactorBppv = None,weight=None):
         if(usedSearchMethod == 'BPA'):
             return Bfs(initialState,game)
         elif(usedSearchMethod == 'BPP'):
@@ -23,9 +23,12 @@ class SearchHelper:
         elif(usedSearchMethod == 'HL'):
             return LocalHeuristic(initialState,game)
         elif(usedSearchMethod == 'HG'):
-            return F(initialState,game,0,1)
+            return F(initialState,game,1)
         elif(usedSearchMethod == 'A*'):
-            return F(initialState,game,0.5,0.5)
+            return F(initialState,game,0.5)
+        elif(usedSearchMethod=='F'):
+            print(weight)
+            return F(initialState,game,weight)
         else:
             return None
 
