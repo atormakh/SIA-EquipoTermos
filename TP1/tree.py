@@ -2,12 +2,13 @@ import itertools
 
 class Node:
     id_iter = itertools.count()
-    children = []
+    
     
     def __init__(self,parent,state):
         self.parent = parent
         self.state = state
         self.id = next(self.id_iter)
+        self.children=[]
         if(parent is None):
             self.level =0
         else:
@@ -26,7 +27,7 @@ class Node:
         return self.id
 
     def createChild(self,state):
-        self.children.add(Node(self,state))
+        self.children.append(Node(self,state))
     def addChild(self , child):
         self.children.append(child)
 

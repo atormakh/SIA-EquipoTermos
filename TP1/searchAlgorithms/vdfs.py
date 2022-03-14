@@ -1,5 +1,3 @@
-
-from treeGraph import TreeGraph
 from tree import Node, Tree
 from collections import deque
 
@@ -20,14 +18,11 @@ class Vdfs:
         self.actualHeight = maxHeight 
 
     def start(self):
-        treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
-        treeGraph.addNode(self.tree.root)
         ## Chequeamos el caso especial de que la raiz sea solucion
         if(self.tree.root.state.isGoal):
             solution = self.returnSolutionIterative(self.tree.root)
-            treeGraph.show("graph.html")
-            return solution
+            return [self.tree,solution]
 
         while(not self.foundASolution):
             #print(f"actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight}")
@@ -40,8 +35,7 @@ class Vdfs:
                     self.foundASolution = True
     
                     solution = self.returnSolutionIterative(goalNode)
-                    treeGraph.show("graph.html")
-                    return solution
+                    return [self.tree,solution]
 
                 if(node.level  < self.actualHeight ):
                     if(not node.state in self.exploredStates or self.exploredStates[node.state] > node.level):
@@ -71,8 +65,7 @@ class Vdfs:
                             self.foundASolution = True
                      
                             solution = self.returnSolutionIterative(goalNode)
-                            treeGraph.show("graph.html")
-                            return solution
+                            return [self.tree,solution]
 
                 else:
                         self.discardedFrontier.appendleft(node)

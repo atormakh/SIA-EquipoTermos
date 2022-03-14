@@ -1,5 +1,4 @@
 
-from treeGraph import TreeGraph
 from tree import Node, Tree
 from collections import deque
 
@@ -14,17 +13,14 @@ class LocalHeuristic:
         self.game = game
 
     def start(self):
-        treeGraph= TreeGraph()
         self.successorsNodes.append(self.tree.root)
-        treeGraph.addNode(self.tree.root)
         #Llamamos al metodo recursivo
-        solutionNode = self.__recursiveSearchMethod(self.successorsNodes,treeGraph)
+        solutionNode = self.__recursiveSearchMethod(self.successorsNodes)
         #Si encontro una solucion la retornamos
         if(solutionNode is not None):
             solution = self.returnSolution(solutionNode)
-            treeGraph.show("graph.html")
             # Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
-            return solution
+            return [self.tree,solution]
         #Sino, retornamos "None"
         return None
     
@@ -35,7 +31,7 @@ class LocalHeuristic:
         l.append(node)
         return l
 
-    def __recursiveSearchMethod(self,conjL,treeGraph):
+    def __recursiveSearchMethod(self,conjL):
         conjLSuccessors = deque()
         #Mientras L no este vacia
         while conjL:
@@ -61,10 +57,8 @@ class LocalHeuristic:
                     #Por cada nodo, incrementamos en 1 la cantidad de nodos frontera
                     self.frontierNodesCount+=1
                     node.addChild(auxNode)
-                    treeGraph.addNode(auxNode)
-                    treeGraph.addEdge(auxNode,node)
                 # LLamar a BusquedaHeuristicaLocal(LSucesores)
-                returnedNode = self.__recursiveSearchMethod(conjLSuccessors,treeGraph)
+                returnedNode = self.__recursiveSearchMethod(conjLSuccessors)
                 #Chequeamos si llego a una solucion
                 if(returnedNode is not None):
                     #Si llego la retornamos, sino seguimos el loop

@@ -1,5 +1,3 @@
-from re import I
-from treeGraph import TreeGraph
 from tree import Node, Tree
 from collections import deque
 import math
@@ -23,18 +21,15 @@ class VdfsOptimo:
         self.lowHeight = 0
 
     def start(self):
-        treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
-        treeGraph.addNode(self.tree.root)
         ## Chequeamos el caso especial de que la raiz sea solucion
         if(self.tree.root.state.isGoal):
             solution = self.returnSolution(self.tree.root)
-            treeGraph.show("graph.html")
-            return solution
-        return self.fixedHeightSearch(treeGraph)
+            return [self.tree,solution]
+        return self.fixedHeightSearch()
 
 
-    def fixedHeightSearch(self , treeGraph): 
+    def fixedHeightSearch(self ): 
         #print(f"actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight}")
         while len(self.frontierNodes)>0:
             ## Extraer el primer node n de F (frontierNodes)
@@ -43,7 +38,7 @@ class VdfsOptimo:
             ## Si el nodo no esta explorado, o esta explorado en una profundidad mayor, explorarlo
             if(node.state.isGoal  and node.level <= self.actualHeight):
                 self.frontierNodes.appendleft(node)
-                return self.restart(treeGraph , True , node)
+                return self.restart( True , node)
 
             if(node.level  < self.actualHeight ):
                 if(not node.state in self.exploredStates or self.exploredStates[node.state] > node.level):
@@ -70,16 +65,15 @@ class VdfsOptimo:
                     if( goalNode is not None and goalNode.level <= self.maxHeight):
                         ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
                         ## Como se encontro una solucion, se hace restart para buscar con altura maxima menor
-                     #   if(not self.foundASolution)
-                        return self.restart( treeGraph , True , goalNode) 
+                        return self.restart( True , goalNode) 
             else:
                #if(not self.foundASolution and node.level <= self.maxHeight ):
                     self.discardedFrontier.append(node)
 
         ## Como no se encontro una solucion, se hace restart para buscar con altura maxima mayor
-        return self.restart(treeGraph , False)
+        return self.restart(False)
 
-    def restart(self , treeGraph , found , goalNode = None):
+    def restart(self, found , goalNode = None):
     #discard  [ a  b  c ] por altura estan esperando
     #frontier [ d  e  f ] me quedan para mirar (pero como dfs tienen baja prioridad)
     #nuevo frontier  [ a b c d e f ]  
@@ -87,7 +81,6 @@ class VdfsOptimo:
         
         self.frontierNodes = self.discardedFrontier                
         self.discardedFrontier = deque() #aca cambio que discarded apunte a otro objeto
-        print(f"En frontier nodes {len(self.frontierNodes)}")
 
 
         ##Si encontre una solucion, me fijo si es la optima, en caso de serlo la retorno, caso contrario realizo busqueda binaria
@@ -101,23 +94,21 @@ class VdfsOptimo:
                                             #uso el nuevo actual height
             self.actualHeight = math.floor((self.lowHeight + self.maxHeight )/2) #varia el actual
 
-            print(f"found actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight} , con el goal en {goalNode.level}")
-            #Encontre la solucion optimad
+            #Encontre la solucion optima
             if(self.actualHeight <= self.lowHeight): 
                 print(self.solutionStates)
                 solution = self.returnSolution(goalNode)
-                treeGraph.show("graph.html")
-                return solution
+                return [self.tree,solution]
             
             
-            return self.fixedHeightSearch(treeGraph)
+            return self.fixedHeightSearch()
 
         ##Si no encontre una solucion, y nunca lo hice hasta ahora, muevo mis indices para adelante para buscar mas profundo en el arbol mediante busqueda binaria
         if(not self.foundASolution):
             self.lowHeight = self.actualHeight ##ya se que no hay maximo en la primera parte
             self.actualHeight = self.incrementHeight()
             self.maxHeight = self.actualHeight
-            return self.fixedHeightSearch(treeGraph)
+            return self.fixedHeightSearch()
         
         ##En caso de haber encontrado una solucion alguna vez, pero yendo para atras en el arbol no encontre ninguna, debo mover la cota menor y la actual para encontrar
         ##la solucion entre la minima y la maxima
@@ -125,7 +116,7 @@ class VdfsOptimo:
             print(f"not found: actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight}")
             self.lowHeight = self.actualHeight
             self.actualHeight = math.ceil((self.lowHeight + self.maxHeight )/2) #varia el actual
-            return self.fixedHeightSearch(treeGraph)
+            return self.fixedHeightSearch()
             
            
     def incrementHeight(self):

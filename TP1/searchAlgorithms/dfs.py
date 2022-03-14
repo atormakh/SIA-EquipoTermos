@@ -1,6 +1,5 @@
 from tree import Node , Tree
 from collections import deque
-from treeGraph import TreeGraph
 class Dfs:
     
     frontierNodes= deque()
@@ -13,14 +12,11 @@ class Dfs:
         self.game = game
     
     def start(self):
-        treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
-        treeGraph.addNode(self.tree.root)
         ## Chequeamos el caso especial de que la raiz sea solucion
         if(self.tree.root.state.isGoal):
             solution = self.returnSolutionIterative(self.tree.root)
-            treeGraph.show("graph.html")
-            return solution
+            return [self.tree,solution]
         while len(self.frontierNodes)>0:
             ## Extraer el primer node n de F (frontierNodes)
             node = self.frontierNodes.pop()
@@ -39,15 +35,12 @@ class Dfs:
                     ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
                     auxNode = Node( node , move )
                     if(not auxNode in self.exploredStates):
-                        treeGraph.addNode(auxNode)
-                        treeGraph.addEdge(node,auxNode)
                         node.addChild(auxNode)
                         self.frontierNodes.append(auxNode)
                     if(auxNode.state.isGoal):
                         solution = self.returnSolutionIterative(auxNode)
-                        treeGraph.show("graph.html")
                         ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
-                        return solution
+                        return [self.tree,solution]
         return None
                     
                     

@@ -1,7 +1,6 @@
-from treeGraph import TreeGraph
 from tree import Node, Tree
 from collections import deque
-
+import bisect
 class F:
     frontierNodes = []
     exploredStates = set()
@@ -18,14 +17,11 @@ class F:
         return self.costWeight* node.level + self.heuristicWeight*node.state.heuristic
     
     def start(self):
-        treeGraph= TreeGraph()
         self.frontierNodes.append(self.tree.root)
-        treeGraph.addNode(self.tree.root)
         ## Chequeamos el caso especial de que la raiz sea solucion
         if(self.tree.root.state.isGoal):
             solution = self.returnSolution(self.tree.root)
-            treeGraph.show("graph.html")
-            return solution
+            return [self.tree,solution]
         while self.frontierNodes:
             ## Extraer el primer node n de F (frontierNodes)
             node = self.frontierNodes.pop()
@@ -43,16 +39,13 @@ class F:
                     ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
                     auxNode = Node( node , move )
                     if(not auxNode in self.exploredStates):
-                        treeGraph.addNode(auxNode)
-                        treeGraph.addEdge(node,auxNode)
                         node.addChild(auxNode)
                         self.insertOrdered(auxNode)
 
                     if(auxNode.state.isGoal):
-                        solution = self.returnSolution(node)
-                        treeGraph.show("graph.html")
+                        solution = self.returnSolution(auxNode)
                         ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
-                        return solution       
+                        return [self.tree,solution]       
         return None
     
     def returnSolution(self ,node ):
@@ -63,7 +56,6 @@ class F:
         return l
 
     def insertOrdered(self,node):
-        import bisect 
         bisect.insort(self.frontierNodes,node,key=lambda x: -self.f(x))
 
     def getExpandedNodesCount(self):

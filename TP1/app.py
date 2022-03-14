@@ -1,3 +1,4 @@
+from helpers.treeGraphHelper import TreeGraphHelper
 from output import Output
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
@@ -26,13 +27,15 @@ def main():
             print(f'Error: could not recognize search method "{configHelper.searchmethod}"')
         initialTime=time.perf_counter()
         ##Start the game
-        solution = searchMethod.start()
+        [tree,solution] = searchMethod.start()
         finishTime=time.perf_counter()
         ##Generate program output
         searchSucceded = solution is not None
+        print("Generating Graph...")
+        TreeGraphHelper(tree,solution)
         solutionHeight = 0
         if(searchSucceded):
-            solutionHeight = len(solution)
+            solutionHeight = len(solution)-1
         output = Output(configHelper,searchSucceded,solutionHeight,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
         output.printOutput()
 
