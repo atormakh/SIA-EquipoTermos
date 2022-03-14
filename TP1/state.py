@@ -6,6 +6,7 @@ class State:
         self.towers = tuple(tupledTowers) 
         self.isGoal = isGoal
         self.heuristic=heuristic
+        self.hash = hash(self.towers)
     
     def __str__(self):
         return f'{{Towers: {str(self.towers)}, isGoal: {str(self.isGoal)}{f", heuristic={self.heuristic}" if self.heuristic is not None else ""} }}'

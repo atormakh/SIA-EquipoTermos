@@ -2,6 +2,8 @@ from mimetypes import init
 from searchAlgorithms.f import F
 from searchAlgorithms.bfs import Bfs
 from searchAlgorithms.dfs import Dfs
+from searchAlgorithms.vdfs import Vdfs
+from searchAlgorithms.vdfsOptimo import VdfsOptimo
 from searchAlgorithms.localHeuristicRecursive import LocalHeuristic
 from searchAlgorithms.localHeuristicIterative import GlobalHeuristic
 from heuristicFunctions.firstHeuristicFunction import FirstHeuristicFunction
@@ -10,11 +12,15 @@ from heuristicFunctions.thirdHeuristicFunction import ThirdHeuristicFunction
 
 class SearchHelper:
 
-    def getSearchMethod(self,usedSearchMethod,initialState,game):
+    def getSearchMethod(self,usedSearchMethod,initialState,game,maxHeightBppv=None):
         if(usedSearchMethod == 'BPA'):
             return Bfs(initialState,game)
         elif(usedSearchMethod == 'BPP'):
             return Dfs(initialState,game)
+        elif(usedSearchMethod == 'BPPV'):
+            return Vdfs(initialState,game,maxHeightBppv)
+        elif(usedSearchMethod == 'BPPVO'):
+            return VdfsOptimo(initialState,game,maxHeightBppv)
         elif(usedSearchMethod == 'HL'):
             return LocalHeuristic(initialState,game)
         elif(usedSearchMethod == 'HG'):

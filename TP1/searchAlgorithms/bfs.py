@@ -22,7 +22,7 @@ class Bfs:
             return solution
         while len(self.frontierNodes)>0:
             ## Extraer el primer node n de F (frontierNodes)
-            node = self.frontierNodes.popleft()
+            node = self.frontierNodes.pop()
             ## Si n no esta en los explorados, agregarlo
             if(not node.state in self.exploredStates):
                 self.exploredStates.add(node.state)

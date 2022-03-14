@@ -4,7 +4,7 @@ from state import State
 
 class ConfigHelper:
     
-    possibleSearchMethods = tuple(['BPP','BPA','BPPV','HG','HL','A*'])
+    possibleSearchMethods = tuple(['BPP','BPA','BPPV', 'BPPVO','HG','HL','A*'])
     possibleHeuristicFunctions = tuple(['FHF','SHF','THF'])
     MIN_DISK_COUNT = 3
     MAX_DISK_COUNT = 7
@@ -16,6 +16,7 @@ class ConfigHelper:
                 ##Getting search properties 
                 self.searchMethod = data['search_properties']['search_method']
                 self.heuristicFunction = data['search_properties']['heuristic_function']
+                self.maxHeightBppv = data['search_properties']['max_height_bppv']
                 ##Getting game properties
                 self.diskCount = data['game_properties']['disk_count']
                 self.destinationTower = data['game_properties']['destination_tower']
@@ -37,7 +38,7 @@ class ConfigHelper:
         return self.__validateSearchProperties() and self.__validateGameProperties()
 
     def __validateSearchProperties(self):
-        return self.__validateSearchMethod() and self.__validateHeuristicFunction()
+       return self.__validateSearchMethod() and self.__validateHeuristicFunction() and self.__validateMaxHeightBppv()
         # return self.__validateSearchMethod()
 
 
@@ -73,6 +74,12 @@ class ConfigHelper:
         isValid = isinstance(self.destinationTower,int) and self.destinationTower >=1 and self.destinationTower <=self.MAX_TOWERS_COUNT
         if(not isValid):
             print("Illegal destination tower : Should be a number between 1 and "+str(self.MAX_TOWERS_COUNT))
+        return isValid
+
+    def __validateMaxHeightBppv(self):
+        isValid = isinstance(self.maxHeightBppv,int) and self.maxHeightBppv > 0
+        if(not isValid):
+            print('Illegal max height for BPPV algorithm')
         return isValid
 
 

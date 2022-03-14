@@ -1,10 +1,13 @@
+import itertools
 
 class Node:
+    id_iter = itertools.count()
     children = []
     
     def __init__(self,parent,state):
         self.parent = parent
         self.state = state
+        self.id = next(self.id_iter)
         if(parent is None):
             self.level =0
         else:
@@ -20,7 +23,7 @@ class Node:
         return self.__str__()
     
     def __hash__(self):
-        return hash(tuple([self.state,self.parent]))
+        return self.id
 
     def createChild(self,state):
         self.children.add(Node(self,state))
