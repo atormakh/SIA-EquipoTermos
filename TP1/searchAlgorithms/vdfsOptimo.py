@@ -1,3 +1,4 @@
+from re import I
 from treeGraph import TreeGraph
 from tree import Node, Tree
 from collections import deque
@@ -69,8 +70,10 @@ class VdfsOptimo:
                     if( goalNode is not None and goalNode.level <= self.maxHeight):
                         ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
                         ## Como se encontro una solucion, se hace restart para buscar con altura maxima menor
+                     #   if(not self.foundASolution)
                         return self.restart( treeGraph , True , goalNode) 
             else:
+               #if(not self.foundASolution and node.level <= self.maxHeight ):
                     self.discardedFrontier.append(node)
 
         ## Como no se encontro una solucion, se hace restart para buscar con altura maxima mayor
@@ -126,7 +129,7 @@ class VdfsOptimo:
             
            
     def incrementHeight(self):
-        return math.ceil(self.actualHeight * 1.2) ##sqrt(2)
+        return self.actualHeight + 2 ##sqrt(2)
             
     def returnSolution(self ,node ):
         if(node == self.tree.root):
