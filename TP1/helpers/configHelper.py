@@ -12,8 +12,8 @@ class ConfigHelper:
     MAX_DISK_COUNT = 7
     MAX_TOWERS_COUNT = 3
     
-    def __init__(self):
-            with open("./config/config.json","r") as config_file:
+    def __init__(self,configPath):
+            with open(configPath,"r") as config_file:
                 data = json.load(config_file)
                 ##Getting search properties 
                 self.searchMethod = data['search_properties']['search_method']
