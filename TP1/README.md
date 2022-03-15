@@ -1,4 +1,5 @@
 # 72.27 Sistemas de Inteligencia Artificial 1er cuatrimestre 2022
+
 ## TP 1 : Metodos de Busqueda
 
 ### Instituto Tecnológico de Buenos Aires (ITBA)
@@ -10,6 +11,7 @@
 - [Igal Leonel Revich](https://github.com/irevich) - Legajo 60390
 
 ## Indice
+
 - [72.27 Sistemas de Inteligencia Artificial 1er cuatrimestre 2022](#7227-sistemas-de-inteligencia-artificial-1er-cuatrimestre-2022)
   - [TP 1 : Metodos de Busqueda](#tp-1--metodos-de-busqueda)
     - [Instituto Tecnológico de Buenos Aires (ITBA)](#instituto-tecnológico-de-buenos-aires-itba)
@@ -27,9 +29,8 @@
       - [Por archivo](#por-archivo)
   - [Ejemplos de configuracion](#ejemplos-de-configuracion)
     - [Ejemplo 1 : Configuracion para BPA, con 7 discos y poste destino = 3](#ejemplo-1--configuracion-para-bpa-con-7-discos-y-poste-destino--3)
-    - [Ejemplo 2 : Configuracion para A*, usando FHF como funcion heuristica, 7 discos y poste destino = 2](#ejemplo-2--configuracion-para-a-usando-fhf-como-funcion-heuristica-7-discos-y-poste-destino--2)
+    - [Ejemplo 2 : Configuracion para A\*, usando FHF como funcion heuristica, 7 discos y poste destino = 2](#ejemplo-2--configuracion-para-a-usando-fhf-como-funcion-heuristica-7-discos-y-poste-destino--2)
     - [Ejemplo 3 : Configuracion para BPPVO, usando 5 como altura maxima inicial, 2 como factor de crecimiento, 7 discos y poste destino = 1](#ejemplo-3--configuracion-para-bppvo-usando-5-como-altura-maxima-inicial-2-como-factor-de-crecimiento-7-discos-y-poste-destino--1)
-
 
 ## Descripcion del problema elegido
 
@@ -45,7 +46,7 @@ Para la instalacion y ejecucion de este proyecto (explicados posteriormente), so
 
 ## Instalacion y ejecucion
 
-Una vez descargado el proyecto, y posicionado en la carpeta raiz del mismo, dentro de una terminal se ejecuta lo siguiente (tener en cuenta que los comandos que sean de la forma "pyhton . . .", en caso de no funcionar, deben hacerse de la forma "python3 . . .") :
+Una vez descargado el proyecto, y posicionado en la carpeta raiz del mismo, dentro de una terminal se ejecuta lo siguiente (tener en cuenta que los comandos que sean de la forma "python . . .", en caso de no funcionar, deben hacerse de la forma "python3 . . .") :
 
 - Primero, para verificar que la version de Python corresponda con la especificada anteriormente, ejecutar
 
@@ -54,7 +55,7 @@ $ python --version
 ```
 
 - Luego, para introducirse en el virtual environment del proyecto debe ejecutatse lo siguiente, dependiendo del sistema operativo utilizado
-  
+
   - Linux/Mac
 
 ```
@@ -63,8 +64,7 @@ $ python -m venv venv/ (o python3 -m venv venv/ )
 $ source venv/bin/activate
 ```
 
-  
-  - Windows
+- Windows
 
 ```
 $ pip install virtualenv
@@ -83,17 +83,17 @@ $ pip install -r requirements.txt
 - Una vez hecho esto, el proyecto esta listo para ser ejecutado. Para hacer esto en la terminal debe introducirse lo siguiente
 
 ```
-$ pyhton app.py
+$ python app.py
 ```
-  
-    Ejecutando de dicha forma, el programa buscara el archivo de configuracion en el directorio "./config". En caso de mover el archivo de configuracion a otro directorio, debe ejecutarse de alguna de estas dos formas :
+
+Ejecutando de dicha forma, el programa buscara el archivo de configuracion en el directorio "./config". En caso de mover el archivo de configuracion a otro directorio, debe ejecutarse de alguna de estas dos formas :
 
 ```
-$ pyhton app.py -c PATH_TO_CONFIG_FILE/config.json
+$ python app.py -c PATH_TO_CONFIG_FILE/config.json
 
-$ pyhton app.py --config PATH_TO_CONFIG_FILE/config.json
+$ python app.py --configPath PATH_TO_CONFIG_FILE/config.json
 ```
-    
+
     Siendo PATH_TO_CONFIG_FILE el path hacia el archivo de configuracion
 
 - Finalmente, para salir del virtual environment, debe ejecutarse
@@ -118,7 +118,7 @@ Para la configuracion de parametros del proyecto, se utiliza el archivo "config.
   - "HL" = Busqueda heuristica local
   - "HG" = Busqueda heuristica global
   - "A*" = Busqueda por algoritmo A*
-  - "F" = Igual al A*, pero con peso (weight) variable
+  - "F" = Igual al A\*, pero con peso (weight) variable
   - "ALL" = Ejecuta todos los metodos de busqueda mencionados anteriormente
 - "heuristic_function" : Es un string que indica la funcion heuristica a utilizar. Es obligatoria en caso de usar metodos de busqueda informados. Los valores que puede tomar son :
   - "FHF" = Primera funcion heuristica (admisible)
@@ -135,7 +135,7 @@ Para la configuracion de parametros del proyecto, se utiliza el archivo "config.
   - "tower_1"
   - "tower_2"
   - "tower_3"
-  Para ser un estado inicial valido debe cumplir las siguientes condiciones :
+    Para ser un estado inicial valido debe cumplir las siguientes condiciones :
   - En caso de no estar vacio, cada poste debe contener un conjunto de enteros positivos ordenados descendentemente
   - Los elementos de todas los postes deben estar en el rango de 1 a la cantidad de discos especificada en el parametro anterior (ambos extremos inclusive)
   - La suma de los elementos de todas los postes debe ser igual a la cantidad de discos especificada en el parametro anterior
@@ -144,14 +144,13 @@ Para la configuracion de parametros del proyecto, se utiliza el archivo "config.
 En caso de que alguno de los parametros no cumpla las indicaciones previamente mencionadas, se mostrara en la consola un mensaje de error correspondiente
 
 Algo importante a aclarar es que en caso de ejecutar el metodo de busqueda "ALL", para su funcionamiento este provee un archivo JSON de configuracion para cada metodo de busqueda ejecutado, con los mismos parametros mencionados anteriormente. Por ende, si en caso de ejecutarse de dicho modo se quisiera que cada metodo de busqueda se ejecute con parametros diferentes, lo que debe hacerse es dirigirse a la carpeta "exampleConfigs", y cambiar los parametros que correspondan (Por ejemplo, si se quisiera que en el ALL, el BPA corra con distinto estado inicial que el resto, debe modificarse el parametro correspondiente en el BPA.json)
-  
+
 ### Salida del programa
 
 Al ejecutarse un metodo de busqueda se producen 2 tipos de salidas : Por consola y por archivo. A su vez, por cada uno se grafica el arbol utilizado en un archivo .html, que podra ser visualizado en el navegador de preferencia. En caso de no abrise automaticamente, para verlo puede ejecutarse el siguiente comando :
 
 ```
 $open graph.html
-
 ```
 
 Siendo graph el grafico del arbol correspondiente al metodo de busqueda utilizada
@@ -159,6 +158,7 @@ Siendo graph el grafico del arbol correspondiente al metodo de busqueda utilizad
 #### Por consola
 
 Al ejecutarse un metodo de busqueda determinado, por consola se observara una salida con las siguientes propiedades :
+
 - "Configuration parameters" : Los parametros correspondientes al archivo de configuracion mecionado previamente
 - "Search result" : Resultado de la busqueda, que indica si encontro una solucion ("Success") o no ("Fail")
 - "Solution" : En caso de haber encontrado una solucion, contiene todos los estados desde el que etiqueta a la raiz del arbol correspondiente, hasta el estado objetivo
@@ -171,14 +171,15 @@ Al ejecutarse un metodo de busqueda determinado, por consola se observara una sa
 #### Por archivo
 
 Ademas de la salida por consola mencionada anteriormente, tambien se produce una salida a dos archivos CSV, dentro de la carpeta "stats" :
+
 - Al csv correspondiente al metodo ejecutado (por ejemplo BPP.csv)
 - A un csv global (global.csv) con las estadisticas de todos los metodos de busqueda ejecutados
-Ambos documentos contienen las siguientes entradas :
+  Ambos documentos contienen las siguientes entradas :
   - "method" : Metodo de busqueda utilizado
   - "diskCount" : Cantidad de discos
   - "executionTime" : Tiempo de procesamiento (en segundos)
   - "solutionHeight" : Profundidad de la solucion
-  - "expandedNodes" :  Cantidad de nodos expandidos
+  - "expandedNodes" : Cantidad de nodos expandidos
   - "frontierNodes" : Cantidad de nodos frontera
   - "heuristic" : Funcion heuristica utilizada, entre las mencionadas previamente (o "None" en caso de usar un metodo de busqueda no informado
 
@@ -203,7 +204,7 @@ Ambos documentos contienen las siguientes entradas :
 }
 ```
 
-### Ejemplo 2 : Configuracion para A*, usando FHF como funcion heuristica, 7 discos y poste destino = 2
+### Ejemplo 2 : Configuracion para A\*, usando FHF como funcion heuristica, 7 discos y poste destino = 2
 
 ```
 {

@@ -1,26 +1,28 @@
-from calendar import c
-from distutils.command.config import config
 from helpers.treeGraphHelper import TreeGraphHelper
 from output import Output
 from hanoiTowers import HanoiTowers
 from helpers.configHelper import ConfigHelper
 from helpers.searchHelper import SearchHelper
 import time
-import sys,getopt
+import argparse
 
 def main():
     print("proyectazo de SIA")
-    cmdShortOptions = "c:"
-    cmdLongOptions = ["configPath ="]
     configPath="./config/config.json"
+    isGraphing = False
     try:
-        opts, args = getopt.getopt(sys.argv[1:], cmdShortOptions,cmdLongOptions)
-    except:
+        parser = argparse.ArgumentParser(description='Process some integers.')
+        parser.add_argument('-c','--configPath',dest='configPath')
+        parser.add_argument('-g','--graph',action="store_true",default=False)
+        args = parser.parse_args()
+        if(args.configPath is not None):
+            configPath=args.configPath
+        isGraphing=args.graph
+    except Exception as e:
         print("Error in command line arguments")
-    for opt, arg in opts:
-        if opt in ['-c', '--config']:
-            configPath = arg
-    ##Create the helpers
+        print(e)
+    
+    ##Crear los helpers
     configHelper1 = ConfigHelper(configPath)
     
     if(not configHelper1.isMulti):
@@ -59,8 +61,10 @@ def main():
             output.printOutput()
             output.writeToFile()
 
-    #for graph in graphs:
-      #  TreeGraphHelper(graph[0] , graph[1] , graph[2])
+    if(isGraphing):
+        print("Starting Graphs")
+        for graph in graphs:
+            TreeGraphHelper(graph[0] , graph[1] , graph[2])
 
 #Variable que existe 
 ## python3 app.py => settea el name a main ( para ejectuarlo )

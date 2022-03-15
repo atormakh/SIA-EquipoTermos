@@ -41,7 +41,6 @@ class ConfigHelper:
                 if 'weight' in data['search_properties']:
                     self.weight = data['search_properties']['weight']
                 else:
-                    print('WEight not found')
                     self.weight=None
 
                 ##Pidiendo las propiedades del juego
