@@ -130,7 +130,7 @@ Para la configuracion de parametros del proyecto, se utiliza el archivo "config.
 
 #### game_properties
 
-- "disk_count" : Es un entero positivo que indica la cantidad de discos a utilizar. Su rango debe ser de 3 a 10 (ambos extremos inclusive)
+- "disk_count" : Es un entero positivo que indica la cantidad de discos a utilizar. Su rango debe ser de 3 a 15 (ambos extremos inclusive)
 - "initial_state" : Indica el estado inicial del juego. Esta compuesto por los 3 postes
   - "tower_1"
   - "tower_2"
@@ -182,6 +182,17 @@ Ademas de la salida por consola mencionada anteriormente, tambien se produce una
   - "expandedNodes" : Cantidad de nodos expandidos
   - "frontierNodes" : Cantidad de nodos frontera
   - "heuristic" : Funcion heuristica utilizada, entre las mencionadas previamente (o "None" en caso de usar un metodo de busqueda no informado
+
+### Consideraciones adicionales
+
+En caso de realizar graficacion del arbol generado por el metodo busqueda, consideramos que no es recomendable hacerlo para una cantidad de nodos mayor a 5, debido al tiempo que tarda en cargarse
+
+Por otro lado, si bien permitimos un maximo de 15 discos, es necesario tener en cuenta que :
+
+- A partir de 9 discos, las heuristicas se vuelven inestables
+- A partir de 11 discos, el BPPVO no retorna
+
+Se cree que esto sucede debido a una gran cantidad de llamadas recursivas
 
 ## Ejemplos de configuracion
 

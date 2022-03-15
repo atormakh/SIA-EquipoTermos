@@ -145,7 +145,6 @@ class ConfigHelper:
     
     def __getAll(self):
         onlyfiles = [f for f in listdir('./config/exampleConfigs') if isfile(join('./config/exampleConfigs', f))]
-        print(f"levante{len(onlyfiles)} , {onlyfiles}")
         helpers = []
         for file in onlyfiles:
             helpers.append(ConfigHelper(f"./config/exampleConfigs/{file}"))
