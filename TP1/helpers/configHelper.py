@@ -1,6 +1,4 @@
 import json
-from re import search
-from turtle import isvisible
 from hanoiTowers import HanoiTowers
 from state import State
 from os import listdir
@@ -126,9 +124,9 @@ class ConfigHelper:
     
     def __validateWeight(self):
         if self.weight is not None:
-            isValid = self.weight > 0 and self.weight < 1
+            isValid = isinstance(self.weight,float) and self.weight > 0 and self.weight < 1
             if(not isValid):
-                print("Weight must be between 0 and 1")
+                print("Illegal weight : Should be a number between 0 and 1")
             return isValid
         return True
 
