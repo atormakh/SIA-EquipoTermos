@@ -33,13 +33,13 @@ class Output:
 
     def writeToFile(self):
         try:
+            if(self.configParams.searchMethod == 'A*'):
+                self.configParams.searchMethod = "Aestrella"
             f = open(f"./results/stats/{self.configParams.searchMethod}.csv" , "a+")
             f.write(f"{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount}\n")
             fg = open(f"./results/stats/global.csv", "a+")
-            fg.write(f"{self.configParams.searchMethod},{self.configParams.diskCount},{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount}\n")
+            fg.write(f"{self.configParams.searchMethod},{self.configParams.diskCount},{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount},{self.configParams.heuristicFunction}\n")
         # Do something with the file
         except IOError:
             print("File not accessible")
-        finally:
-            f.close()
     # Do something with the file

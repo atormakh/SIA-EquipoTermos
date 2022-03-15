@@ -1,9 +1,6 @@
 {
   "search_properties": {
-    "search_method": "BPPV",
-    "max_height_bppv": 500,
-    "growth_factor_bppv": 4
-    
+    "search_method": "BPA"
   },
   "game_properties": {
     "disk_count": 7,
