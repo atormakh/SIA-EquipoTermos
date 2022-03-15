@@ -108,6 +108,27 @@ $ deactivate
 
 Para la configuracion de parametros del proyecto, se utiliza el archivo "config.json", ubicado en la carpeta "config". Dicho archivo contiene una serie de parametros a configurar para arrancar el juego, separados en dos grandes partes : "search_properties" (propiedades de busqueda) y "game_properties" (propiedades del juego)
 
+Ejemplo:
+
+```
+{
+  "search_properties": {
+    "search_method": "BPPV",
+    "max_height_bppv": 4,
+    "growth_factor_bppv": 1,
+  },
+  "game_properties": {
+    "disk_count": 7,
+    "initial_state": {
+      "tower_1": [7,6,5,4,3,2,1],
+      "tower_2": [],
+      "tower_3": []
+    },
+    "destination_tower": 3
+  }
+}
+```
+
 ### search_properties
 
 - "search_method" : Es un string que indica el metodo de busqueda utilizado. Los valores que puede tomar son :
