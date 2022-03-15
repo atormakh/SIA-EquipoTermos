@@ -42,6 +42,7 @@ def main():
             solutionHeight = len(solution)-1
         output = Output(configHelper,searchSucceded,solutionHeight,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
         output.printOutput()
+        output.writeToFile()
 
 #Variable que existe 
 ## python3 app.py => settea el name a main ( para ejectuarlo )

@@ -30,3 +30,16 @@ class Output:
 
     def printOutput(self):
         print(self)
+
+    def writeToFile(self):
+        try:
+            f = open(f"./results/stats/{self.configParams.searchMethod}.csv" , "a+")
+            f.write(f"{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount}\n")
+            fg = open(f"./results/stats/global.csv", "a+")
+            fg.write(f"{self.configParams.searchMethod},{self.configParams.diskCount},{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount}\n")
+        # Do something with the file
+        except IOError:
+            print("File not accessible")
+        finally:
+            f.close()
+    # Do something with the file

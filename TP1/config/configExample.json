@@ -1,0 +1,18 @@
+{
+    "search_properties": {
+      "search_method": "BPPV",
+      "max_height_bppv": 4,
+      "growth_factor_bppv": 1,
+      "heuristic_function": "FHF"
+    },
+    "game_properties": {
+      "disk_count": 5,
+      "initial_state": {
+        "tower_1": [5,4,3, 2, 1],
+        "tower_2": [],
+        "tower_3": []
+      },
+      "destination_tower": 3
+    }
+  }
+  

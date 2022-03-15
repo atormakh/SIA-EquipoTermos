@@ -120,5 +120,6 @@ class ConfigHelper:
         if self.searchMethod in ['BPPV', 'BPPVO']:
             isValid = self.growthFactorBppv is not None and self.maxHeightBppv is not None
             if(not isValid):
-                print('the fields \"growth_factor\" and \"max_height_bppv\" are required in the search options for the BPPV algorith family')
+                print('the fields \"growth_factor_Bppv\" and \"max_height_bppv\" are required in the search options for the BPPV algorith family')
+            return isValid
         return True

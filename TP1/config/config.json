@@ -1,11 +1,14 @@
 {
   "search_properties": {
-    "search_method": "BPP"
+    "search_method": "BPPV",
+    "max_height_bppv": 500,
+    "growth_factor_bppv": 4
+    
   },
   "game_properties": {
     "disk_count": 7,
     "initial_state": {
-      "tower_1": [7,6,5,4,3, 2, 1],
+      "tower_1": [7,6,5,4,3,2,1],
       "tower_2": [],
       "tower_3": []
     },
