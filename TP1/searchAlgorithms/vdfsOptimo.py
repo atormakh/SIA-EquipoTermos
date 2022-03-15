@@ -92,7 +92,6 @@ class VdfsOptimo:
 
             #Encontre la solucion optima
             if(self.actualHeight <= self.lowHeight): 
-                print(self.solutionStates)
                 solution = self.returnSolution(goalNode)
                 return [self.tree,solution]
             
@@ -109,7 +108,6 @@ class VdfsOptimo:
         ##En caso de haber encontrado una solucion alguna vez, pero yendo para atras en el arbol no encontre ninguna, debo mover la cota menor y la actual para encontrar
         ##la solucion entre la minima y la maxima
         if(not found):
-            print(f"not found: actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight}")
             self.lowHeight = self.actualHeight
             self.actualHeight = math.ceil((self.lowHeight + self.maxHeight )/2) #varia el actual
             return self.fixedHeightSearch()

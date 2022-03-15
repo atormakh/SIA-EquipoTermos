@@ -27,7 +27,6 @@ class SearchHelper:
         elif(usedSearchMethod == 'A*'):
             return F(initialState,game,0.5)
         elif(usedSearchMethod=='F'):
-            print(weight)
             return F(initialState,game,weight)
         else:
             return None
