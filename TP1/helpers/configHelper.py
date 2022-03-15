@@ -1,6 +1,4 @@
 import json
-from re import search
-from turtle import isvisible
 from hanoiTowers import HanoiTowers
 from state import State
 from os import listdir
