@@ -22,13 +22,13 @@ def main():
             configPath = arg
     ##Create the helpers
     configHelper1 = ConfigHelper(configPath)
-    searchHelper = SearchHelper()
     
     if(not configHelper1.isMulti):
         configHelper1 = [configHelper1]
     else:
         configHelper1 = configHelper1.multi
-
+    counter = 0
+    graphs = []
     for configHelper in configHelper1:
         searchHelper = SearchHelper()
         print(configHelper)
@@ -53,14 +53,19 @@ def main():
             finishTime=time.perf_counter()
             ##Generate program output
             searchSucceded = solution is not None
-           # print("Generating Graph...")
+            #print("Generating Graph...")
             #TreeGraphHelper(tree,solution)
+            graphs.append((tree,solution , counter))
+            counter += 1
             solutionHeight = 0
             if(searchSucceded):
                 solutionHeight = len(solution)-1
             output = Output(configHelper,searchSucceded,solutionHeight,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
             output.printOutput()
             output.writeToFile()
+            
+    for graph in graphs:
+        TreeGraphHelper(graph[0] , graph[1] , graph[2])
 
 #Variable que existe 
 ## python3 app.py => settea el name a main ( para ejectuarlo )

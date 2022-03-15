@@ -7,8 +7,7 @@ class TreeGraphHelper:
     exploredNodes=[]
     frontierNodes=deque()
     edges=[]
-
-    def __init__(self,tree,solution):
+    def __init__(self,tree,solution , counter):
         self.network= Network()
         with open('./config/network_options.txt') as f:
             lines = f.read()
@@ -26,7 +25,7 @@ class TreeGraphHelper:
         
         self.addNodes(self.exploredNodes)
         self.addEdges(self.edges)
-        self.show("graph.html")
+        self.show(f"./results/graphs/graph{counter}.html")
             
         
     def addNodes(self,nodes):

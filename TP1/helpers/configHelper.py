@@ -11,7 +11,7 @@ class ConfigHelper:
     possibleSearchMethods = tuple(['BPP','BPA','BPPV', 'BPPVO','HG','HL','A*','F'])
     possibleHeuristicFunctions = tuple(['FHF','SHF','THF'])
     MIN_DISK_COUNT = 3
-    MAX_DISK_COUNT = 7
+    MAX_DISK_COUNT = 15
     MAX_TOWERS_COUNT = 3
     
     def __init__(self,configPath):
@@ -19,6 +19,7 @@ class ConfigHelper:
                 data = json.load(config_file)
                 ##Getting search properties 
                 self.searchMethod = data['search_properties']['search_method']
+                
                 if self.searchMethod == 'ALL':
                     self.isMulti = True
                     self.multi = self.__getAll()
