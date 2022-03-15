@@ -4,13 +4,7 @@ import math
 class VdfsOptimo:
 
     
-    solutionStates = dict() ## <heigth , State>
-    exploredStates = dict() ## <State,heigth>
-    frontierNodes = deque()
-    discardedFrontier = deque() ## Los que borre por hmax (hojas no por repedito) 
-    expandedNodesCount = 0
-    frontierNodesCount = 1
-    foundASolution = False
+    
 
     def __init__(self,initialState,game , maxHeight , growthFactor):
         self.tree = Tree(initialState)
@@ -20,6 +14,13 @@ class VdfsOptimo:
         self.actualHeight = maxHeight 
         self.lowHeight = 0
         self.growthFactor = growthFactor
+        self.solutionStates = dict() ## <heigth , State>
+        self.exploredStates = dict() ## <State,heigth>
+        self.frontierNodes = deque()
+        self.discardedFrontier = deque() ## Los que borre por hmax (hojas no por repedito) 
+        self.expandedNodesCount = 0
+        self.frontierNodesCount = 1
+        self.foundASolution = False
 
     def start(self):
         self.frontierNodes.append(self.tree.root)

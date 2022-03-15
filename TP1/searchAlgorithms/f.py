@@ -2,15 +2,16 @@ from tree import Node, Tree
 from collections import deque
 import bisect
 class F:
-    frontierNodes = []
-    exploredStates = set()
-    expandedNodesCount = 0
-    frontierNodesCount = 1
-    
+   
     def __init__(self,initialState,game,weight):
         self.tree = Tree(initialState)
         self.game = game
         self.weight=weight
+        self.frontierNodes = []
+        self.exploredStates = set()
+        self.expandedNodesCount = 0
+        self.frontierNodesCount = 1
+    
 
     def f(self,node):
         return (1-self.weight)* node.level + self.weight*node.state.heuristic
@@ -45,7 +46,7 @@ class F:
                         solution = self.returnSolution(auxNode)
                         ## Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
                         return [self.tree,solution]       
-        return None
+        return [None, None]
     
     def returnSolution(self ,node ):
         if(node == self.tree.root):

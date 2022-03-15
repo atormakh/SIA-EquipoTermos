@@ -4,12 +4,7 @@ from collections import deque
 import math
 class Vdfs:
 
-    exploredStates = dict() ## <State,heigth>
-    frontierNodes = deque()
-    discardedFrontier = deque() ## Los que borre por hmax (hojas no por repedito) 
-    expandedNodesCount = 0
-    frontierNodesCount = 1
-    foundASolution = False
+    
 
     def __init__(self,initialState,game , maxHeight , growthFactor):
         self.tree = Tree(initialState)
@@ -18,6 +13,12 @@ class Vdfs:
         self.actualHeight = maxHeight
         self.maxHeight = maxHeight
         self.growthFactor = growthFactor
+        self.exploredStates = dict() ## <State,heigth>
+        self.frontierNodes = deque()
+        self.discardedFrontier = deque() ## Los que borre por hmax (hojas no por repedito) 
+        self.expandedNodesCount = 0
+        self.frontierNodesCount = 1
+        self.foundASolution = False
 
     def start(self):
         self.frontierNodes.append(self.tree.root)

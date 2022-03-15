@@ -1,0 +1,15 @@
+{
+    "search_properties": {
+      "search_method": "HL",
+      "heuristic_function": "SHF"
+    },
+    "game_properties": {
+      "disk_count": 7,
+      "initial_state": {
+        "tower_1": [7,6,5,4,3,2,1],
+        "tower_2": [],
+        "tower_3": []
+      },
+      "destination_tower": 3
+    }
+}

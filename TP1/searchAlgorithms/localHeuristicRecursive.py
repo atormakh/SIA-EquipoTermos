@@ -3,14 +3,15 @@ from tree import Node, Tree
 from collections import deque
 
 class LocalHeuristic:
-    successorsNodes = deque()
-    exploredStates = set()
-    expandedNodesCount = 0
-    frontierNodesCount = 1
+  
 
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
         self.game = game
+        self.successorsNodes = deque()
+        self.exploredStates = set()
+        self.expandedNodesCount = 0
+        self.frontierNodesCount = 1
 
     def start(self):
         self.successorsNodes.append(self.tree.root)
@@ -22,7 +23,7 @@ class LocalHeuristic:
             # Devolver la solucion, formada por los arcos entre la raiz n0 y el nodo n en A
             return [self.tree,solution]
         #Sino, retornamos "None"
-        return None
+        return [None,None]
     
     def returnSolution(self ,node ):
         if(node == self.tree.root):

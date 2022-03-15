@@ -3,6 +3,8 @@ from re import search
 from turtle import isvisible
 from hanoiTowers import HanoiTowers
 from state import State
+from os import listdir
+from os.path import isfile, join
 
 class ConfigHelper:
     
@@ -17,7 +19,11 @@ class ConfigHelper:
                 data = json.load(config_file)
                 ##Getting search properties 
                 self.searchMethod = data['search_properties']['search_method']
-
+                if self.searchMethod == 'ALL':
+                    self.isMulti = True
+                    self.multi = self.__getAll()
+                else:
+                    self.isMulti = False 
                 if 'heuristic_function' in data['search_properties']:
                     self.heuristicFunction = data['search_properties']['heuristic_function']
                 else:
@@ -140,3 +146,12 @@ class ConfigHelper:
                 print('the fields \"growth_factor_Bppv\" and \"max_height_bppv\" are required in the search options for the BPPV algorith family')
             return isValid
         return True
+    
+    def __getAll(self):
+        onlyfiles = [f for f in listdir('./config/exampleConfigs') if isfile(join('./config/exampleConfigs', f))]
+        print(f"levante{len(onlyfiles)} , {onlyfiles}")
+        helpers = []
+        for file in onlyfiles:
+            helpers.append(ConfigHelper(f"./config/exampleConfigs/{file}"))
+
+        return helpers

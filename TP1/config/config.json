@@ -1,6 +1,6 @@
 {
   "search_properties": {
-    "search_method": "BPA"
+    "search_method": "ALL"
   },
   "game_properties": {
     "disk_count": 7,

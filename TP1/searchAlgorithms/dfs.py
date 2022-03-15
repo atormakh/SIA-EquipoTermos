@@ -2,14 +2,15 @@ from tree import Node , Tree
 from collections import deque
 class Dfs:
     
-    frontierNodes= deque()
-    exploredStates= set()
-    expandedNodesCount = 0
-    frontierNodesCount = 1
-
+  
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
         self.game = game
+        self.frontierNodes= deque()
+        self.exploredStates= set()
+        self.expandedNodesCount = 0
+        self.frontierNodesCount = 1
+
     
     def start(self):
         self.frontierNodes.append(self.tree.root)
