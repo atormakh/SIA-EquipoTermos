@@ -15,7 +15,7 @@ class ConfigHelper:
     def __init__(self,configPath):
             with open(configPath,"r") as config_file:
                 data = json.load(config_file)
-                ##Getting search properties 
+                ##Pidiendo las propiedades de la busqueda  
                 self.searchMethod = data['search_properties']['search_method']
                 
                 if self.searchMethod == 'ALL':
@@ -44,7 +44,7 @@ class ConfigHelper:
                     print('WEight not found')
                     self.weight=None
 
-                ##Getting game properties
+                ##Pidiendo las propiedades del juego
                 self.diskCount = data['game_properties']['disk_count']
                 self.destinationTower = data['game_properties']['destination_tower']
                 hanoiTowers = HanoiTowers(self.diskCount,self.destinationTower,None)
@@ -65,9 +65,7 @@ class ConfigHelper:
         return self.__validateSearchProperties() and self.__validateGameProperties()
 
     def __validateSearchProperties(self):
-      # return all(self.__validateSearchMethod(),self.__validateHeuristicFunction(),self.__validateMaxHeightBppv(),self.__validateGrowthFactorBppv())
        return self.__validateSearchMethod() and self.__validateHeuristicFunction() and self.__validateMaxHeightBppv() and self.__validateGrowthFactorBppv() and self.__validateRequiredParameters() and self.__validateWeight()
-        # return self.__validateSearchMethod()
 
 
     def __validateGameProperties(self):

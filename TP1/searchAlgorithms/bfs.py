@@ -1,11 +1,7 @@
 from tree import Node , Tree
 from collections import deque
 class Bfs:
-   # frontierNodes= deque()
-  #  exploredStates= set()
-   # expandedNodesCount = 0
-  #  frontierNodesCount = 1
-    
+        
     def __init__(self,initialState,game):
         self.tree = Tree(initialState)
         self.game = game
@@ -25,9 +21,7 @@ class Bfs:
             node = self.frontierNodes.popleft()
             ## Si n no esta en los explorados, agregarlo
             if(not node.state in self.exploredStates):
-                self.exploredStates.add(node.state)
-                ## Si n esta etiquetado con un estado objetivo
-          
+                self.exploredStates.add(node.state)          
                 ## Expandir el nodo n, guardando los sucesores en F y en A
                 self.expandedNodesCount+=1
                 possibleMoves = self.game.possibleMoves(node.state)

@@ -13,9 +13,9 @@ class Vdfs:
         self.actualHeight = maxHeight
         self.maxHeight = maxHeight
         self.growthFactor = growthFactor
-        self.exploredStates = dict() ## <State,heigth>
+        self.exploredStates = dict() ## <State,height>
         self.frontierNodes = deque()
-        self.discardedFrontier = deque() ## Los que borre por hmax (hojas no por repedito) 
+        self.discardedFrontier = deque() ## Los que borre por hmax (hojas no por repetidos) 
         self.expandedNodesCount = 0
         self.frontierNodesCount = 1
         self.foundASolution = False
@@ -28,7 +28,6 @@ class Vdfs:
             return [self.tree,solution]
 
         while(not self.foundASolution):
-            #print(f"actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight}")
             while len(self.frontierNodes)>0:
                 ## Extraer el primer node n de F (frontierNodes)
                 node = self.frontierNodes.popleft()
@@ -55,8 +54,6 @@ class Vdfs:
                             ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
                             auxNode = Node( node , move )
                             if(not auxNode in self.exploredStates):
-                                #treeGraph.addNode(auxNode)
-                                #treeGraph.addEdge(node,auxNode)
                                 node.addChild(auxNode)
                                 if(goalNode is None and auxNode.state.isGoal):
                                     goalNode = auxNode
@@ -73,11 +70,9 @@ class Vdfs:
                 else:
                         self.discardedFrontier.appendleft(node)
                         
-           # print("resetting frontier")
             self.resetFrontier()
             self.actualHeight = self.incrementHeight()
             self.maxHeight = self.actualHeight
-         #   print(f"mi altura {self.maxHeight}")
         
 
     def resetFrontier(self):

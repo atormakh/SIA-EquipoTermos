@@ -24,9 +24,6 @@ class Dfs:
             ## Si n no esta en los explorados, agregarlo
             if(not node.state in self.exploredStates):
                 self.exploredStates.add(node.state)
-                
-                ## Si n esta etiquetado con un estado objetivo 
-                
                 ## Expandir el nodo n, guardando los sucesores en F y en A
                 self.expandedNodesCount+=1
                 possibleMoves = self.game.possibleMoves(node.state)

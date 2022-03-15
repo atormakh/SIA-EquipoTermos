@@ -51,7 +51,6 @@ class HanoiTowers:
         return moves
 
     def createNewState(self,towers, startingTower , endingTower,heuristic=False):
-        #Copio l
         newTowers = []
         for tower in towers:
             newTowers.append(tower.copy())

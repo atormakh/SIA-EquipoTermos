@@ -12,7 +12,7 @@ class TreeGraphHelper:
         with open('./config/network_options.txt') as f:
             lines = f.read()
         self.network.set_options(lines)
-        #JODITA
+
         self.frontierNodes.append(tree.root)
         while self.frontierNodes:
             currentNode=self.frontierNodes.pop()

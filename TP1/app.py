@@ -31,30 +31,25 @@ def main():
     graphs = []
     for configHelper in configHelper1:
         searchHelper = SearchHelper()
-        print(configHelper)
-        ##First,check if parameters are ok
+        ##Primero, chequear que los parametros esten ok
         if(configHelper.validateConfigurationProperties() ):
-            ##Get the heuristic function used
+            ##Pedir la funcion heuristica utilizada
             heuristicFunction = searchHelper.getHeuristicFunction(configHelper.heuristicFunction,configHelper.diskCount,configHelper.destinationTower)
             maxHeightBppv = configHelper.maxHeightBppv
             growthFactorBppv = configHelper.growthFactorBppv
             weight=configHelper.weight
-
-            print(f" max : {maxHeightBppv} , growth: {growthFactorBppv} , heuristic: {heuristicFunction},weight={weight}")
-            ##Start the Hanoi with the specified disk count and the heuristic function
+            ##Empezar el Hanoi con la cantidad especificada de discos y la funcion heuristica
             hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower,heuristicFunction)
-            ##Get the search method used
+            ##Pedir el metodo de busqueda utilizado
             searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers,maxHeightBppv,growthFactorBppv,weight)
             if(searchMethod is None):
                 print(f'Error: could not recognize search method "{configHelper.searchmethod}"')
             initialTime=time.perf_counter()
-            ##Start the game
+            ##Empezar el juego
             [tree,solution] = searchMethod.start()
             finishTime=time.perf_counter()
-            ##Generate program output
+            ##Generar la salida del programa
             searchSucceded = solution is not None
-            #print("Generating Graph...")
-            #TreeGraphHelper(tree,solution)
             graphs.append((tree,solution , counter))
             counter += 1
             solutionHeight = 0

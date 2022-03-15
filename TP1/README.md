@@ -25,6 +25,10 @@
     - [Salida del programa](#salida-del-programa)
       - [Por consola](#por-consola)
       - [Por archivo](#por-archivo)
+  - [Ejemplos de configuracion](#ejemplos-de-configuracion)
+    - [Ejemplo 1 : Configuracion para BPA, con 7 discos y poste destino = 3](#ejemplo-1--configuracion-para-bpa-con-7-discos-y-poste-destino--3)
+    - [Ejemplo 2 : Configuracion para A*, usando FHF como funcion heuristica, 7 discos y poste destino = 2](#ejemplo-2--configuracion-para-a-usando-fhf-como-funcion-heuristica-7-discos-y-poste-destino--2)
+    - [Ejemplo 3 : Configuracion para BPPVO, usando 5 como altura maxima inicial, 2 como factor de crecimiento, 7 discos y poste destino = 1](#ejemplo-3--configuracion-para-bppvo-usando-5-como-altura-maxima-inicial-2-como-factor-de-crecimiento-7-discos-y-poste-destino--1)
 
 
 ## Descripcion del problema elegido
@@ -50,6 +54,7 @@ $ python --version
 ```
 
 - Luego, para introducirse en el virtual environment del proyecto debe ejecutatse lo siguiente, dependiendo del sistema operativo utilizado
+  
   - Linux/Mac
 
 ```
@@ -58,6 +63,7 @@ $ python -m venv venv/ (o python3 -m venv venv/ )
 $ source venv/bin/activate
 ```
 
+  
   - Windows
 
 ```
@@ -175,3 +181,67 @@ Ambos documentos contienen las siguientes entradas :
   - "expandedNodes" :  Cantidad de nodos expandidos
   - "frontierNodes" : Cantidad de nodos frontera
   - "heuristic" : Funcion heuristica utilizada, entre las mencionadas previamente (o "None" en caso de usar un metodo de busqueda no informado
+
+## Ejemplos de configuracion
+
+### Ejemplo 1 : Configuracion para BPA, con 7 discos y poste destino = 3
+
+```
+{
+  "search_properties": {
+    "search_method": "BPA"
+  },
+  "game_properties": {
+    "disk_count": 7,
+    "initial_state": {
+      "tower_1": [7,6,5,4,3,2,1],
+      "tower_2": [],
+      "tower_3": []
+    },
+    "destination_tower": 3
+  }
+}
+```
+
+### Ejemplo 2 : Configuracion para A*, usando FHF como funcion heuristica, 7 discos y poste destino = 2
+
+```
+{
+  "search_properties": {
+    "search_method": "A*",
+    "heuristic_function": "FHF"
+  },
+  "game_properties": {
+    "disk_count": 7,
+    "initial_state": {
+      "tower_1": [7,6,5],
+      "tower_2": [],
+      "tower_3": [4,3,2,1]
+    },
+    "destination_tower": 2
+  }
+}
+```
+
+### Ejemplo 3 : Configuracion para BPPVO, usando 5 como altura maxima inicial, 2 como factor de crecimiento, 7 discos y poste destino = 1
+
+```
+{
+  "search_properties": {
+    "search_method": "BPPVO",
+    "max_height_bppv": 5,
+    "growth_factor_bppv": 2
+  },
+  "game_properties": {
+    "disk_count": 7,
+    "initial_state": {
+      "tower_1": [],
+      "tower_2": [7,6],
+      "tower_3": [5,4,3,2,1]
+    },
+    "destination_tower": 2
+  }
+}
+```
+
+Para mas ejemplos, en la carpeta exampleConfigs hay ejemplos para distintos metodos de busqueda

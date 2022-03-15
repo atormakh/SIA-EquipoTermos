@@ -3,9 +3,6 @@ from collections import deque
 import math
 class VdfsOptimo:
 
-    
-    
-
     def __init__(self,initialState,game , maxHeight , growthFactor):
         self.tree = Tree(initialState)
         self.game = game
@@ -14,10 +11,10 @@ class VdfsOptimo:
         self.actualHeight = maxHeight 
         self.lowHeight = 0
         self.growthFactor = growthFactor
-        self.solutionStates = dict() ## <heigth , State>
-        self.exploredStates = dict() ## <State,heigth>
+        self.solutionStates = dict() ## <height , State>
+        self.exploredStates = dict() ## <State,height>
         self.frontierNodes = deque()
-        self.discardedFrontier = deque() ## Los que borre por hmax (hojas no por repedito) 
+        self.discardedFrontier = deque() ## Los que borre por hmax (hojas no por repetido) 
         self.expandedNodesCount = 0
         self.frontierNodesCount = 1
         self.foundASolution = False
@@ -32,7 +29,6 @@ class VdfsOptimo:
 
 
     def fixedHeightSearch(self ): 
-        #print(f"actual:{self.actualHeight} , min:{self.lowHeight} , max:{self.maxHeight}")
         while len(self.frontierNodes)>0:
             ## Extraer el primer node n de F (frontierNodes)
             node = self.frontierNodes.pop()
@@ -57,8 +53,6 @@ class VdfsOptimo:
                         ##Si el nodo n , no esta en Explorados. Guardo los sucesores en Frontier y en los hijos del nodo
                         auxNode = Node( node , move )
                         if(not auxNode in self.exploredStates):
-                           # treeGraph.addNode(auxNode)
-                            #treeGraph.addEdge(node,auxNode)
                             node.addChild(auxNode)
                             if(goalNode is None and auxNode.state.isGoal):
                                 goalNode = auxNode
@@ -69,7 +63,7 @@ class VdfsOptimo:
                         ## Como se encontro una solucion, se hace restart para buscar con altura maxima menor
                         return self.restart( True , goalNode) 
             else:
-               #if(not self.foundASolution and node.level <= self.maxHeight ):
+               #if(not self.foundASolution and node.level <= self.maxHeight ): ##Posible optimizacion, pero no se vieron mejoras en tiempo de ejecucion
                     self.discardedFrontier.append(node)
 
         ## Como no se encontro una solucion, se hace restart para buscar con altura maxima mayor
