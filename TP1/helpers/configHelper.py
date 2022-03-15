@@ -6,14 +6,14 @@ from state import State
 
 class ConfigHelper:
     
-    possibleSearchMethods = tuple(['BPP','BPA','BPPV', 'BPPVO','HG','HL','A*'])
+    possibleSearchMethods = tuple(['BPP','BPA','BPPV', 'BPPVO','HG','HL','A*','F'])
     possibleHeuristicFunctions = tuple(['FHF','SHF','THF'])
     MIN_DISK_COUNT = 3
     MAX_DISK_COUNT = 7
     MAX_TOWERS_COUNT = 3
     
-    def __init__(self):
-            with open("./config/config.json","r") as config_file:
+    def __init__(self,configPath):
+            with open(configPath,"r") as config_file:
                 data = json.load(config_file)
                 ##Getting search properties 
                 self.searchMethod = data['search_properties']['search_method']
@@ -32,6 +32,12 @@ class ConfigHelper:
                     self.growthFactorBppv = data['search_properties']['growth_factor_bppv']
                 else:
                     self.growthFactorBppv = None
+
+                if 'weight' in data['search_properties']:
+                    self.weight = data['search_properties']['weight']
+                else:
+                    print('WEight not found')
+                    self.weight=None
 
                 ##Getting game properties
                 self.diskCount = data['game_properties']['disk_count']
@@ -55,7 +61,7 @@ class ConfigHelper:
 
     def __validateSearchProperties(self):
       # return all(self.__validateSearchMethod(),self.__validateHeuristicFunction(),self.__validateMaxHeightBppv(),self.__validateGrowthFactorBppv())
-       return self.__validateSearchMethod() and self.__validateHeuristicFunction() and self.__validateMaxHeightBppv() and self.__validateGrowthFactorBppv() and self.__validateRequiredParameters()
+       return self.__validateSearchMethod() and self.__validateHeuristicFunction() and self.__validateMaxHeightBppv() and self.__validateGrowthFactorBppv() and self.__validateRequiredParameters() and self.__validateWeight()
         # return self.__validateSearchMethod()
 
 
@@ -110,13 +116,24 @@ class ConfigHelper:
                 print('Illegal growth factor for BPPV algorithm')
             return isValid
         return True
+    
+    def __validateWeight(self):
+        if self.weight is not None:
+            isValid = self.weight > 0 and self.weight < 1
+            if(not isValid):
+                print("Weight must be between 0 and 1")
+            return isValid
+        return True
 
     def __validateRequiredParameters(self):
-        if self.searchMethod in ['HG','HL','A*']:
+        if self.searchMethod in ['HG','HL','A*','F']:
             isValid = self.heuristicFunction is not None
             if(not isValid):
                 print('A heuristic function is required to this method, add the field \"heuristic_function\" into your search options')
+            if self.searchMethod in ['F']:
+                isValid= isValid and self.weight is not None
             return isValid
+
         if self.searchMethod in ['BPPV', 'BPPVO']:
             isValid = self.growthFactorBppv is not None and self.maxHeightBppv is not None
             if(not isValid):

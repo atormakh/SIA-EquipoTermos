@@ -1,18 +1,25 @@
 from helpers.treeGraphHelper import TreeGraphHelper
 from output import Output
-from searchAlgorithms.bfs import Bfs
-from searchAlgorithms.dfs import Dfs
-from state import State
 from hanoiTowers import HanoiTowers
 from helpers.configHelper import ConfigHelper
 from helpers.searchHelper import SearchHelper
 import time
+import sys,getopt
 
 def main():
     print("proyectazo de SIA")
-
+    cmdShortOptions = "c:"
+    cmdLongOptions = ["configPath ="]
+    configPath="./config/config.json"
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], cmdShortOptions,cmdLongOptions)
+    except:
+        print("Error in command line arguments")
+    for opt, arg in opts:
+        if opt in ['-c', '--config']:
+            configPath = arg
     ##Create the helpers
-    configHelper = ConfigHelper()
+    configHelper = ConfigHelper(configPath)
     searchHelper = SearchHelper()
 
     ##First,check if parameters are ok
@@ -21,14 +28,15 @@ def main():
         heuristicFunction = searchHelper.getHeuristicFunction(configHelper.heuristicFunction,configHelper.diskCount,configHelper.destinationTower)
         maxHeightBppv = configHelper.maxHeightBppv
         growthFactorBppv = configHelper.growthFactorBppv
-
+        weight=configHelper.weight
+   
+        print(f" max : {maxHeightBppv} , growth: {growthFactorBppv} , heuristic: {heuristicFunction},weight={weight}")
         ##Start the Hanoi with the specified disk count and the heuristic function
         hanoiTowers = HanoiTowers(configHelper.diskCount,configHelper.destinationTower,heuristicFunction)
         ##Get the search method used
-        searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers,maxHeightBppv,growthFactorBppv)
+        searchMethod = searchHelper.getSearchMethod(configHelper.searchMethod,configHelper.initialState,hanoiTowers,maxHeightBppv,growthFactorBppv,weight)
         if(searchMethod is None):
             print(f'Error: could not recognize search method "{configHelper.searchmethod}"')
-    
         initialTime=time.perf_counter()
         ##Start the game
         [tree,solution] = searchMethod.start()

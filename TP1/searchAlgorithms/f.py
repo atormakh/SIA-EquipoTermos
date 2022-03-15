@@ -7,14 +7,13 @@ class F:
     expandedNodesCount = 0
     frontierNodesCount = 1
     
-    def __init__(self,initialState,game,costWeight,heuristicWeight):
+    def __init__(self,initialState,game,weight):
         self.tree = Tree(initialState)
         self.game = game
-        self.costWeight=costWeight
-        self.heuristicWeight=heuristicWeight
+        self.weight=weight
 
     def f(self,node):
-        return self.costWeight* node.level + self.heuristicWeight*node.state.heuristic
+        return (1-self.weight)* node.level + self.weight*node.state.heuristic
     
     def start(self):
         self.frontierNodes.append(self.tree.root)
