@@ -36,7 +36,7 @@ class Output:
             if(self.configParams.searchMethod == 'A*'):
                 self.configParams.searchMethod = "Aestrella"
             f = open(f"./results/stats/{self.configParams.searchMethod}.csv" , "a+")
-            f.write(f"{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount}\n")
+            f.write(f"{self.configParams.searchMethod},{self.configParams.diskCount},{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount},{self.configParams.heuristicFunction}\n")
             fg = open(f"./results/stats/global.csv", "a+")
             fg.write(f"{self.configParams.searchMethod},{self.configParams.diskCount},{self.executionTime},{self.solutionHeight},{self.expandedNodesCount},{self.frontierNodesCount},{self.configParams.heuristicFunction}\n")
         # Do something with the file

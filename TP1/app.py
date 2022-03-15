@@ -63,9 +63,9 @@ def main():
             output = Output(configHelper,searchSucceded,solutionHeight,solutionHeight,searchMethod.getExpandedNodesCount(),searchMethod.getFrontierNodesCount(),solution,finishTime-initialTime)
             output.printOutput()
             output.writeToFile()
-            
-    for graph in graphs:
-        TreeGraphHelper(graph[0] , graph[1] , graph[2])
+
+    #for graph in graphs:
+      #  TreeGraphHelper(graph[0] , graph[1] , graph[2])
 
 #Variable que existe 
 ## python3 app.py => settea el name a main ( para ejectuarlo )
