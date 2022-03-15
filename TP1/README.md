@@ -1,4 +1,5 @@
 # 72.27 Sistemas de Inteligencia Artificial 1er cuatrimestre 2022
+
 ## TP 1 : Metodos de Busqueda
 
 ### Instituto Tecnológico de Buenos Aires (ITBA)
@@ -6,21 +7,32 @@
 ## Autores (Equipo "Termos")
 
 - [Agustin Tormakh](https://github.com/atormakh) - Legajo 60041
+
 - [Valentino Riera Torraca](https://github.com/vriera) - Legajo 60212
+
 - [Igal Leonel Revich](https://github.com/irevich) - Legajo 60390
 
 ## Indice
-- [72.27 Sistemas de Inteligencia Artificial 1er cuatrimestre 2022](#7227-sistemas-de-inteligencia-artificial-1er-cuatrimestre-2022)
-  - [TP 1 : Metodos de Busqueda](#tp-1--metodos-de-busqueda)
-    - [Instituto Tecnológico de Buenos Aires (ITBA)](#instituto-tecnológico-de-buenos-aires-itba)
-  - [Autores (Equipo "Termos")](#autores-equipo-termos)
-  - [Indice](#indice)
-  - [Descripcion del problema elegido](#descripcion-del-problema-elegido)
-  - [Requerimientos previos](#requerimientos-previos)
-  - [Instalacion y ejecucion](#instalacion-y-ejecucion)
-  - [Guia de uso](#guia-de-uso)
-    - [search_properties](#search_properties)
 
+- [72.27 Sistemas de Inteligencia Artificial 1er cuatrimestre 2022](#7227-sistemas-de-inteligencia-artificial-1er-cuatrimestre-2022)
+
+- [TP 1 : Metodos de Busqueda](#tp-1--metodos-de-busqueda)
+
+- [Instituto Tecnológico de Buenos Aires (ITBA)](#instituto-tecnológico-de-buenos-aires-itba)
+
+- [Autores (Equipo "Termos")](#autores-equipo-termos)
+
+- [Indice](#indice)
+
+- [Descripcion del problema elegido](#descripcion-del-problema-elegido)
+
+- [Requerimientos previos](#requerimientos-previos)
+
+- [Instalacion y ejecucion](#instalacion-y-ejecucion)
+
+- [Guia de uso](#guia-de-uso)
+
+- [search_properties](#search_properties)
 
 ## Descripcion del problema elegido
 
@@ -31,38 +43,66 @@ Algo importante a destacar es que si bien el juego considera el caso de todos lo
 ## Requerimientos previos
 
 Para la instalacion y ejecucion de este proyecto (explicados posteriormente), son necesarios los siguientes requerimientos :
-- Pyhton (Version 3.10 o superior)
+
+- Python (Version **3.10** o superior)
 
 ## Instalacion y ejecucion
 
 Una vez descargado el proyecto, y posicionado en la carpeta raiz del mismo, dentro de una terminal se ejecuta lo siguiente (tener en cuenta que los comandos que sean de la forma "pyhton . . .", en caso de no funcionar, deben hacerse de la forma "python3 . . .") :
 
 - Primero, para verificar que la version de Python corresponda con la especificada anteriormente, ejecutar
-  - python --version
+
+```
+$ python --version
+```
 
 - Luego, para introducirse en el virtual environment del proyecto debe ejecutatse lo siguiente, dependiendo del sistema operativo utilizado
-  - Linux/Mac
-    - python -m venv venv/ (o python3 -m venv venv/ )
-    - source venv/bin/activate
-  - Windows
-    - pip install virtualenv
-    - virtualenv --python PATH_TO_PYTHON venv (Siendo PATH_TO_PYTHON el path donde se encuentra el python.exe)
-    - .\venv\Scripts\activate
+
+- Linux/Mac
+
+```
+$ python -m venv venv/ (o python3 -m venv venv/ )
+
+$ source venv/bin/activate
+```
+
+- Windows
+
+```
+$ pip install virtualenv
+
+$ virtualenv --python PATH_TO_PYTHON venv (Siendo PATH_TO_PYTHON el path donde se encuentra el python.exe)
+
+$ .\venv\Scripts\activate
+```
 
 - Una vez realizado esto, se descargan las dependencias a utilizar mediante el siguiente comando
-  - pip install -r requirements.txt
+
+```
+$ pip install -r requirements.txt
+```
 
 - Una vez hecho esto, el proyecto esta listo para ser ejecutado. Para hacer esto en la terminal debe introducirse lo siguiente
-  - pyhton app.py
-  
-    Ejecutando de dicha forma, el programa buscara el archivo de configuracion en el directorio "./config". En caso de mover el archivo de configuracion a otro directorio, debe ejecutarse de alguna de estas dos formas :
-      - pyhton app.py -c PATH_TO_CONFIG_FILE/config.json
-      - pyhton app.py --config PATH_TO_CONFIG_FILE/config.json
-    
-    Siendo PATH_TO_CONFIG_FILE el path hacia el archivo de configuracion
+
+```
+$ pyhton app.py
+```
+
+Ejecutando de dicha forma, el programa buscara el archivo de configuracion en el directorio "./config". En caso de mover el archivo de configuracion a otro directorio, debe ejecutarse de alguna de estas dos formas :
+
+```
+$ pyhton app.py -c PATH_TO_CONFIG_FILE/config.json
+
+$ pyhton app.py --config PATH_TO_CONFIG_FILE/config.json
+```
+
+Siendo PATH_TO_CONFIG_FILE el path hacia el archivo de configuracion
 
 - Finalmente, para salir del virtual environment, debe ejecutarse
-  - deactivate
+
+```
+$ deactivate
+```
 
 ## Guia de uso
 
@@ -71,11 +111,19 @@ Para la configuracion de parametros del proyecto, se utiliza el archivo "config.
 ### search_properties
 
 - "search_method" : Es un string que indica el metodo de busqueda utilizado. Los valores que puede tomar son :
-  - "BPP" = Busqueda primero en profundidad
-  - "BPA" = Busqueda primero a lo ancho
-  - "BPPV" = Busqueda primero en profundidad con altura variable sin retroceso
-  - "BPPVO" = Busqueda primero en profundidad con altura variable con retroceso
-  - "HL" = Busqueda heuristica local
-  - "HG" = Busqueda heuristica global
-  - "A*" = Busqueda por algoritmo A*
-  - "F" = Igual al A*, pero con peso (weight) variable
+
+- "BPP" = Busqueda primero en profundidad
+
+- "BPA" = Busqueda primero a lo ancho
+
+- "BPPV" = Busqueda primero en profundidad con altura variable sin retroceso
+
+- "BPPVO" = Busqueda primero en profundidad con altura variable con retroceso
+
+- "HL" = Busqueda heuristica local
+
+- "HG" = Busqueda heuristica global
+
+- "A*" = Busqueda por algoritmo A*
+
+- "F" = Igual al A\*, pero con peso (weight) variable
