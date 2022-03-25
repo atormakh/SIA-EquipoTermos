@@ -22,9 +22,6 @@ class PoblationManager:
 
         #Agrego la generacion 0 al historial
         self.poblationsHistory.append(currentPoblation)
-        print("FIRST GENERATION==")
-        for individual  in currentPoblation.individuals:
-            print(individual)
         #Mientras no cumpla criterio de corte
         while( self.currentGeneration<self.maxGenerationSize):
                 
@@ -76,4 +73,4 @@ class PoblationManager:
             #Aumento en 1 el numero de generacion
             self.currentGeneration+=1
 
-        return currentPoblation.maxFitnessIndividual
+        return (currentPoblation.maxFitnessIndividual,self.poblationsHistory)
