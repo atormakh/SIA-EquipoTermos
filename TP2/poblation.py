@@ -45,7 +45,7 @@ class Poblation:
         return randomIndividuals
 
     def __str__(self):
-        return f"Poblation:{{Generation: {self.generation}, MaxFitness:{self.maxFitnessIndividual.fitness}, MaxFitnessIndvidual:{self.maxFitnessIndividual} }}"
+        return f"Poblation:{{Generation: {self.generation}, MaxFitness:{self.maxFitnessIndividual.fitness}}}"
 
     def __repr__(self):
         return self.__str__()

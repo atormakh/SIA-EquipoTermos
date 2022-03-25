@@ -2,12 +2,12 @@ from poblation import Poblation
 
 class PoblationManager:
 
-    def __init__(self,maxGenerationSize,poblationSize,crossMethod,selectionMethod,fitness):
+    def __init__(self,maxGenerationSize,poblationSize,crossMethod,selectionMethod,mutation,fitness):
         self.maxGenerationSize = maxGenerationSize
         self.poblationSize = poblationSize
         self.crossMethod = crossMethod
         self.selectionMethod = selectionMethod
-        #self.mutation = mutation
+        self.mutation = mutation
         self.fitness = fitness
         self.poblationsHistory = []
         self.currentGeneration = 0
@@ -44,8 +44,8 @@ class PoblationManager:
                 
                 #Aplico mutacion a los descendientes
                 
-                #mutation.apply(newIndividual1)
-                #mutation.apply(newIndividual2)
+                self.mutation.apply(newIndividual1)
+                self.mutation.apply(newIndividual2)
 
                 #Calcular el fitness de cada individuo
                 newIndividual1.fitness = self.fitness.calculate(newIndividual1)

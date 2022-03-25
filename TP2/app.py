@@ -1,9 +1,9 @@
-import random
+from mutation import Mutation
 from fitness import Fitness
 from poblationManager import PoblationManager
 from selectionMethods.eliteSelection import eliteSelection
 from crossingMethods.simpleCross import simpleCross
-from individual import Individual
+
 
 
 def main():
@@ -15,8 +15,8 @@ def main():
     poblationSize=10
     crossMethod= simpleCross
     selectionMethod=eliteSelection
-    
-    poblationManager = PoblationManager(maxGenerationSize,poblationSize,crossMethod,selectionMethod,Fitness(epsilon,c))
+    mutation=Mutation(0.20,3)
+    poblationManager = PoblationManager(maxGenerationSize,poblationSize,crossMethod,selectionMethod,mutation,Fitness(epsilon,c))
     bestIndividual=poblationManager.start()
 
     print("FINISH-------------------------------------------------------------------------------------------")
