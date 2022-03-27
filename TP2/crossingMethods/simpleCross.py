@@ -3,6 +3,8 @@ import random
 from individual import Individual
 
 def simpleCross(i1,i2):
+    
+    #Creamos los genes de los descendientes vacios, y calculamos un indice random
     p = random.randint(0,len(i1.genes))
     genes1=[]
     genes2=[]
@@ -16,6 +18,8 @@ def simpleCross(i1,i2):
     for i in range(p,len(i1.genes)):
         genes1.append(i2.genes[i])
         genes2.append(i1.genes[i])
+
+    #Finalmente, creamos y retornamos los individuos con los nuevos genes
     newIndividual1 = Individual(genes1)
     newIndividual2=Individual(genes2)
     return [newIndividual1,newIndividual2]
