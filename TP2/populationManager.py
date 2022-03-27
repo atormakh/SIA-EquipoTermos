@@ -1,39 +1,39 @@
-from poblation import Poblation
+from population import Population
 
-class PoblationManager:
+class PopulationManager:
 
-    def __init__(self,maxGenerationSize,poblationSize,crossMethod,selectionMethod,mutation,fitness):
+    def __init__(self,maxGenerationSize,populationSize,crossMethod,selectionMethod,mutation,fitness):
         self.maxGenerationSize = maxGenerationSize
-        self.poblationSize = poblationSize
+        self.populationSize = populationSize
         self.crossMethod = crossMethod
         self.selectionMethod = selectionMethod
         self.mutation = mutation
         self.fitness = fitness
-        self.poblationsHistory = []
+        self.populationsHistory = []
         self.currentGeneration = 0
 
 
     def start(self):
         #Generar poblacion inicial
-        initialPoblation = Poblation(self.currentGeneration,self.fitness)
-        initialPoblation.createInitialIndividuals(self.poblationSize)
+        initialPopulation = Population(self.currentGeneration,self.fitness)
+        initialPopulation.createInitialIndividuals(self.populationSize)
 
-        currentPoblation=initialPoblation
+        currentPopulation=initialPopulation
 
         #Agrego la generacion 0 al historial
-        self.poblationsHistory.append(currentPoblation)
+        self.populationsHistory.append(currentPopulation)
         #Mientras no cumpla criterio de corte
         while( self.currentGeneration<self.maxGenerationSize):
                 
             #Crear nueva poblacion
             newIndividuals=[]
 
-            #Mientras la poblacion nueva no tenga cantidad poblationSize
-            while( len(newIndividuals) < self.poblationSize ):
+            #Mientras la poblacion nueva no tenga cantidad populationSize
+            while( len(newIndividuals) < self.populationSize ):
                 
                 #Elijo random 2 individuos de la poblacion vieja
                 
-                randomIndividuals = currentPoblation.getRandomIndividuals(2)
+                randomIndividuals = currentPopulation.getRandomIndividuals(2)
 
                 #Cruzo a dichos individuos para obtener 2 descendientes
 
@@ -53,24 +53,24 @@ class PoblationManager:
                 newIndividuals.append(newIndividual1)
                 newIndividuals.append(newIndividual2)
                 
-            #Aplico metodo de seleccion a la poblacion total para quedarme con una de cantidad poblationSize
+            #Aplico metodo de seleccion a la poblacion total para quedarme con una de cantidad populationSize
             selectionIndividuals = []
-            selectionIndividuals.extend(currentPoblation.individuals)
+            selectionIndividuals.extend(currentPopulation.individuals)
             selectionIndividuals.extend(newIndividuals)
 
-            newIndividuals = self.selectionMethod(selectionIndividuals,self.poblationSize)
-            newPoblation = Poblation(self.currentGeneration+1,self.fitness,newIndividuals)
+            newIndividuals = self.selectionMethod(selectionIndividuals,self.populationSize)
+            newPopulation = Population(self.currentGeneration+1,self.fitness,newIndividuals)
             #Reemplazo la poblacion vieja por la nueva
 
-            currentPoblation = newPoblation
+            currentPopulation = newPopulation
 
             #Agrego la nueva poblacion al historial
-            self.poblationsHistory.append(currentPoblation)
+            self.populationsHistory.append(currentPopulation)
 
-            print('Current poblation : '+str(currentPoblation))
+            print('Current population : '+str(currentPopulation))
 
 
             #Aumento en 1 el numero de generacion
             self.currentGeneration+=1
 
-        return (currentPoblation.maxFitnessIndividual,self.poblationsHistory)
+        return (currentPopulation.maxFitnessIndividual,self.populationsHistory)

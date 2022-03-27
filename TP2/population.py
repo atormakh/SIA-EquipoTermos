@@ -1,7 +1,7 @@
 import random
 from individual import Individual
 
-class Poblation:
+class Population:
     
     def __init__(self,generation,fitness,individuals=None):
         self.generation=generation
@@ -45,7 +45,7 @@ class Poblation:
         return randomIndividuals
 
     def __str__(self):
-        return f"Poblation:{{Generation: {self.generation}, MaxFitness:{self.maxFitnessIndividual.fitness}}}"
+        return f"Population:{{Generation: {self.generation}, MaxFitness:{self.maxFitnessIndividual.fitness}}}"
 
     def __repr__(self):
         return self.__str__()

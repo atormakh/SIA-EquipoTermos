@@ -1,7 +1,7 @@
 from graph import plotGenerationsFitness, plotGenerationsF
 from mutation import Mutation
 from fitness import Fitness
-from poblationManager import PoblationManager
+from populationManager import PopulationManager
 from selectionMethods.eliteSelection import eliteSelection
 from crossingMethods.simpleCross import simpleCross
 
@@ -14,19 +14,19 @@ def main():
     c = [0,1,1]
     # Parsear parametros de entrada
     maxGenerationSize=25
-    poblationSize=10
+    populationSize=10
     crossMethod= simpleCross
     selectionMethod=eliteSelection
     mutation=Mutation(0.05,3)
     fitness=Fitness(epsilon,c)
-    poblationManager = PoblationManager(maxGenerationSize,poblationSize,crossMethod,selectionMethod,mutation,fitness)
-    (bestIndividual,poblations)=poblationManager.start()
+    populationManager = PopulationManager(maxGenerationSize,populationSize,crossMethod,selectionMethod,mutation,fitness)
+    (bestIndividual,populations)=populationManager.start()
 
     print("FINISH-------------------------------------------------------------------------------------------")
     print("Best individual=="+ str(bestIndividual))
     #plot
-    plotGenerationsFitness(poblations)
-    #plotGenerationsF(poblations,epsilon,c,fitness)
+    plotGenerationsFitness(populations)
+    #plotGenerationsF(populations,epsilon,c,fitness)
 
 
 
