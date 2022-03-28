@@ -4,7 +4,7 @@ import math
 from individual import Individual
 
 
-def uniformCross(i1,i2):
+def uniformCross(i1,i2,crossIndexCount=None):
 
     #Creamos los genes de los descendientes vacios
     genes1 = []

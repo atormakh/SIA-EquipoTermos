@@ -2,7 +2,8 @@
     "genetic_properties":{
         "population_size" : 100,
         "max_generation_size" : 100,
-        "cross_method" : "UNIFORM",
+        "cross_method" : "MULTIPLE",
+        "cross_index_count" : 2,
         "mutation" : {
             "probability" : 0.05,
             "sigma" : 3.0

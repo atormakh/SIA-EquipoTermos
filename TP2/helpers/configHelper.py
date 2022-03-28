@@ -9,6 +9,7 @@ class ConfigHelper:
 
     possibleSelectionMethods = tuple(['ELITE','ROULETTE','TOURNAMENTS','BOLTZMANN','TRUNCATED'])
     possibleCrossMethods = tuple(['SIMPLE','MULTIPLE','UNIFORM'])
+    MAX_INDIVIDUAL_SIZE = 11
 
     def __init__(self,configPath):
             with open(configPath,"r") as config_file:
@@ -17,6 +18,10 @@ class ConfigHelper:
                 self.populationSize = data['genetic_properties']['population_size']
                 self.maxGenerationSize = data['genetic_properties']['max_generation_size']
                 self.crossMethod = data['genetic_properties']['cross_method']
+                if 'cross_index_count' in data['genetic_properties']:
+                    self.crossIndexCount = data['genetic_properties']['cross_index_count']
+                else:
+                    self.crossIndexCount = None
                 mutationProbability = data['genetic_properties']['mutation']['probability']
                 mutationSigma = data['genetic_properties']['mutation']['sigma']
                 self.mutation = Mutation(mutationProbability,mutationSigma)
@@ -37,7 +42,7 @@ class ConfigHelper:
         return self.__validateGeneticProperties() and self.__validateProblemProperties()
 
     def __validateGeneticProperties(self):
-        return self.__validatePopulationSize() and self.__validateMaxGenerationSize() and self.__validateCrossMethod() and self.__validateMutation() and self.__validateSelectionMethod()
+        return self.__validatePopulationSize() and self.__validateMaxGenerationSize() and self.__validateCrossMethod() and self.__validateCrossIndexCount() and self.__validateMutation() and self.__validateSelectionMethod() and self.__validateRequiredParameters()
 
     def __validateProblemProperties(self):
         return self.__validateEpsilon() and self.__validateC()
@@ -60,6 +65,14 @@ class ConfigHelper:
             print('Illegal cross method used')
         return isValid
 
+    def __validateCrossIndexCount(self):
+        if self.crossIndexCount is not None:
+            isValid = isinstance(self.crossIndexCount,int) and self.crossIndexCount >=2 and self.crossIndexCount<=self.MAX_INDIVIDUAL_SIZE
+            if(not isValid):
+                print('Illegal cross index count : Should be an integer number between 2 and '+str(self.MAX_INDIVIDUAL_SIZE)+' (limits included)')
+            return isValid
+        return True
+
     def __validateMutation(self):
         probabilityValid = isinstance(self.mutation.p,float) and self.mutation.p >=0 and self.mutation.p <=1
         sigmaValid = isinstance(self.mutation.sigma,float) and self.mutation.sigma >=0
@@ -73,6 +86,14 @@ class ConfigHelper:
         if(not isValid):
             print('Illegal selection method used')
         return isValid
+
+    def __validateRequiredParameters(self):
+        if self.crossMethod.strip().upper() == 'MULTIPLE':
+            isValid = self.crossIndexCount is not None
+            if(not isValid):
+                print('An index count is required to this cross method, add the field \"cross_index_count\" into your genetic options')
+            return isValid
+        return True
 
     def __validateEpsilon(self):
         problemManager = ProblemManager(self.epsilon,self.c)

@@ -1,5 +1,6 @@
 from crossingMethods.simpleCross import simpleCross
 from crossingMethods.uniformCross import uniformCross
+from crossingMethods.multipleCross import multipleCross
 from selectionMethods.eliteSelection import eliteSelection
 
 class GeneticHelper:
@@ -10,8 +11,10 @@ class GeneticHelper:
             return simpleCross
         elif(usedCrossMethod == 'UNIFORM'):
             return uniformCross
+        elif(usedCrossMethod == 'MULTIPLE'):
+            return multipleCross
         else:
-            return simpleCross
+            return None
 
     def getSelectionMethod(self,usedSelectionMethod):
         usedSelectionMethod = usedSelectionMethod.strip().upper()

@@ -2,10 +2,11 @@ from population import Population
 
 class PopulationManager:
 
-    def __init__(self,maxGenerationSize,populationSize,crossMethod,selectionMethod,mutation,fitness):
+    def __init__(self,maxGenerationSize,populationSize,crossMethod,selectionMethod,mutation,fitness,crossIndexCount=None):
         self.maxGenerationSize = maxGenerationSize
         self.populationSize = populationSize
         self.crossMethod = crossMethod
+        self.crossIndexCount = crossIndexCount
         self.selectionMethod = selectionMethod
         self.mutation = mutation
         self.fitness = fitness
@@ -37,7 +38,7 @@ class PopulationManager:
 
                 #Cruzo a dichos individuos para obtener 2 descendientes
 
-                [newIndividual1,newIndividual2] = self.crossMethod(randomIndividuals[0],randomIndividuals[1])
+                [newIndividual1,newIndividual2] = self.crossMethod(randomIndividuals[0],randomIndividuals[1],self.crossIndexCount)
                 
                 #Aplico mutacion a los descendientes
                 

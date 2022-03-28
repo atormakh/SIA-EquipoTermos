@@ -2,7 +2,7 @@ import random
 
 from individual import Individual
 
-def simpleCross(i1,i2):
+def simpleCross(i1,i2,crossIndexCount=None):
     
     #Creamos los genes de los descendientes vacios, y calculamos un indice random
     p = random.randint(0,len(i1.genes))

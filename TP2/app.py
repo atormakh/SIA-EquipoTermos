@@ -33,7 +33,7 @@ def main():
         crossMethod = geneticHelper.getCrossMethod(configHelper.crossMethod)
 
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-        populationManager = PopulationManager(configHelper.maxGenerationSize,configHelper.populationSize,crossMethod,selectionMethod,configHelper.mutation,Fitness(configHelper.epsilon.reactives,configHelper.c))
+        populationManager = PopulationManager(configHelper.maxGenerationSize,configHelper.populationSize,crossMethod,selectionMethod,configHelper.mutation,Fitness(configHelper.epsilon.reactives,configHelper.c),configHelper.crossIndexCount)
         (bestIndividual,populations)=populationManager.start()
 
         ##Imprimir la salida correspondiente
