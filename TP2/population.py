@@ -25,7 +25,7 @@ class Population:
             if(maxFitnessIndividual is None):
                 maxFitnessIndividual=individual
             else:
-                if(maxFitnessIndividual.fitness <= individualFitness):
+                if(maxFitnessIndividual.fitness >= individualFitness):
                     maxFitnessIndividual=individual
 
         #Me guardo el individuo con mayor fitness
@@ -34,7 +34,7 @@ class Population:
     def _calculateBestIndividual(self):
         self.maxFitnessIndividual = self.individuals[0]
         for individual in self.individuals:
-            if(self.maxFitnessIndividual.fitness <= individual.fitness):
+            if(self.maxFitnessIndividual.fitness >= individual.fitness):
                 self.maxFitnessIndividual=individual
 
     def getRandomIndividuals(self,numberOfIndividuals):
