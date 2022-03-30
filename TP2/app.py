@@ -1,11 +1,8 @@
 
 import argparse
-from graph import plotGenerationsFitness, plotGenerationsF
-from mutation import Mutation
+from graph import plotGenerationsFitness
 from fitness import Fitness
 from populationManager import PopulationManager
-from selectionMethods.eliteSelection import eliteSelection
-from crossingMethods.simpleCross import simpleCross
 from helpers.configHelper import ConfigHelper
 from helpers.geneticHelper import GeneticHelper
 
@@ -29,11 +26,11 @@ def main():
 
     if(configHelper.validateConfigurationProperties()):
         ##Pedir el metodo de cruza y de seleccion utilizado
-        selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionMethod)
-        crossMethod = geneticHelper.getCrossMethod(configHelper.crossMethod)
+        selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionData)
+        crossMethod = geneticHelper.getCrossMethod(configHelper.crossData)
 
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-        populationManager = PopulationManager(configHelper.maxGenerationSize,configHelper.populationSize,crossMethod,selectionMethod,configHelper.mutation,Fitness(configHelper.epsilon.reactives,configHelper.c),configHelper.crossIndexCount)
+        populationManager = PopulationManager(configHelper.maxGenerationSize,configHelper.populationSize,crossMethod,selectionMethod,configHelper.mutation,Fitness(configHelper.epsilon.reactives,configHelper.c))
         (bestIndividual,populations)=populationManager.start()
 
         ##Imprimir la salida correspondiente

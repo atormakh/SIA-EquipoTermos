@@ -1,21 +1,26 @@
 {
-    "genetic_properties":{
-        "population_size" : 100,
-        "max_generation_size" : 100,
-        "cross_method" : "MULTIPLE",
-        "cross_index_count" : 2,
-        "mutation" : {
-            "probability" : 0.05,
-            "sigma" : 3.0
-        },
-        "selection_method" : "ELITE"
+  "genetic_properties": {
+    "population_size": 100,
+    "max_generation_size": 100,
+    "cross": {
+      "method": "SIMPLE",
+      "index_count": 2
     },
-    "problem_properties":{
-        "epsilon" : {
-            "epsilon_1" : [4.4793,-4.0765,-4.0765],
-            "epsilon_2" : [-4.1793,-4.9218,1.7664],
-            "epsilon_3" : [-3.9429,-0.7689,4.8830]
-        },
-        "c" : [0,1,1]
+    "mutation": {
+      "probability": 0.2,
+      "sigma": 3.0
+    },
+    "selection": {
+      "method": "ELITE",
+      "k": 25
     }
+  },
+  "problem_properties": {
+    "epsilon": {
+      "epsilon_1": [4.4793, -4.0765, -4.0765],
+      "epsilon_2": [-4.1793, -4.9218, 1.7664],
+      "epsilon_3": [-3.9429, -0.7689, 4.883]
+    },
+    "c": [0, 1, 1]
+  }
 }

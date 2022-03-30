@@ -1,24 +1,11 @@
-from crossingMethods.simpleCross import simpleCross
-from crossingMethods.uniformCross import uniformCross
-from crossingMethods.multipleCross import multipleCross
-from selectionMethods.eliteSelection import eliteSelection
+from helpers.configHelper import ConfigHelper
 
 class GeneticHelper:
 
-    def getCrossMethod(self,usedCrossMethod):
-        usedCrossMethod = usedCrossMethod.strip().upper()
-        if(usedCrossMethod == 'SIMPLE'):
-            return simpleCross
-        elif(usedCrossMethod == 'UNIFORM'):
-            return uniformCross
-        elif(usedCrossMethod == 'MULTIPLE'):
-            return multipleCross
-        else:
-            return None
+    def getCrossMethod(self,crossData):
+        crossMethodClass = ConfigHelper.getCrossMethodClass(crossData["method"].strip().upper())
+        return crossMethodClass.fromJson(crossData)
 
-    def getSelectionMethod(self,usedSelectionMethod):
-        usedSelectionMethod = usedSelectionMethod.strip().upper()
-        if(usedSelectionMethod == 'ELITE'):
-            return eliteSelection
-        else:
-            return eliteSelection
+    def getSelectionMethod(self,selectionData):
+        selectionMethodClass = ConfigHelper.getSelectionMethodClass(selectionData["method"].strip().upper())
+        return selectionMethodClass.fromJson(selectionData)
