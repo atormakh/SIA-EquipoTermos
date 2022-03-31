@@ -2,7 +2,8 @@ import random
 import math
 from individual import Individual
 class UniformCross:
-    def apply(i1,i2):
+    
+    def apply(self,i1,i2):
         #Creamos los genes de los descendientes vacios
         genes1 = []
         genes2 = []

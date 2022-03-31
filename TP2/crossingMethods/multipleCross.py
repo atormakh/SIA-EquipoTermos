@@ -5,7 +5,7 @@ class MultipleCross:
     def __init__(self,indexCount):
         self.indexCount = indexCount
 
-    def multipleCross(self,i1,i2):
+    def apply(self,i1,i2):
         MAX_INDIVIDUAL_SIZE = 11
         isIndexesSameLengthAsIndividual = False
         
@@ -66,6 +66,16 @@ class MultipleCross:
 
     @staticmethod
     def isValid(crossData):
-        return (True,"")
+        MAX_INDIVIDUAL_SIZE = 11
+        isValid = True
+        errorMessage = ""
+        indexCount = None
+        if('index_count' in crossData):
+         indexCount = crossData['index_count']
+        if(indexCount is None or not isinstance(indexCount,int) or indexCount < 2 or indexCount > MAX_INDIVIDUAL_SIZE ):
+            isValid = False
+            errorMessage="Invalid Multiple Cross parameters. 'index_count' is a required parameter and it must be an integer between 2 and "+str(MAX_INDIVIDUAL_SIZE)+" (limits included)"          
+
+        return (isValid,errorMessage)
 
 

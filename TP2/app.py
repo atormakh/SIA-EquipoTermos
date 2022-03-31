@@ -25,12 +25,14 @@ def main():
     geneticHelper = GeneticHelper()
 
     if(configHelper.validateConfigurationProperties()):
-        ##Pedir el metodo de cruza y de seleccion utilizado
-        selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionData)
+        ##Pedir el metodo de cruza, mutacion, seleccion y condicion de corte utilizados
         crossMethod = geneticHelper.getCrossMethod(configHelper.crossData)
+        mutationMethod = geneticHelper.getMutationMethod(configHelper.mutationData)
+        selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionData)
+        finishCondition = geneticHelper.getFinishCondition(configHelper.finishConditionData)
 
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-        populationManager = PopulationManager(configHelper.maxGenerationSize,configHelper.populationSize,crossMethod,selectionMethod,configHelper.mutation,Fitness(configHelper.epsilon.reactives,configHelper.c))
+        populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,crossMethod,selectionMethod,mutationMethod,Fitness(configHelper.epsilon.reactives,configHelper.c),finishCondition)
         (bestIndividual,populations)=populationManager.start()
 
         ##Imprimir la salida correspondiente

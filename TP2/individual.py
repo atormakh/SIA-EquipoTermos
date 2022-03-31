@@ -2,8 +2,6 @@ import random
 
 class Individual:
     
-    MIN_RANGE_PROPERTY = -10
-    MAX_RANGE_PROPERTY = 10
     NUMBER_OF_GENES = 11
 
     #Crear individuo con genes determinados
@@ -15,7 +13,7 @@ class Individual:
     def __generate__genes__random(self):
         genes = []
         for i in range(0,self.NUMBER_OF_GENES):
-            gen = random.uniform(self.MIN_RANGE_PROPERTY,self.MAX_RANGE_PROPERTY)
+            gen = random.uniform(-self.maxRangeGen,self.maxRangeGen)
             genes.append(gen)
         return genes
 
@@ -24,3 +22,7 @@ class Individual:
     
     def __repr__(self) -> str:
         return self.__str__()
+
+    @classmethod
+    def setupIndividualsMaxRangeGen(cls, maxRangeGen):
+        cls.maxRangeGen = maxRangeGen

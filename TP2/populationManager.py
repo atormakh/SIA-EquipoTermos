@@ -1,19 +1,28 @@
+from individual import Individual
 from population import Population
 
 class PopulationManager:
 
-    def __init__(self,maxGenerationSize,populationSize,crossMethod,selectionMethod,mutation,fitness):
-        self.maxGenerationSize = maxGenerationSize
+    def __init__(self,populationSize,maxRangeGen,crossMethod,selectionMethod,mutation,fitness,finishCondition):
         self.populationSize = populationSize
+        self.maxRangeGen = maxRangeGen
         self.crossMethod = crossMethod
         self.selectionMethod = selectionMethod
         self.mutation = mutation
         self.fitness = fitness
         self.populationsHistory = []
+        self.finishCondition = finishCondition
         self.currentGeneration = 0
 
 
     def start(self):
+
+        #Setear el maximo rango de genes de los individuos
+        Individual.setupIndividualsMaxRangeGen(self.maxRangeGen)
+
+        #Inicializar el population manager en la condicion de corte
+        self.finishCondition.initializePopulationManager(self)
+
         #Generar poblacion inicial
         initialPopulation = Population(self.currentGeneration,self.fitness)
         initialPopulation.createInitialIndividuals(self.populationSize)
@@ -23,7 +32,7 @@ class PopulationManager:
         #Agrego la generacion 0 al historial
         self.populationsHistory.append(currentPopulation)
         #Mientras no cumpla criterio de corte
-        while( self.currentGeneration<self.maxGenerationSize):
+        while( not self.finishCondition.testCondition()):
                 
             #Crear nueva poblacion
             newIndividuals=[]
