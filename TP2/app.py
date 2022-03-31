@@ -34,7 +34,7 @@ def main():
         finishCondition = geneticHelper.getFinishCondition(configHelper.finishConditionData)
 
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-        populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,crossMethod,selectionMethod,mutationMethod,Fitness(configHelper.epsilon.reactives,configHelper.c),finishCondition)
+        populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,Fitness(configHelper.epsilon.reactives,configHelper.c),finishCondition)
         initTime = time.perf_counter()
         (bestIndividual,populations)=populationManager.start()
         endTime = time.perf_counter()

@@ -2,6 +2,7 @@
   "genetic_properties": {
     "population_size":1000,
     "max_range_gen":10,
+    "replacement" : false,
     "cross": {
       "method": "MULTIPLE",
       "index_count": 7
@@ -13,7 +14,9 @@
       "a" : 1.0
     },
     "selection": {
-      "method": "RANK"
+      "method": "TOURNAMENTS",
+      "k": 25,
+      "u":0.5
     },
     "finish_condition" : {
       "method" : "GENERATION_SIZE",

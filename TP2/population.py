@@ -37,12 +37,15 @@ class Population:
             if(self.maxFitnessIndividual.fitness < individual.fitness):
                 self.maxFitnessIndividual=individual
 
-    def getRandomIndividuals(self,numberOfIndividuals):
+    def getRandomIndividuals(self,numberOfIndividuals,replacement):
+        if(not replacement):
+            return random.sample(self.individuals,numberOfIndividuals)
         randomIndividuals = []
         for i in range(0,numberOfIndividuals):
             randIndex = random.randint(0,len(self.individuals)-1)
             randomIndividuals.append(self.individuals[randIndex])
         return randomIndividuals
+
 
     def __str__(self):
         return f"Population:{{Generation: {self.generation}, MaxFitness:{self.maxFitnessIndividual.fitness}}}"

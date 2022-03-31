@@ -3,9 +3,10 @@ from population import Population
 
 class PopulationManager:
 
-    def __init__(self,populationSize,maxRangeGen,crossMethod,selectionMethod,mutation,fitness,finishCondition):
+    def __init__(self,populationSize,maxRangeGen,replacement,crossMethod,selectionMethod,mutation,fitness,finishCondition):
         self.populationSize = populationSize
         self.maxRangeGen = maxRangeGen
+        self.replacement = replacement
         self.crossMethod = crossMethod
         self.selectionMethod = selectionMethod
         self.mutation = mutation
@@ -42,7 +43,7 @@ class PopulationManager:
                 
                 #Elijo random 2 individuos de la poblacion vieja
                 
-                randomIndividuals = currentPopulation.getRandomIndividuals(2)
+                randomIndividuals = currentPopulation.getRandomIndividuals(2,self.replacement)
 
                 #Cruzo a dichos individuos para obtener 2 descendientes
                 [newIndividual1,newIndividual2] = self.crossMethod.apply(randomIndividuals[0],randomIndividuals[1])
@@ -65,7 +66,7 @@ class PopulationManager:
             selectionIndividuals = []
             selectionIndividuals.extend(currentPopulation.individuals)
             selectionIndividuals.extend(newIndividuals)
-            newIndividuals = self.selectionMethod.apply(selectionIndividuals,self.populationSize)
+            newIndividuals = self.selectionMethod.apply(selectionIndividuals,self.populationSize,self.replacement)
             newPopulation = Population(self.currentGeneration+1,self.fitness,newIndividuals)
             #Reemplazo la poblacion vieja por la nueva
 

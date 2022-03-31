@@ -26,16 +26,21 @@ class ConfigHelper:
             with open(configPath,"r") as config_file:
                 data = json.load(config_file)
                 ##Pidiendo las propiedades del algoritmo genetico 
-                #PopulationSize
+                #populationSize
                 if('population_size' in data['genetic_properties']):
                     self.populationSize = data['genetic_properties']['population_size']
                 else:
                     self.populationSize = None
-                #MaxRangeGen
+                #maxRangeGen
                 if('max_range_gen' in data['genetic_properties']):
                     self.maxRangeGen = data['genetic_properties']['max_range_gen']
                 else:
                     self.maxRangeGen = None
+                #replacement
+                if('replacement' in data['genetic_properties']):
+                    self.replacement = data['genetic_properties']['replacement']
+                else:
+                    self.replacement = None
                 #cross  
                 if('cross' in data['genetic_properties'] and 'method' in data['genetic_properties']['cross']):
                     self.crossData = data['genetic_properties']['cross']
@@ -80,7 +85,7 @@ class ConfigHelper:
         return self.__validateGeneticProperties() and self.__validateProblemProperties()
 
     def __validateGeneticProperties(self):
-        return self.__validatePopulationSize() and self.__validateMaxRangeGen() and self.__validateCrossMethod() and self.__validateMutationMethod() and self.__validateSelectionMethod() and self.__validateFinishCondition()
+        return self.__validatePopulationSize() and self.__validateMaxRangeGen() and self.__validateReplacement() and self.__validateCrossMethod() and self.__validateMutationMethod() and self.__validateSelectionMethod() and self.__validateFinishCondition()
 
     def __validateProblemProperties(self):
         return self.__validateEpsilon() and self.__validateC()
@@ -101,6 +106,15 @@ class ConfigHelper:
         isValid = isinstance(self.maxRangeGen,int) and self.maxRangeGen > 0
         if(not isValid):
             print("Illegal max range gen : Should be an integer positive number")
+        return isValid
+
+    def __validateReplacement(self):
+        if(self.replacement is None):
+            print(" 'replacement' is a required parameter")
+            return False
+        isValid = isinstance(self.replacement,bool)
+        if(not isValid):
+            print("Illegal replacement : Should be a boolean value (true or false)")
         return isValid
 
     def __validateCrossMethod(self):
