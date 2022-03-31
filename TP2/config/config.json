@@ -1,20 +1,19 @@
 {
   "genetic_properties": {
-    "population_size":100,
+    "population_size":1000,
     "max_range_gen":10,
     "cross": {
       "method": "MULTIPLE",
-      "index_count": 11
+      "index_count": 7
     },
     "mutation": {
-      "method" : "UNIFORM",
-      "probability": 0.2,
-      "sigma": 3.0,
-      "a" : 3.0
+      "method" : "GAUSSIAN",
+      "probability": 0.1,
+      "sigma": 2.0,
+      "a" : 1.0
     },
     "selection": {
-      "method": "ELITE",
-      "k": 25
+      "method": "RANK"
     },
     "finish_condition" : {
       "method" : "GENERATION_SIZE",
