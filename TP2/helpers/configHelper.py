@@ -1,8 +1,5 @@
-from audioop import mul
-from distutils.log import error
 import json
-from os import listdir
-from os.path import isfile, join
+from selectionMethods.tournamentSelection import TournamentSelection
 from crossingMethods.uniformCross import UniformCross
 from crossingMethods.multipleCross import MultipleCross
 from crossingMethods.simpleCross import SimpleCross
@@ -11,7 +8,7 @@ from selectionMethods.truncatedSelection import TruncatedSelection
 from problemManager import ProblemManager
 from mutation import Mutation
 from epsilon import Epsilon
-possibleSelectionMethods = {'ELITE':EliteSelection,'ROULETTE':None,'TOURNAMENTS':None,'BOLTZMANN':None,'TRUNCATED':TruncatedSelection}
+possibleSelectionMethods = {'ELITE':EliteSelection,'ROULETTE':None,'TOURNAMENTS':TournamentSelection,'BOLTZMANN':None,'TRUNCATED':TruncatedSelection}
 possibleCrossMethods = {'SIMPLE':SimpleCross,'MULTIPLE':MultipleCross,'UNIFORM':UniformCross}
 class ConfigHelper:
 
