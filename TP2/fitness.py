@@ -37,6 +37,6 @@ class Fitness:
         for i in range(0,len(self.epsilon)):
          fitness +=  math.pow((self.c[i]- self.f(individual,self.epsilon[i])),2)
         #Multiplicamos por -1 para que pueda ser usada como funcion de aptitud
-        fitness*=(-1)
-        return fitness
+        ##fitness*=(-1)
+        return len(self.epsilon) - fitness
         

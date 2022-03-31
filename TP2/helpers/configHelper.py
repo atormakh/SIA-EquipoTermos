@@ -5,12 +5,15 @@ from crossingMethods.multipleCross import MultipleCross
 from crossingMethods.simpleCross import SimpleCross
 from selectionMethods.eliteSelection import EliteSelection
 from selectionMethods.truncatedSelection import TruncatedSelection
+from selectionMethods.rankSelection import RankSelection
+from selectionMethods.rouletteSelection import RouletteSelection
 from mutationMethods.gaussianMutation import GaussianMutation
 from mutationMethods.uniformMutation import UniformMutation
 from finishConditions.generationSizeFinishCondition import GenerationSizeFinishCondition
+
 from problemManager import ProblemManager
 from epsilon import Epsilon
-possibleSelectionMethods = {'ELITE':EliteSelection,'ROULETTE':None,'TOURNAMENTS':TournamentSelection,'BOLTZMANN':None,'TRUNCATED':TruncatedSelection}
+possibleSelectionMethods = {'ELITE':EliteSelection,'ROULETTE':RouletteSelection,'TOURNAMENTS':TournamentSelection,'BOLTZMANN':None,'TRUNCATED':TruncatedSelection ,'RANK':RankSelection}
 possibleCrossMethods = {'SIMPLE':SimpleCross,'MULTIPLE':MultipleCross,'UNIFORM':UniformCross}
 possibleMutationMethods = {'GAUSSIAN':GaussianMutation,'UNIFORM':UniformMutation}
 possibleFinishConditions = {'GENERATION_SIZE':GenerationSizeFinishCondition}
