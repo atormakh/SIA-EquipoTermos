@@ -23,6 +23,15 @@ class Individual:
     def __repr__(self) -> str:
         return self.__str__()
 
+    def strArrays(self) ->str:
+        W = self.genes[0:3]
+        w =[self.genes[3:6],self.genes[6:9]]
+        w0 = self.genes[9:11]
+        return f"""W={W}\n
+                   \tw=[{w[0]}\n
+                    \t  {w[1]}]\n
+                   \tw0={w0}"""
+
     @classmethod
     def setupIndividualsMaxRangeGen(cls, maxRangeGen):
         cls.maxRangeGen = maxRangeGen

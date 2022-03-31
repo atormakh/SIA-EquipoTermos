@@ -1,5 +1,7 @@
 
 import argparse
+import time
+from output import Output
 from graph import plotGenerationsFitness
 from fitness import Fitness
 from populationManager import PopulationManager
@@ -33,13 +35,15 @@ def main():
 
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
         populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,crossMethod,selectionMethod,mutationMethod,Fitness(configHelper.epsilon.reactives,configHelper.c),finishCondition)
+        initTime = time.perf_counter()
         (bestIndividual,populations)=populationManager.start()
-
+        endTime = time.perf_counter()
         ##Imprimir la salida correspondiente
         print("FINISH-------------------------------------------------------------------------------------------")
-        print("Best individual=="+ str(bestIndividual))
+        output = Output(configHelper, populations,bestIndividual,(endTime-initTime))
+        output.printOutput()
         #plot
-        plotGenerationsFitness(populations)
+        #plotGenerationsFitness(populations)
 
 
 if __name__ == "__main__":

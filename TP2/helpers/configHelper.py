@@ -68,7 +68,7 @@ class ConfigHelper:
                     self.c = None
 
     def __str__(self):
-        return f"\t-Poblation size : {self.poblationSize}\n\t-Max generation size : {self.maxGenerationSize}\n\t-Cross method : {self.crossMethod}\n\t-Mutation : [ p : {self.mutation.p} ; sigma : {self.mutation.sigma} ]\n\t-Selection Data : {self.selectionData}"
+        return f"\t-Poblation size : {self.populationSize}\n\t\t-Finish Condition:{self.finishConditionData}\n\t\t-Cross method : {self.crossData} \n\t\t-Mutation : {self.mutationData}\n\t\t-Selection Data : {self.selectionData}"
 
     def __repr__(self) -> str:
         return self.__str__()
