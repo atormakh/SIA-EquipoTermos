@@ -30,7 +30,10 @@ class Fitness:
         return self.g(totalAcum - W[0])
 
     def g(self,x):
-        return math.exp(x)/(1+math.exp(x))
+        try:
+            return math.exp(x)/(1+math.exp(x))
+        except:
+            return 1
 
     def calculate(self,individual):
         fitness = 0
