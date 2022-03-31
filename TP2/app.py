@@ -43,7 +43,7 @@ def main():
         output = Output(configHelper, populations,bestIndividual,(endTime-initTime))
         output.printOutput()
         #plot
-        #plotGenerationsFitness(populations)
+        plotGenerationsFitness(populations)
 
 
 if __name__ == "__main__":

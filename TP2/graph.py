@@ -5,16 +5,30 @@ import matplotlib.cm as cm
 def plotGenerationsFitness(populations):
     data = {
         'Generation':[],
-        'Fitness':[]
+        'best fitness':[],
+        'average fitness':[],
+        'worst fitness':[]
     }
     for population in populations:
+        
         data["Generation"].append(population.generation)
-        data["Fitness"].append(population.maxFitnessIndividual.fitness)
-
+        data["best fitness"].append(population.maxFitnessIndividual.fitness)
+        (avg,worst) = calculateGenerationAverageAndWorstFitness(population.individuals)
+        data['average fitness'].append(avg)
+        data['worst fitness'].append(worst)
     table = pd.DataFrame(data)
     print(table.head())
-    table.plot(x="Generation", y="Fitness")
+    table.plot(x="Generation")
     plt.show()
+
+def calculateGenerationAverageAndWorstFitness(population):
+    fitnessSum=0
+    worstFitness=population[0].fitness
+    for individual in population:
+        fitnessSum+=individual.fitness
+        if individual.fitness < worstFitness:
+            worstFitness=individual.fitness
+    return (fitnessSum/len(population),worstFitness)
 
 def plotGenerationsF(populations,epsilon,c,fitness):    
     colormap="spring"
