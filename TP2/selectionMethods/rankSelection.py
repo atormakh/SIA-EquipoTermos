@@ -7,7 +7,7 @@ class RankSelection:
     def __init__(self):
         print("Corre rank")
 
-    def apply(self,selectionIndividuals,targetPopulationSize):
+    def apply(self,selectionIndividuals,targetPopulationSize,replacement=False):
         #Sacamos el fitness total
         rankedIndividuals = sorted(selectionIndividuals,key=lambda x: x.fitness,reverse=True)
         p = len(rankedIndividuals)

@@ -1,6 +1,8 @@
 
 import argparse
 import time
+import random
+import numpy as np
 from output import Output
 from graph import plotGenerationsFitness
 from fitness import Fitness
@@ -32,6 +34,10 @@ def main():
         mutationMethod = geneticHelper.getMutationMethod(configHelper.mutationData)
         selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionData)
         finishCondition = geneticHelper.getFinishCondition(configHelper.finishConditionData)
+
+        ##Setear el seed para todos los random que se utilicen en el algoritmo
+        random.seed(configHelper.randomSeed)
+        np.random.seed(configHelper.randomSeed)
 
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
         populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,Fitness(configHelper.epsilon.reactives,configHelper.c),finishCondition)

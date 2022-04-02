@@ -25,6 +25,11 @@ class ConfigHelper:
     def __init__(self,configPath):
             with open(configPath,"r") as config_file:
                 data = json.load(config_file)
+                ##Pidiendo la seed para el random en caso de que se haya definido
+                if('random_seed' in data):
+                    self.randomSeed = data['random_seed']
+                else:
+                    self.randomSeed = None
                 ##Pidiendo las propiedades del algoritmo genetico 
                 #populationSize
                 if('population_size' in data['genetic_properties']):
@@ -82,7 +87,13 @@ class ConfigHelper:
         return self.__str__()
 
     def validateConfigurationProperties(self):
-        return self.__validateGeneticProperties() and self.__validateProblemProperties()
+        return self.__validateRandomSeed() and self.__validateGeneticProperties() and self.__validateProblemProperties()
+
+    def __validateRandomSeed(self):
+        if(self.randomSeed is not None and not (isinstance(self.randomSeed,int) or isinstance(self.randomSeed,float))):
+            print("Illegal random seed : Should be a number")
+            return False
+        return True
 
     def __validateGeneticProperties(self):
         return self.__validatePopulationSize() and self.__validateMaxRangeGen() and self.__validateReplacement() and self.__validateCrossMethod() and self.__validateMutationMethod() and self.__validateSelectionMethod() and self.__validateFinishCondition()

@@ -7,11 +7,11 @@ class RouletteSelection:
     def __init__(self):
         print("Corre roulette")
 
-    def apply(self,selectionIndividuals,targetPopulationSize):
+    def apply(self,selectionIndividuals,targetPopulationSize,replacement=False):
         #Sacamos el fitness total
         #return random.choices(selectionIndividuals , weights=[x.fitness for x in selectionIndividuals] , k=targetPopulationSize )
         totalFitness = sum(ind.fitness for ind in selectionIndividuals)
-        accumulatedPro
+        accumulatedProb=0
         b = 0
         probArray = []
         for ind in selectionIndividuals:
