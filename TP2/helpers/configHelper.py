@@ -12,13 +12,14 @@ from mutationMethods.uniformMutation import UniformMutation
 from finishConditions.generationSizeFinishCondition import GenerationSizeFinishCondition
 from finishConditions.timeFinishCondition import TimeFinishCondition
 from finishConditions.acceptableSolutionFinishCondition import AcceptableSolutionFinishCondition
+from finishConditions.contentFinishCondition import ContentFinishCondition
 
 from problemManager import ProblemManager
 from epsilon import Epsilon
 possibleSelectionMethods = {'ELITE':EliteSelection,'ROULETTE':RouletteSelection,'TOURNAMENTS':TournamentSelection,'BOLTZMANN':None,'TRUNCATED':TruncatedSelection ,'RANK':RankSelection}
 possibleCrossMethods = {'SIMPLE':SimpleCross,'MULTIPLE':MultipleCross,'UNIFORM':UniformCross}
 possibleMutationMethods = {'GAUSSIAN':GaussianMutation,'UNIFORM':UniformMutation}
-possibleFinishConditions = {'GENERATION_SIZE':GenerationSizeFinishCondition, 'TIME':TimeFinishCondition, 'ACCEPTABLE_SOLUTION':AcceptableSolutionFinishCondition}
+possibleFinishConditions = {'GENERATION_SIZE':GenerationSizeFinishCondition, 'TIME':TimeFinishCondition, 'ACCEPTABLE_SOLUTION':AcceptableSolutionFinishCondition, 'CONTENT':ContentFinishCondition}
 class ConfigHelper:
 
 

@@ -15,13 +15,13 @@
       "a" : 1.0
     },
     "selection": {
-      "method": "TOURNAMENTS",
+      "method": "ELITE",
       "k": 25,
       "u":0.5
     },
     "finish_condition" : {
-      "method" : "ACCEPTABLE_SOLUTION",
-      "max_generation_size" : 100,
+      "method" : "CONTENT",
+      "max_generation_size" : 9,
       "max_execution_time" : 10.0,
       "max_tolerance_exponent" : -16
     }
