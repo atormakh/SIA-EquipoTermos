@@ -9,7 +9,7 @@ class MultipleCross:
         MAX_INDIVIDUAL_SIZE = 11
         isIndexesSameLengthAsIndividual = False
         
-        #Primero, creamos los genes de los descendientes vacios y un array donde se guardaran los indices a establecer
+        #Primero, creamos los genes de los descendientes vacios y un array donde se guardaran los indices a establecer en caso de que el numero pedido de indices sea menor a la cantidad de genes del individuo
         genes1 = []
         genes2 = []
         indexes = []
@@ -18,7 +18,13 @@ class MultipleCross:
         if(self.indexCount == MAX_INDIVIDUAL_SIZE):
             isIndexesSameLengthAsIndividual = True
             for i in range(0,MAX_INDIVIDUAL_SIZE):
-                indexes.append(i)
+                #Para indices de posicion par, no intercambiamos. Caso contrario, si
+                if(i % 2 == 0):
+                    genes1.append(i1.genes[i])
+                    genes2.append(i2.genes[i])
+                else:
+                    genes1.append(i2.genes[i])
+                    genes2.append(i1.genes[i])
         else:
             while(len(indexes)!=self.indexCount):
                 possibleIndex = random.randint(0,MAX_INDIVIDUAL_SIZE-1)
