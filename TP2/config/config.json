@@ -20,9 +20,10 @@
       "u":0.5
     },
     "finish_condition" : {
-      "method" : "TIME",
+      "method" : "ACCEPTABLE_SOLUTION",
       "max_generation_size" : 100,
-      "max_execution_time" : 10.0
+      "max_execution_time" : 10.0,
+      "max_tolerance_exponent" : -16
     }
   },
   "problem_properties": {

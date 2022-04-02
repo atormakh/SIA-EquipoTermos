@@ -6,7 +6,7 @@ class Fitness:
     def __init__(self,epsilon,c):
         self.epsilon = epsilon
         self.c = c
-        print()
+        self.maxFitness = len(self.epsilon)
     
     # X = (W0, W1, W2, w11, w12, w13, w21, w22, w23, , w01, w02)
 
@@ -35,11 +35,12 @@ class Fitness:
         except:
             return 1
 
-    def calculate(self,individual):
-        fitness = 0
+    def error(self,individual):
+        error = 0
         for i in range(0,len(self.epsilon)):
-         fitness +=  math.pow((self.c[i]- self.f(individual,self.epsilon[i])),2)
-        #Multiplicamos por -1 para que pueda ser usada como funcion de aptitud
-        ##fitness*=(-1)
-        return len(self.epsilon) - fitness
+         error +=  math.pow((self.c[i]- self.f(individual,self.epsilon[i])),2)
+        return error
+
+    def calculate(self,individual):
+        return self.maxFitness - self.error(individual)
         

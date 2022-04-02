@@ -39,12 +39,15 @@ def main():
         random.seed(configHelper.randomSeed)
         np.random.seed(configHelper.randomSeed)
 
+        ##Inicializar la funcion de fitness a utilizar
+        fitness = Fitness(configHelper.epsilon.reactives,configHelper.c)
+
         ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-        populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,Fitness(configHelper.epsilon.reactives,configHelper.c),finishCondition)
+        populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,fitness,finishCondition)
         (bestIndividual,populations,executionTime)=populationManager.start()
         ##Imprimir la salida correspondiente
         print("FINISH-------------------------------------------------------------------------------------------")
-        output = Output(configHelper, populations,bestIndividual,executionTime)
+        output = Output(configHelper, populations,bestIndividual,executionTime,fitness)
         output.printOutput()
         #plot
         plotGenerationsFitness(populations)

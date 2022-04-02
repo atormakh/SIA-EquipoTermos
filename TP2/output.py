@@ -1,10 +1,17 @@
 class Output:
-    def __init__(self,configParams, populations,bestIndividual,executionTime):
+    def __init__(self,configParams, populations,bestIndividual,executionTime,fitness):
         self.configParams = configParams
         self.bestIndividual= bestIndividual
         self.populations=populations
         self.executionTime=executionTime
+        self.fitness = fitness
+        self.optimalIndividualFValues = self.__getOptimalIndividualFValues()
 
+    def __getOptimalIndividualFValues(self):
+        optimalIndividualFValues = []
+        for i in range(0,len(self.fitness.epsilon)):
+            optimalIndividualFValues.append(self.fitness.f(self.bestIndividual,self.fitness.epsilon[i]))
+        return optimalIndividualFValues
     
     def __str__(self):
         return f"""OUTPUT :
@@ -12,7 +19,10 @@ class Output:
             {self.configParams}
         - Solution :
             - Generation: {len(self.populations)}
-            - Individual: \n\t\t\t{self.bestIndividual.strArrays()}\n
+            - Optimal individual: \n\t\t\t{self.bestIndividual.strArrays()}\n
+            - F(i): {self.optimalIndividualFValues}\n
+            - E(i): {self.fitness.error(self.bestIndividual)}\n
+            - Fitness : {self.bestIndividual.fitness}\n
         - Execution time : {self.executionTime} sec"""
 
     def __repr__(self) -> str:
