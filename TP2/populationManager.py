@@ -1,3 +1,4 @@
+import time
 from individual import Individual
 from population import Population
 
@@ -14,9 +15,13 @@ class PopulationManager:
         self.populationsHistory = []
         self.finishCondition = finishCondition
         self.currentGeneration = 0
+        self.currentExecutionTime = 0
 
 
     def start(self):
+
+        #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
+        initTime = time.perf_counter()
 
         #Setear el maximo rango de genes de los individuos
         Individual.setupIndividualsMaxRangeGen(self.maxRangeGen)
@@ -30,8 +35,12 @@ class PopulationManager:
 
         currentPopulation=initialPopulation
 
-        #Agrego la generacion 0 al historial
+        #Agregar la generacion 0 al historial
         self.populationsHistory.append(currentPopulation)
+
+        #Tomar el tiempo de ejecucion actual
+        self.currentExecutionTime = time.perf_counter() - initTime
+
         #Mientras no cumpla criterio de corte
         while( not self.finishCondition.testCondition()):
                 
@@ -42,7 +51,6 @@ class PopulationManager:
             while( len(newIndividuals) < self.populationSize ):
                 
                 #Elijo random 2 individuos de la poblacion vieja
-                
                 randomIndividuals = currentPopulation.getRandomIndividuals(2,self.replacement)
 
                 #Cruzo a dichos individuos para obtener 2 descendientes
@@ -81,4 +89,10 @@ class PopulationManager:
             #Aumento en 1 el numero de generacion
             self.currentGeneration+=1
 
-        return (currentPopulation.maxFitnessIndividual,self.populationsHistory)
+            #Seteo el nuevo tiempo de ejecucion actual para la proxima iteracion
+            self.currentExecutionTime = time.perf_counter() - initTime
+
+         #Parar el cronometro
+        endTime = time.perf_counter()
+
+        return (currentPopulation.maxFitnessIndividual,self.populationsHistory,endTime-initTime)
