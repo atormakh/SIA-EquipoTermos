@@ -19,7 +19,7 @@ def plotGenerationsFitness(populations,allCategory, allCategoryData):
     table = pd.DataFrame(data)
     print(table.head())
     table.plot(x="Generation")
-    destinationPath = "./results/"
+    destinationPath = "./results/graphs/"
     fileName = "Graph"
     if(allCategory is not None):
         fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"

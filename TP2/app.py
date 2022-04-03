@@ -14,8 +14,12 @@ def main():
     print("proyectazo de SIA-TP2")
 
     configPath="./config/config.json"
-    graphsFolderName = "results"
-    graphsPath = f"./{graphsFolderName}"
+    resultsFolderName = "results"
+    graphsFolderName = "graphs"
+    statsFolderName = "stats"
+    graphsPath = f"./{resultsFolderName}/{graphsFolderName}"
+    statsPath = f"./{resultsFolderName}/{statsFolderName}"
+
     try:
         parser = argparse.ArgumentParser(description='Process some integers.')
         parser.add_argument('-c','--configPath',dest='configPath')
@@ -26,9 +30,12 @@ def main():
         print("Error in command line arguments")
         print(e)
 
-    ##Crear la carpeta para los graficos en caso de que no exista
-    if(not os.path.exists(graphsFolderName)):
-        os.mkdir(graphsFolderName)
+    ##Crear la carpeta de resultados con la subcarpeta de graficos y estadisticas en caso de que no existan
+    if(not os.path.exists(graphsPath)):
+        os.makedirs(graphsPath)
+
+    if(not os.path.exists(statsPath)):
+        os.makedirs(statsPath)
 
     #Eliminar los graficos viejos
     for f in os.listdir(graphsPath):
@@ -70,6 +77,7 @@ def main():
                 print("FINISH-------------------------------------------------------------------------------------------")
                 output = Output(configHelper, populations,bestIndividual,executionTime,fitness)
                 output.printOutput()
+                output.writeToFile()
                 #plot
                 plotGenerationsFitness(populations,configHelper1.allCategory,configHelper.getAllCategoryData(configHelper1.allCategory))
 
