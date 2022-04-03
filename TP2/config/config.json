@@ -10,20 +10,19 @@
     },
     "mutation": {
       "method" : "GAUSSIAN",
-      "probability": 0.1,
+      "probability": 0.2,
       "sigma": 2.0,
       "a" : 1.0
     },
     "selection": {
-      "method": "TRUNCATED",
-      "k": 900,
-      "u":0.5
+      "method": "BOLTZMANN",
+      "k": 0.1,
+      "T0":100,
+      "Tc": 10
     },
     "finish_condition" : {
-      "method" : "CONTENT",
-      "max_generation_size" : 9,
-      "max_execution_time" : 10.0,
-      "max_tolerance_exponent" : -16
+      "method" : "GENERATION_SIZE",
+      "max_generation_size" : 100
     }
   },
   "problem_properties": {

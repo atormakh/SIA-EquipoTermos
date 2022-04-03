@@ -11,8 +11,7 @@ class RouletteSelection:
         #Sacamos el fitness total
         #return random.choices(selectionIndividuals , weights=[x.fitness for x in selectionIndividuals] , k=targetPopulationSize )
         totalFitness = sum(ind.fitness for ind in selectionIndividuals)
-        accumulatedProb=0
-        b = 0
+        accumulatedProb = 0
         probArray = []
         for ind in selectionIndividuals:
             #Obtenemos la probabilidad acumulada de cada individuo
