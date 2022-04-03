@@ -14,21 +14,38 @@ from finishConditions.generationSizeFinishCondition import GenerationSizeFinishC
 from finishConditions.timeFinishCondition import TimeFinishCondition
 from finishConditions.acceptableSolutionFinishCondition import AcceptableSolutionFinishCondition
 from finishConditions.contentFinishCondition import ContentFinishCondition
-
+from os import listdir
+from os.path import isfile, join
 from problemManager import ProblemManager
 from epsilon import Epsilon
+
 possibleSelectionMethods = {'ELITE':EliteSelection,'ROULETTE':RouletteSelection,'TOURNAMENTS':TournamentSelection,'BOLTZMANN':BoltzmannSelection,'TRUNCATED':TruncatedSelection ,'RANK':RankSelection}
 possibleCrossMethods = {'SIMPLE':SimpleCross,'MULTIPLE':MultipleCross,'UNIFORM':UniformCross}
 possibleMutationMethods = {'GAUSSIAN':GaussianMutation,'UNIFORM':UniformMutation}
 possibleFinishConditions = {'GENERATION_SIZE':GenerationSizeFinishCondition, 'TIME':TimeFinishCondition, 'ACCEPTABLE_SOLUTION':AcceptableSolutionFinishCondition, 'CONTENT':ContentFinishCondition}
+possibleAllOptions = ['CROSS','MUTATION','SELECTION','FINISH_CONDITION']
+
 class ConfigHelper:
 
 
     MAX_INDIVIDUAL_SIZE = 11
 
     def __init__(self,configPath):
+            self.allValid = True
+            self.isMulti = False
+            self.allCategory = None
             with open(configPath,"r") as config_file:
                 data = json.load(config_file)
+
+                ##Primero, chequeamos si se pidio la opcion de "ALL" o no
+                if('all' in data ):
+                    #En caso de pedirse, chequeamos que sea valida
+                    self.__checkAll(data['all'])
+                    #En caso de ser valida, se generan los configHelpers correspondientes
+                    if(self.allValid):
+                        self.isMulti = True
+                        self.multi = self.__getAll() 
+
                 ##Pidiendo la seed para el random en caso de que se haya definido
                 if('random_seed' in data):
                     self.randomSeed = data['random_seed']
@@ -207,6 +224,25 @@ class ConfigHelper:
         if(not isValid):
             print("Illegal C")
         return isValid
+
+    def __checkAll(self,category):
+        self.allValid = isinstance(category,str) and category.strip().upper() in possibleAllOptions
+        if(self.allValid):
+            self.allCategory = category.strip().lower()
+
+    def __getAll(self):
+        onlyfiles = [f for f in listdir(f"./config/exampleConfigs/{self.allCategory}") if isfile(join(f"./config/exampleConfigs/{self.allCategory}", f))]
+        helpers = []
+        for file in onlyfiles:
+            helpers.append(ConfigHelper(f"./config/exampleConfigs/{self.allCategory}/{file}"))
+
+        return helpers
+
+    def getAllCategoryData(self,category):
+        if(category is not None):
+            categoryDataDict = {'cross':self.crossData,'mutation':self.mutationData,'selection':self.selectionData,'finish_condition':self.finishConditionData}
+            return categoryDataDict.get(category)
+        return None
 
     @staticmethod
     def getSelectionMethodClass(method):

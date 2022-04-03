@@ -1,4 +1,5 @@
 { 
+  "all":"SELECTION",
   "random_seed" : 10,
   "genetic_properties": {
     "population_size":1000,
@@ -22,7 +23,9 @@
     },
     "finish_condition" : {
       "method" : "GENERATION_SIZE",
-      "max_generation_size" : 100
+      "max_generation_size" : 100,
+      "max_execution_time" : 10.0,
+      "max_tolerance_exponent" : -12
     }
   },
   "problem_properties": {

@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
-def plotGenerationsFitness(populations):
+def plotGenerationsFitness(populations,allCategory, allCategoryData):
     data = {
         'Generation':[],
         'best fitness':[],
@@ -19,7 +19,11 @@ def plotGenerationsFitness(populations):
     table = pd.DataFrame(data)
     print(table.head())
     table.plot(x="Generation")
-    plt.show()
+    destinationPath = "./results/"
+    fileName = "Graph"
+    if(allCategory is not None):
+        fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
+    plt.savefig(f"{destinationPath}{fileName}")
 
 def calculateGenerationAverageAndWorstFitness(population):
     fitnessSum=0

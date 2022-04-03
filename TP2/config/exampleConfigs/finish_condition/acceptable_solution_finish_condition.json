@@ -1,0 +1,35 @@
+{ 
+    "random_seed" : 10,
+    "genetic_properties": {
+      "population_size":1000,
+      "max_range_gen":10,
+      "replacement" : false,
+      "cross": {
+        "method": "UNIFORM"
+      },
+      "mutation": {
+        "method" : "GAUSSIAN",
+        "probability": 0.1,
+        "sigma": 2.0,
+        "a" : 1.0
+      },
+      "selection": {
+        "method": "ELITE",
+        "k": 900,
+        "u":0.5
+      },
+      "finish_condition" : {
+        "method" : "ACCEPTABLE_SOLUTION",
+        "max_tolerance_exponent" : -16
+      }
+    },
+    "problem_properties": {
+      "epsilon": {
+        "epsilon_1": [4.4793, -4.0765, -4.0765],
+        "epsilon_2": [-4.1793, -4.9218, 1.7664],
+        "epsilon_3": [-3.9429, -0.7689, 4.883]
+      },
+      "c": [0, 1, 1]
+    }
+  }
+  
