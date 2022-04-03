@@ -108,9 +108,9 @@ class ConfigHelper:
         if(self.populationSize is None):
             print(" 'population_size' is a required parameter")
             return False
-        isValid = isinstance(self.populationSize,int) and self.populationSize > 0
+        isValid = isinstance(self.populationSize,int) and self.populationSize > 1
         if(not isValid):
-            print("Illegal population size : Should be an integer positive number")
+            print("Illegal population size : Should be an integer positive number and greater than 1")
         return isValid
 
     def __validateMaxRangeGen(self):
@@ -168,7 +168,7 @@ class ConfigHelper:
         if(selectionMethodClass is None):
             print("Illegal selection method used")
             return False
-        (isValid,errorMessage)= selectionMethodClass.isValid(self.selectionData)
+        (isValid,errorMessage)= selectionMethodClass.isValid(self.selectionData,self.populationSize)
         if not isValid:
             print(errorMessage) 
         return isValid

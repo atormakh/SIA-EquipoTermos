@@ -68,7 +68,7 @@ class TournamentSelection:
         return cls(selectionData['u'])
 
     @staticmethod
-    def isValid(selectionData):
+    def isValid(selectionData,populationSize=None):
         isValid = True
         errorMessage = ""
         u=selectionData['u']

@@ -15,8 +15,8 @@
       "a" : 1.0
     },
     "selection": {
-      "method": "ELITE",
-      "k": 25,
+      "method": "TRUNCATED",
+      "k": 900,
       "u":0.5
     },
     "finish_condition" : {

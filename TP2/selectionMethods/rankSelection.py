@@ -40,7 +40,7 @@ class RankSelection:
         return cls()
 
     @staticmethod
-    def isValid(selectionData):
+    def isValid(selectionData,populationSize=None):
         return (True,"")
 
 

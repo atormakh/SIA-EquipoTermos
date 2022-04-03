@@ -23,13 +23,13 @@ class TruncatedSelection:
         return cls(selectionData['k'])
 
     @staticmethod
-    def isValid(selectionData):
+    def isValid(selectionData,populationSize=None):
         isValid = True
         errorMessage = ""
         k = None
         if('k' in selectionData):
          k=selectionData['k']
-        if(k is None or  not isinstance(k,int)):
+        if(k is None or not isinstance(k,int) or k<=0 or k>populationSize):
             isValid = False
-            errorMessage="Invalid Truncated Selection parameters. 'k' is a required parameter and it must be an integer lower than 2 times the population size"          
+            errorMessage="Invalid Truncated Selection parameters. 'k' is a required parameter and it must be a positive integer number and lower than the population size"          
         return (isValid,errorMessage)
