@@ -5,7 +5,7 @@ class SimpleCross:
     
     def apply(self,i1,i2):
         #Creamos los genes de los descendientes vacios, y calculamos un indice random
-        p = random.randint(0,len(i1.genes))
+        p = random.randint(0,len(i1.genes)-1)
         genes1=[]
         genes2=[]
 
