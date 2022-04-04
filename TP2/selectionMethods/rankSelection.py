@@ -8,13 +8,13 @@ class RankSelection:
         print("Corre rank")
 
     def apply(self,selectionIndividuals,targetPopulationSize,replacement=False):
-        #Sacamos el fitness total
+        #Ordenamos los individuos por fitness
         rankedIndividuals = sorted(selectionIndividuals,key=lambda x: x.fitness,reverse=True)
         p = len(rankedIndividuals)
 
         valueRankedIndividuals = []
         rankValueAcum = 0
-
+        #Genero un ranking acumulado dependiendo de la posicion en el vector de rango
         for idx , individual in enumerate(rankedIndividuals):
 
             rankValue = (p - (idx + 1 )) / p
@@ -22,7 +22,7 @@ class RankSelection:
             valueRankedIndividuals.append((rankValueAcum , individual))
             
         selectedPopulation = []   
-
+        #Tiro la ruleta la cantidad de veces necesarias
         for i in range(0 , targetPopulationSize):
             selectedPopulation.append(self.__runRoulette(valueRankedIndividuals,rankValueAcum))
 
