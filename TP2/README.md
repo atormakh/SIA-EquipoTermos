@@ -28,11 +28,11 @@
     - [Salida del programa](#salida-del-programa)
       - [Por consola](#por-consola)
       - [Por archivo](#por-archivo)
-    - [Consideraciones adicionales](#consideraciones-adicionales)
+      - [Graficos](#graficos)
   - [Ejemplos de configuracion](#ejemplos-de-configuracion)
-    - [Ejemplo 1 :](#ejemplo-1-)
-    - [Ejemplo 2 :](#ejemplo-2-)
-    - [Ejemplo 3 :](#ejemplo-3-)
+    - [Ejemplo 1 : Metodo de seleccion de Boltzmann con cruza uniforme, mutacion con distribucion gaussiana y criterio de corte por cantidad de generaciones, con reemplazo](#ejemplo-1--metodo-de-seleccion-de-boltzmann-con-cruza-uniforme-mutacion-con-distribucion-gaussiana-y-criterio-de-corte-por-cantidad-de-generaciones-con-reemplazo)
+    - [Ejemplo 2 : Metodo de seleccion de torneos con cruza multiple con 3 indices, mutacion con distribucion uniforme y criterio de corte por contenido, sin reemplazo](#ejemplo-2--metodo-de-seleccion-de-torneos-con-cruza-multiple-con-3-indices-mutacion-con-distribucion-uniforme-y-criterio-de-corte-por-contenido-sin-reemplazo)
+    - [Ejemplo 3 : Ejecucion de todos los metodos de seleccion](#ejemplo-3--ejecucion-de-todos-los-metodos-de-seleccion)
 
 ## Descripcion del problema elegido
 
@@ -185,37 +185,188 @@ Estos parametros son optativos y no son parte de las propiedades de los algoritm
 
 ### Salida del programa
 
+Al ejecutarse el programa se producen 2 tipos de salidas : Por consola y por archivo. A su vez, por cada algoritmo genetico ejecutado se genera un grafico que muestra el fitness en funcion de la generacion, mostrandose en este como varia el mejor y peor fitness de cada generacion, y el promedio del fitness a lo largo de las misma
 
 #### Por consola
 
+Al ejecutarse un algoritmo determinado, por consola se observara una salida con las siguientes propiedades :
+
+- "Configuration parameters" : Los parametros utilizados para el algoritmo genetico explicados previamente en <a href="#archivos-de-configuracion">archivos de configuracion</a>
+- "Solution" : Contiene las distintas componentes de la solucion encontrada por el algoritmo, estas son :
+  - "Generation" : El numero de generacion al cual pertenece el individuo optimo
+  - "Optimal individual" : Es el individuo optimo (es decir, el de mejor fitness). En este se pueden observar sus respectivos genes, y ciertas propiedades como :
+    - "F(i)": El valor de la funcion F(W,w,w0,ξ) enunciada en la <a href="#descripcion-del-problema-elegido">descripcion del problema elegido</a> de los genes del individuo optimo
+    - "E(i)" : El error del invidivuo optimo
+    - "Fitness" : El fitness del individuo optimo 
+- "Execution time" : El tiempo de ejecucion del algoritmo en segundos
+
+A su vez, a continuacion de estos datos se muestra una tabla con las 5 primeras generaciones (como mucho) de las algoritmo, incluyendo la inicial, con los siguientes datos : 
+- "Generation" : Numero de generacion
+- "best fitness" : El mejor fitness de la generacion
+- "average fitness" : El fitness promedio de la generacion
+- "worst fitness" : El peor promedio de la generacion
 
 #### Por archivo
 
-### Consideraciones adicionales
+Ademas de la salida por consola mencionada anteriormente, tambien se produce una salida a dos archivos CSV, dentro del directorio "results/stats" (en caso de no existir se crea dicho directorio) :
+
+- Uno correspondiente al conjunto de metodos ejecutados (seleccion, cruza, mutacion y criterio de corte ), que se guardara con el siguiente nombre : "<i>smethod</i>Selection_<i>cmethod</i>Cross_<i>mmethod</i>Mutation_<i>fcondtion</i>FinishCondition.csv", con :
+  - <i>smethod</i> : Metodo de seleccion utilizado
+  - <i>cmethod</i> : Metodo de cruza utilizado
+  - <i>mmethod</i> : Distribucion de probabilidad utilizada para la mutacion
+  - <i>fcondtion</i> : Criterio de corte utilizado
+- A un csv global (global.csv) con las estadisticas de todos los algoritmos geneticos ejecutados
+
+Ambos documentos contienen las siguientes entradas :
+  - "Selection" : Metodo de seleccion utilizado
+  - "Cross" : Metodo de cruza utilizado
+  - "Mutation" : Distribucion de probabilidad utilizada para la mutacion
+  - "Finish condition" : Criterio de corte utilizado
+  - "Generation" : Generacion a la que pertenece el individuo optimo
+  - Entradas correspondientes a los genes del individuo optimo :
+    - "W1" : Corresponde a W<sub>1</sub>
+    - "W2" : Corresponde a W<sub>2</sub>
+    - "W3" : Corresponde a W<sub>3</sub>
+    - "w11" : Corresponde a w<sub>11</sub>
+    - "w12" : Corresponde a w<sub>12</sub>
+    - "w13" : Corresponde a w<sub>13</sub>
+    - "w21" : Corresponde a w<sub>21</sub>
+    - "w22" : Corresponde a w<sub>22</sub>
+    - "w23" : Corresponde a w<sub>23</sub>
+    - "w01" : Corresponde a w<sub>01</sub>
+    - "w02" : Corresponde a w<sub>02</sub>
+  - Entradas correspondientes a los valores de F(W,w,w0,ξ) del individuo optimo :
+    - "F_1" : Corresponde a F(W,w,w0,ξ<sup>1</sup>)
+    - "F_2" : Corresponde a F(W,w,w0,ξ<sup>2</sup>)
+    - "F_3" : Corresponde a F(W,w,w0,ξ<sup>3</sup>)
+  - "Error" : Error del invidividuo optimo
+  - "Fitness" : Fitness del individuo optimo
+  - "Execution time (sec)" : Tiempo de ejecucion del algoritmo en segundos
+
+En cada ejecucion del programa, se iran acumulando registros en el csv global y en el correspondiente al conjunto de metodos utilizados
+
+#### Graficos
+
+En compañia de las salidas recientemente mecionadas, al ejecutarse el programa tambien se genera un grafico del algoritmo genetico en cuestion, donde se observa lo mencionado previamente en <a href="#salida-del-programa">salida del programa</a>. Este un archivo de extension PNG que se guarda con el nombre "Graph.png" en el directorio "results/graphs" (en caso de no existir se crea dicho directorio). En caso de haberse ejecutado el programa con el parametro "all" seteado, se generara un grafico por metodo perteneciente a la categoria setada en all, cada uno con el siguiente nombre : "Graph_<i>category</i>_<i>method</i>.png", siendo :
+  - <i>category</i> : La categoria utilizada en el all, cuyos valores son los mencionados en <a href="#parametros-generales">parametros generales</a>
+  - <i>method</i> : Los metodos involucrados en dicha categoria
+
+Cabe aclarar que por cada ejecucion del programa, el directorio donde se guardan los graficos se reinicia, por ende en caso de querer conservar los graficos obtenidos, generar una copia y almacenarlos en otro directorio
 
 ## Ejemplos de configuracion
 
-### Ejemplo 1 : 
+### Ejemplo 1 : Metodo de seleccion de Boltzmann con cruza uniforme, mutacion con distribucion gaussiana y criterio de corte por cantidad de generaciones, con reemplazo
 
 ```
 {
-
+    "genetic_properties": {
+      "population_size":1000,
+      "max_range_gen":10,
+      "replacement" : true,
+      "cross": {
+        "method": "UNIFORM"
+      },
+      "mutation": {
+        "method" : "GAUSSIAN",
+        "probability": 0.2,
+        "sigma": 2.0
+      },
+      "selection": {
+        "method": "BOLTZMANN",
+        "k": 0.1,
+        "T0":100,
+        "Tc": 10
+      },
+      "finish_condition" : {
+        "method" : "GENERATION_SIZE",
+        "max_generation_size" : 100
+      }
+    },
+    "problem_properties": {
+      "epsilon": {
+        "epsilon_1": [4.4793, -4.0765, -4.0765],
+        "epsilon_2": [-4.1793, -4.9218, 1.7664],
+        "epsilon_3": [-3.9429, -0.7689, 4.883]
+      },
+      "c": [0, 1, 1]
+    }
 }
 ```
 
-### Ejemplo 2 : 
+### Ejemplo 2 : Metodo de seleccion de torneos con cruza multiple con 3 indices, mutacion con distribucion uniforme y criterio de corte por contenido, sin reemplazo
 
 ```
 {
-
+    "genetic_properties": {
+      "population_size":1000,
+      "max_range_gen":10,
+      "replacement" : false,
+      "cross": {
+        "method": "MULTIPLE",
+        "index_count": 3
+      },
+      "mutation": {
+        "method" : "UNIFORM",
+        "probability": 0.2,
+        "a" : 1.0
+      },
+      "selection": {
+        "method": "TOURNAMENTS",
+        "u":0.7
+      },
+      "finish_condition" : {
+        "method" : "CONTENT",
+        "max_generation_size" : 20,
+        "max_tolerance_exponent" : -12
+      }
+    },
+    "problem_properties": {
+      "epsilon": {
+        "epsilon_1": [4.4793, -4.0765, -4.0765],
+        "epsilon_2": [-4.1793, -4.9218, 1.7664],
+        "epsilon_3": [-3.9429, -0.7689, 4.883]
+      },
+      "c": [0, 1, 1]
+    }
 }
 ```
 
-### Ejemplo 3 : 
+### Ejemplo 3 : Ejecucion de todos los metodos de seleccion
 
 ```
 {
-
+      "all":"SELECTION",
+      "genetic_properties": {
+      "population_size":1000,
+      "max_range_gen":10,
+      "replacement" : true,
+      "cross": {
+        "method": "UNIFORM"
+      },
+      "mutation": {
+        "method" : "GAUSSIAN",
+        "probability": 0.2,
+        "sigma": 2.0
+      },
+      "selection": {
+        "method": "BOLTZMANN",
+        "k": 0.1,
+        "T0":100,
+        "Tc": 10
+      },
+      "finish_condition" : {
+        "method" : "GENERATION_SIZE",
+        "max_generation_size" : 100
+      }
+    },
+    "problem_properties": {
+      "epsilon": {
+        "epsilon_1": [4.4793, -4.0765, -4.0765],
+        "epsilon_2": [-4.1793, -4.9218, 1.7664],
+        "epsilon_3": [-3.9429, -0.7689, 4.883]
+      },
+      "c": [0, 1, 1]
+    }
 }
 ```
 
