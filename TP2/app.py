@@ -3,8 +3,10 @@ import argparse
 import random
 import numpy as np
 import os
+from selectionMethods.truncatedSelection import TruncatedSelection
+from selectionMethods.tournamentSelection import TournamentSelection
 from output import Output
-from graph import plotGenerationsFitness
+from graph import plotGenerationsFitness,plotVariablesPlotter
 from fitness import Fitness
 from populationManager import PopulationManager
 from helpers.configHelper import ConfigHelper
@@ -45,44 +47,65 @@ def main():
     configHelper1 = ConfigHelper(configPath)
     
     configHelpers = [configHelper1]
+    
     if(configHelper1.isMulti):
         configHelpers = configHelper1.multi
 
-    if(configHelper1.allValid):
+    populationsHistory =[]
 
-        for configHelper in configHelpers:
+    variableRange = []
+    repetitions=[]
+    step=(configHelpers[0].populationSize/5)-4
+    i=5
+    while i<=configHelpers[0].populationSize:
+        variableRange.append(i)
+        i+=int(step)
+        repetitions.append(i%4)
+    print(f"populationSize={configHelpers[0].populationSize}")
+    print(variableRange)
 
-            #Crear el geneticHelper
-            geneticHelper = GeneticHelper()
 
-            if(configHelper.validateConfigurationProperties()):
 
-                ##Pedir el metodo de cruza, mutacion, seleccion y condicion de corte utilizados
-                crossMethod = geneticHelper.getCrossMethod(configHelper.crossData)
-                mutationMethod = geneticHelper.getMutationMethod(configHelper.mutationData)
-                selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionData)
-                finishCondition = geneticHelper.getFinishCondition(configHelper.finishConditionData)
+    if(configHelper1.allValid or True):
 
-                ##Setear el seed para todos los random que se utilicen en el algoritmo
-                random.seed(configHelper.randomSeed)
-                np.random.seed(configHelper.randomSeed)
+        for u in variableRange:
+            repetitionsAcum=0
+            for r in repetitions:
+                #Crear el geneticHelper
+                geneticHelper = GeneticHelper()
+                configHelper = configHelpers[0]
+                if(configHelper.validateConfigurationProperties()):
 
-                ##Inicializar la funcion de fitness a utilizar
-                fitness = Fitness(configHelper.epsilon.reactives,configHelper.c)
+                    ##Pedir el metodo de cruza, mutacion, seleccion y condicion de corte utilizados
+                    crossMethod = geneticHelper.getCrossMethod(configHelper.crossData)
+                    mutationMethod =  geneticHelper.getMutationMethod(configHelper.mutationData)
+                    selectionMethod = TruncatedSelection(u) #geneticHelper.getSelectionMethod(configHelper.selectionData)
+                    finishCondition = geneticHelper.getFinishCondition(configHelper.finishConditionData)
 
-                ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-                populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,fitness,finishCondition)
-                (bestIndividual,populations,executionTime)=populationManager.start()
-                ##Imprimir la salida correspondiente
-                print("FINISH-------------------------------------------------------------------------------------------")
-                output = Output(configHelper, populations,bestIndividual,executionTime,fitness)
-                output.printOutput()
-                output.writeToFile()
-                #plot
-                plotGenerationsFitness(populations,configHelper1.allCategory,configHelper.getAllCategoryData(configHelper1.allCategory))
+                    ##Setear el seed para todos los random que se utilicen en el algoritmo
+                    random.seed(configHelper.randomSeed+r)
+                    np.random.seed(configHelper.randomSeed)
 
+                    ##Inicializar la funcion de fitness a utilizar
+                    fitness = Fitness(configHelper.epsilon.reactives,configHelper.c)
+
+                    ##Empezar el populationManager con los datos del algoritmo genetico y del problema
+                    populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,fitness,finishCondition)
+                    (bestIndividual,populations,executionTime)=populationManager.start()
+                    ##Imprimir la salida correspondiente
+                    print("FINISH-------------------------------------------------------------------------------------------")
+                    output = Output(configHelper, populations,bestIndividual,executionTime,fitness)
+                    output.printOutput()
+                    output.writeToFile()
+                    
+                    #plot
+                    #plotGenerationsFitness(populations,configHelper1.allCategory,configHelper.getAllCategoryData(configHelper1.allCategory))
+                    repetitionsAcum+=len(populations)
+            populationsHistory.append(repetitionsAcum/len(repetitions))
     else:
         print('Illegal ALL option')
+
+    plotVariablesPlotter(populationsHistory,variableRange)
 
 
 if __name__ == "__main__":

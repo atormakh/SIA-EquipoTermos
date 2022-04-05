@@ -2,6 +2,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+def plotVariablesPlotter(populationsHistory,variableStep):
+    data={"u":[],"populationsGenerationNumber":[]}
+    for populationGeneration in populationsHistory:
+        data["populationsGenerationNumber"].append(populationGeneration)
+    for i in variableStep:
+        data["u"].append(i)
+    table = pd.DataFrame(data)
+    table.plot(x="u")
+    table.set_ylabel="Generations to reach solution"
+    plt.title="Difference in Generation amount to reach solution when varying u"
+    #plt.show()
+    destinationPath = "./results/graphs/"
+    plt.savefig(f"{destinationPath}truncatedSelection")
+
 def plotGenerationsFitness(populations,allCategory, allCategoryData):
     data = {
         'Generation':[],
@@ -24,6 +38,7 @@ def plotGenerationsFitness(populations,allCategory, allCategoryData):
     if(allCategory is not None):
         fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
     plt.savefig(f"{destinationPath}{fileName}")
+    
 
 def calculateGenerationAverageAndWorstFitness(population):
     fitnessSum=0

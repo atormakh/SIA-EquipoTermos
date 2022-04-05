@@ -42,7 +42,7 @@ class PopulationManager:
         self.currentExecutionTime = time.perf_counter() - initTime
 
         #Mientras no cumpla criterio de corte
-        while( not self.finishCondition.testCondition()):
+        while( not self.finishCondition.testCondition() and self.currentGeneration <200):
                 
             #Crear nueva poblacion
             newIndividuals=[]

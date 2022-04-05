@@ -1,31 +1,26 @@
-{ 
-  "all":"SELECTION",
-  "random_seed" : 10,
+{
   "genetic_properties": {
-    "population_size":1000,
-    "max_range_gen":10,
-    "replacement" : false,
+    "population_size": 1500,
+    "max_range_gen": 10,
+    "replacement": false,
     "cross": {
-      "method": "MULTIPLE",
-      "index_count": 7
+      "method": "UNIFORM",
+      "index_count": 5
     },
     "mutation": {
-      "method" : "GAUSSIAN",
+      "method": "GAUSSIAN",
       "probability": 0.2,
-      "sigma": 2.0,
-      "a" : 1.0
+      "sigma": 2.0
     },
     "selection": {
       "method": "BOLTZMANN",
       "k": 0.1,
-      "T0":100,
+      "T0": 100,
       "Tc": 10
     },
-    "finish_condition" : {
-      "method" : "GENERATION_SIZE",
-      "max_generation_size" : 100,
-      "max_execution_time" : 10.0,
-      "max_tolerance_exponent" : -12
+    "finish_condition": {
+      "method": "GENERATION_SIZE",
+      "max_generation_size": 500
     }
   },
   "problem_properties": {
