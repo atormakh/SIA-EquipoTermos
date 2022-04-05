@@ -3,18 +3,18 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 def plotVariablesPlotter(populationsHistory,variableStep):
-    data={"u":[],"populationsGenerationNumber":[]}
+    data={"k":[],"populationsGenerationNumber":[]}
     for populationGeneration in populationsHistory:
         data["populationsGenerationNumber"].append(populationGeneration)
     for i in variableStep:
-        data["u"].append(i)
+        data["k"].append(i)
     table = pd.DataFrame(data)
-    table.plot(x="u")
+    table.plot(x="k")
     table.set_ylabel="Generations to reach solution"
     plt.title="Difference in Generation amount to reach solution when varying u"
     #plt.show()
     destinationPath = "./results/graphs/"
-    plt.savefig(f"{destinationPath}truncatedSelection")
+    plt.savefig(f"{destinationPath}mutationVariables")
 
 def plotGenerationsFitness(populations,allCategory, allCategoryData):
     data = {

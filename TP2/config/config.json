@@ -1,6 +1,6 @@
 {
   "genetic_properties": {
-    "population_size": 1500,
+    "population_size": 100,
     "max_range_gen": 10,
     "replacement": false,
     "cross": {
@@ -19,8 +19,9 @@
       "Tc": 10
     },
     "finish_condition": {
-      "method": "GENERATION_SIZE",
-      "max_generation_size": 500
+      "method": "ACCEPTABLE_SOLUTION",
+      "max_generation_size": 500,
+      "max_tolerance_exponent": -16
     }
   },
   "problem_properties": {
