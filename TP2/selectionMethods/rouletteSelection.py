@@ -4,9 +4,6 @@ import random
 
 class RouletteSelection:
 
-    def __init__(self):
-        print("Corre roulette")
-
     def apply(self,selectionIndividuals,targetPopulationSize,replacement=False):
         #Sacamos el fitness total
         #return random.choices(selectionIndividuals , weights=[x.fitness for x in selectionIndividuals] , k=targetPopulationSize )

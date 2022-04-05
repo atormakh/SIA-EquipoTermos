@@ -4,9 +4,6 @@ import random
 
 class RankSelection:
 
-    def __init__(self):
-        print("Corre rank")
-
     def apply(self,selectionIndividuals,targetPopulationSize,replacement=False):
         #Ordenamos los individuos por fitness
         rankedIndividuals = sorted(selectionIndividuals,key=lambda x: x.fitness,reverse=True)

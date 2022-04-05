@@ -9,7 +9,6 @@ class BoltzmannSelection:
         self.initialT = T0
         self.finalT = Tc
         self.k = k
-        print("Corre Boltzmann")
 
 
     #Funcion de temperatura dada en clase
@@ -17,13 +16,11 @@ class BoltzmannSelection:
         return self.finalT + (self.initialT - self.finalT) * np.exp( - self.k * self.generation )
         
     def apply(self,selectionIndividuals,targetPopulationSize,replacement=False):
-      #  print(self.__temperature())
         valuedIndividuals = []
         total = 0
         #Por cada individuo calculo su valor (el dividendo de la probabilidad)
         for individual in selectionIndividuals:
             value = np.exp(individual.fitness / self.__temperature())
-            #print("fitness: " + str(individual.fitness) + "value: " + str(value) )
             total += value
             valuedIndividuals.append((value, individual))
 
@@ -34,9 +31,7 @@ class BoltzmannSelection:
         for valuedIndividual in valuedIndividuals:
             acumulated+= valuedIndividual[0] / total
             promediatedIndividuals.append((acumulated , valuedIndividual[1]))
-           # print("fitness: " + str(valuedIndividual[1].fitness) + "value: " + str(acumulated) )
-            
-       #print("total: " + str(valueAcum) )  
+
         selectedPopulation = []   
         #tiro la ruleta
         for i in range(0 , targetPopulationSize):
