@@ -1,4 +1,6 @@
-
+from autograd.misc.optimizers import adam
+import numdifftools as nd
+import numpy as np
 
 class Adam:
 
@@ -6,7 +8,7 @@ class Adam:
         self.useGeneralAlgorithm = False
 
     def calculateOptimal(self,individual,function):
-        return [0,0,0,0,0,0,0,0,0,0,0]
+        return adam(nd.Gradient(function.error),np.array(individual.genes),step_size=0.80085)
 
     def calculateDirection(self,individual):
         return None

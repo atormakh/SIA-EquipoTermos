@@ -1,12 +1,14 @@
-
+from scipy.optimize import minimize
 
 class ConjugateGradient:
+
+    METHOD_NAME = 'CG'
 
     def __init__(self):
         self.useGeneralAlgorithm = False
 
     def calculateOptimal(self,individual,function):
-        return [0,0,0,0,0,0,0,0,0,0,0] 
+        return minimize(function.error,individual.genes,args=(0),method=self.METHOD_NAME).x 
 
     def calculateDirection(self,individual):
         return None

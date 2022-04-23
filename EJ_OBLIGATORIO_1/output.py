@@ -15,7 +15,7 @@ class Output:
     def __getOptimalIndividualFValues(self):
         optimalIndividualFValues = []
         for i in range(0,len(self.function.epsilon)):
-            optimalIndividualFValues.append(self.function.f(self.bestIndividual,self.function.epsilon[i]))
+            optimalIndividualFValues.append(self.function.f(self.bestIndividual.genes,self.function.epsilon[i]))
         return optimalIndividualFValues
     
     def __str__(self):
@@ -23,10 +23,9 @@ class Output:
         - Configuration paramaters :
             {self.configParams}
         - Solution :
-            - Epoch: {len(self.individuals)}
             - Optimal individual: \n\t\t\t{self.bestIndividual.strArrays()}\n
                 - F(i): {self.optimalIndividualFValues}\n
-                - E(i): {self.function.error(self.bestIndividual)}\n
+                - E(i): {self.function.error(self.bestIndividual.genes)}\n
         - Execution time : {self.executionTime} sec"""
 
     def __repr__(self) -> str:

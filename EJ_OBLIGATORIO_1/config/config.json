@@ -1,7 +1,7 @@
 { 
     "random_seed" : 10,
     "optimization_properties": {
-      "method": "GC",
+      "method": "CG",
       "max_range_gen":10,
       "max_tolerance_exponent":-10
     },

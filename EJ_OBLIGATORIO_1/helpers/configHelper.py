@@ -7,7 +7,7 @@ from os.path import isfile, join
 from problemManager import ProblemManager
 from epsilon import Epsilon
 
-possibleOptimizationMethods = {'GD':GradientDescent, 'GC':ConjugateGradient, 'ADAM':Adam}
+possibleOptimizationMethods = {'GD':GradientDescent, 'CG':ConjugateGradient, 'ADAM':Adam}
 
 class ConfigHelper:
 
@@ -45,6 +45,11 @@ class ConfigHelper:
                     self.maxRangeGen = data['optimization_properties']['max_range_gen']
                 else:
                     self.maxRangeGen = None
+                # #stepSize
+                # if('step_size' in data['optimization_properties']):
+                #     self.stepSize = data['optimization_properties']['step_size']
+                # else:
+                #     self.stepSize = None
                 #maxToleranceExponent
                 if('max_tolerance_exponent' in data['optimization_properties']):
                     self.maxToleranceExponent = data['optimization_properties']['max_tolerance_exponent']

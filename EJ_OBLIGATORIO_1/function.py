@@ -9,11 +9,11 @@ class Function:
     
     # X = (W0, W1, W2, w11, w12, w13, w21, w22, w23, , w01, w02)
 
-    def f(self,individual,epsilon):
+    def f(self,genes,epsilon):
         #Modelamos los genes del individuo como los arrays y matrices mostrados en el enunciado
-        W = np.array(individual.genes[0:3])
-        w = np.array([individual.genes[3:6],individual.genes[6:9]])
-        w0 = np.array(individual.genes[9:11])
+        W = np.array(genes[0:3])
+        w = np.array([genes[3:6],genes[6:9]])
+        w0 = np.array(genes[9:11])
 
         (rowsCount, columsCount) = w.shape
 
@@ -34,9 +34,9 @@ class Function:
         except:
             return 1
 
-    def error(self,individual):
+    def error(self,individualGenes,step=None):
         error = 0
         for i in range(0,len(self.epsilon)):
-         error +=  math.pow((self.c[i]- self.f(individual,self.epsilon[i])),2)
+         error +=  math.pow((self.c[i]- self.f(individualGenes,self.epsilon[i])),2)
         return error
         
