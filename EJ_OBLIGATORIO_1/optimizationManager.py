@@ -1,6 +1,4 @@
 import time
-import math
-import random
 import numpy as np 
 from individual import Individual
 
