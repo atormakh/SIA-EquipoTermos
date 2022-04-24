@@ -1,9 +1,8 @@
 { 
-    "random_seed" : 10,
+    "random_seed" : 11,
     "optimization_properties": {
-      "method": "CG",
-      "max_range_gen":10,
-      "max_tolerance_exponent":-10
+      "method": "ALL",
+      "max_range_gen":10
     },
     "problem_properties": {
       "epsilon": {
@@ -13,5 +12,5 @@
       },
       "c": [0, 1, 1]
     }
-  }
+}
   

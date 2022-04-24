@@ -40,9 +40,9 @@ consistia en las mediciones de un reactivo a partir de un conjunto de valores de
 
 En este se buscaba aproximar los valores de salida para otras posibles entradas, por una funcion F(W,w,w<sub>0</sub>,ξ), donde W es un vector de tres coordenadas de numeros reales, w es una matriz de dimension 2 × 3 de numeros reales, y w<sub>0</sub> = (w<sub>01</sub>,w<sub>02</sub>) tambien de numeros reales, definiendose dicha funcion a partir de otra funcion g(x) que figuraba en el enunciado.A su vez, tambien se definia una funcion de error que indica la diferencia entre los valores de ζ<sup>n</sup> y los calculados por la funcion F(W,w,w0,ξ)
 
-El objetivo de este ejercicios es utilizar ciertos metodos de optimizacion no lineal vistos en clase para calcular los valores de W, w y w<sub>0</sub> que minimizan el error recientemente mencionado, para los datos de entrada ξ<sup>1</sup>, ξ<sup>2</sup>, ξ<sup>3</sup>
+El objetivo de este ejercicio es utilizar ciertos metodos de optimizacion no lineal vistos en clase para calcular los valores de W, w y w<sub>0</sub> que minimizan el error recientemente mencionado, para los datos de entrada ξ<sup>1</sup>, ξ<sup>2</sup>, ξ<sup>3</sup>
 
-Los metodos a utilizar son: 
+Dichos metodos son: 
   - Gradiente descendiente (GD)
   - Gradientes conjugados (CG)
   - Adam
@@ -151,14 +151,22 @@ Al ejecutarse un algoritmo determinado, por consola se observara una salida con 
 
 - "Configuration parameters" : Los parametros utilizados para el algoritmo genetico explicados previamente en <a href="#archivos-de-configuracion">archivos de configuracion</a>
 - "Solution" : Contiene las distintas componentes de la solucion encontrada por el algoritmo, estas son :
-  - "Optimal individual" : Es el individuo optimo (es decir, el que minimiza la funcion de error). En este se pueden observar sus respectivos valores, y ciertas propiedades como :
+  - "Optimal individual" : Es el conjunto de valores de W, w y w<sub>0</sub> optimo (es decir, el que minimiza la funcion de error). En este se pueden observar sus respectivos valores, y ciertas propiedades como :
     - "F(i)": El valor de la funcion F(W,w,w0,ξ) enunciada en la <a href="#descripcion-del-problema">descripcion del problema</a> de los valores del individuo optimo
     - "E(i)" : El error del invidivuo optimo
 - "Execution time" : El tiempo de ejecucion del algoritmo en segundos
 
 #### Graficos
 
+En compañia de la salida recientemente mecionada, en caso de haberse ejecutado con la opcion del ALL, se generan los siguientes dos graficos de barras:
+- Errores en funcion del metodo de optimizacion (<i>errorGraph</i>)
+- Tiempos de ejecucion en funcion del metodo de optimizacion (<i>timeGraph</i>)
 
+Ambos consisten en archivos PNG que se almacenaran en el directorio "results/graphs" (en caso de no existir se crea dicho directorio)
+
+Cabe aclarar que por cada ejecucion del programa con el ALL, el directorio donde se guardan los graficos se reinicia, por ende en caso de querer conservar los graficos obtenidos, generar una copia y almacenarlos en otro directorio
+
+En caso de que se ejecute con el ALL, y posteriormente con otros valores para el parametro "method", estos graficos persistirian hasta que se ejecute el proximo ALL
 
 ## Ejemplos de configuracion
 
@@ -223,5 +231,3 @@ Al ejecutarse un algoritmo determinado, por consola se observara una salida con 
 }
   
 ```
-
-Para mas ejemplos, en la carpeta <i>exampleConfigs</i> hay ejemplos para los distintos metodos de seleccion y cruza, y los distintos tipos de mutacion y criterios de corte

@@ -12,8 +12,8 @@ class GradientDescent:
         self.useGeneralAlgorithm = False
 
     def calculateOptimal(self,individual,function):
-        return sgd(nd.Gradient(function.error),np.array(individual.genes))
-        # return minimize(function.error,individual.genes,args=(0),method=self.METHOD_NAME).x 
+        # return sgd(nd.Gradient(function.error),np.array(individual.genes))
+        return minimize(function.error,individual.genes,args=(0),method=self.METHOD_NAME).x 
 
     def calculateDirection(self,individual):
         return nd.Gradient(individual.genes)
