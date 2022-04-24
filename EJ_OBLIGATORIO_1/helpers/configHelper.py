@@ -14,21 +14,9 @@ class ConfigHelper:
     MAX_INDIVIDUAL_SIZE = 11
 
     def __init__(self,configPath):
-            # self.allValid = True
-            # self.isMulti = False
-            # self.allCategory = None
             self.optimizationMethods = None
             with open(configPath,"r") as config_file:
                 data = json.load(config_file)
-
-                # ##Primero, chequeamos si se pidio la opcion de "ALL" o no
-                # if('all' in data ):
-                #     #En caso de pedirse, chequeamos que sea valida
-                #     self.__checkAll(data['all'])
-                #     #En caso de ser valida, se generan los configHelpers correspondientes
-                #     if(self.allValid):
-                #         self.isMulti = True
-                #         self.multi = self.__getAll() 
 
                 ##Pidiendo la seed para el random en caso de que se haya definido
                 if('random_seed' in data):
@@ -46,12 +34,6 @@ class ConfigHelper:
                     self.maxRangeGen = data['optimization_properties']['max_range_gen']
                 else:
                     self.maxRangeGen = None
-                # #stepSize
-                # if('step_size' in data['optimization_properties']):
-                #     self.stepSize = data['optimization_properties']['step_size']
-                # else:
-                #     self.stepSize = None
-
 
                 ##Pidiendo las propiedades del problema
                 #epsilon
@@ -109,9 +91,6 @@ class ConfigHelper:
             self.currentMethod = self.method.strip().upper()
         else:
             self.optimizationMethods = possibleOptimizationMethods.keys()
-        # (isValid,errorMessage)=crossMethodClass.isValid(self.crossData)
-        # if not isValid:
-        #     print(errorMessage) 
         return isValid
 
 

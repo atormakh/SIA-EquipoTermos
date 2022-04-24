@@ -10,9 +10,6 @@ class Adam:
     def calculateOptimal(self,individual,function):
         return adam(nd.Gradient(function.error),np.array(individual.genes),step_size=0.80085)
 
-    def calculateDirection(self,individual):
-        return None
-
     @classmethod
     def getMethod(cls):
         return cls()
