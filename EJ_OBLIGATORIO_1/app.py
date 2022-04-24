@@ -46,74 +46,32 @@ def main():
     optimizationHelper = OptimizationHelper()
 
     if(configHelper.validateConfigurationProperties()):
+
         ##Pedir el metodo de optimizacion
-        optimizationMethod = optimizationHelper.getOptimizationMethod(configHelper.method)
+        optimizationMethodArray = [configHelper.method]
+        if(configHelper.optimizationMethods is not None):
+            optimizationMethodArray = configHelper.optimizationMethods
 
-        ##Setear el seed para todos los random que se utilicen en el algoritmo
-        random.seed(configHelper.randomSeed)
-        np.random.seed(configHelper.randomSeed)
+        for optMethod in optimizationMethodArray:
+            
+            optimizationMethod = optimizationHelper.getOptimizationMethod(optMethod)
+            configHelper.setCurrentOptimizationMethod(optMethod)
+            ##Setear el seed para todos los random que se utilicen en el algoritmo
+            random.seed(configHelper.randomSeed)
+            np.random.seed(configHelper.randomSeed)
 
-        ##Inicializar la funcion a utilizar
-        function = Function(configHelper.epsilon.reactives,configHelper.c)
+            ##Inicializar la funcion a utilizar
+            function = Function(configHelper.epsilon.reactives,configHelper.c)
 
-        # ##Empezar el optimizationManager con los datos del algoritmo de optimizacion y del problema
-        optimizationManager = OptimizationManager(optimizationMethod,configHelper.maxRangeGen,configHelper.maxToleranceExponent,function)
-        (bestIndividual,individuals,executionTime)=optimizationManager.start()
-        #Imprimir la salida correspondiente
-        print("FINISH-------------------------------------------------------------------------------------------")
-        output = Output(configHelper, individuals,bestIndividual,executionTime,function)
-        output.printOutput()
+            # ##Empezar el optimizationManager con los datos del algoritmo de optimizacion y del problema
+            optimizationManager = OptimizationManager(optimizationMethod,configHelper.maxRangeGen,function)
+            (bestIndividual,error,executionTime)=optimizationManager.start()
+            #Imprimir la salida correspondiente
+            print("FINISH-------------------------------------------------------------------------------------------")
+            output = Output(configHelper,bestIndividual,executionTime,function)
+            output.printOutput()
         # #plot
         # plotGenerationsFitness(populations)
-
-
-######################################CODIGO CON EL ALL #################################################################################################################
-
-    # ##Crear el configHelper principal
-    # configHelper1 = ConfigHelper(configPath)
-    
-    # configHelpers = [configHelper1]
-    # if(configHelper1.isMulti):
-    #     configHelpers = configHelper1.multi
-
-    # if(configHelper1.allValid):
-
-    #     for configHelper in configHelpers:
-
-    #         #Crear el geneticHelper
-    #         geneticHelper = GeneticHelper()
-
-    #         if(configHelper.validateConfigurationProperties()):
-
-    #             ##Pedir el metodo de cruza, mutacion, seleccion y condicion de corte utilizados
-    #             crossMethod = geneticHelper.getCrossMethod(configHelper.crossData)
-    #             mutationMethod = geneticHelper.getMutationMethod(configHelper.mutationData)
-    #             selectionMethod = geneticHelper.getSelectionMethod(configHelper.selectionData)
-    #             finishCondition = geneticHelper.getFinishCondition(configHelper.finishConditionData)
-
-    #             ##Setear el seed para todos los random que se utilicen en el algoritmo
-    #             random.seed(configHelper.randomSeed)
-    #             np.random.seed(configHelper.randomSeed)
-
-    #             ##Inicializar la funcion de fitness a utilizar
-    #             fitness = Fitness(configHelper.epsilon.reactives,configHelper.c)
-
-    #             ##Empezar el populationManager con los datos del algoritmo genetico y del problema
-    #             populationManager = PopulationManager(configHelper.populationSize,configHelper.maxRangeGen,configHelper.replacement,crossMethod,selectionMethod,mutationMethod,fitness,finishCondition)
-    #             (bestIndividual,populations,executionTime)=populationManager.start()
-    #             ##Imprimir la salida correspondiente
-    #             print("FINISH-------------------------------------------------------------------------------------------")
-    #             output = Output(configHelper, populations,bestIndividual,executionTime,fitness)
-    #             output.printOutput()
-    #             output.writeToFile()
-    #             #plot
-    #             plotGenerationsFitness(populations,configHelper1.allCategory,configHelper.getAllCategoryData(configHelper1.allCategory))
-
-    # else:
-    #     print('Illegal ALL option')
-
-
-#############################################################################################################################################################################
 
 if __name__ == "__main__":
     main()

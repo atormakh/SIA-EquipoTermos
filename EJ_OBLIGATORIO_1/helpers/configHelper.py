@@ -17,6 +17,7 @@ class ConfigHelper:
             # self.allValid = True
             # self.isMulti = False
             # self.allCategory = None
+            self.optimizationMethods = None
             with open(configPath,"r") as config_file:
                 data = json.load(config_file)
 
@@ -50,11 +51,7 @@ class ConfigHelper:
                 #     self.stepSize = data['optimization_properties']['step_size']
                 # else:
                 #     self.stepSize = None
-                #maxToleranceExponent
-                if('max_tolerance_exponent' in data['optimization_properties']):
-                    self.maxToleranceExponent = data['optimization_properties']['max_tolerance_exponent']
-                else:
-                    self.maxToleranceExponent = None
+
 
                 ##Pidiendo las propiedades del problema
                 #epsilon
@@ -70,7 +67,7 @@ class ConfigHelper:
                     self.c = None
 
     def __str__(self):
-        return f"\t-Optimization method : {self.method}\n\t\t-Max tolerance exponent:{self.maxToleranceExponent}\n\t\t-Epsilon : {self.epsilon} \n\t\t-C : {self.c}"
+        return f"\t-Optimization method : {self.currentMethod}\n\t\t-Epsilon : {self.epsilon} \n\t\t-C : {self.c}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -85,7 +82,7 @@ class ConfigHelper:
         return True
 
     def __validateOptimizationProperties(self):
-        return self.__validateMaxRangeGen() and self.__validateOptimizationMethod() and self.__validateMaxToleranceExponent()
+        return self.__validateMaxRangeGen() and self.__validateOptimizationMethod()
     
     def __validateProblemProperties(self):
         return self.__validateEpsilon() and self.__validateC()
@@ -104,23 +101,19 @@ class ConfigHelper:
         if(not isValid):
             print('It is required to determine a "method" in a form of a string.')
             return isValid
-        optimizationMethodClass=self.getOptimizationMethodClass(self.method.strip().upper())
-        if(optimizationMethodClass is None):
-            print("Illegal optimization method used.")
-            return False
+        if(self.method.strip().upper() != 'ALL'):
+            optimizationMethodClass=self.getOptimizationMethodClass(self.method.strip().upper())
+            if(optimizationMethodClass is None):
+                print("Illegal optimization method used.")
+                return False
+            self.currentMethod = self.method.strip().upper()
+        else:
+            self.optimizationMethods = possibleOptimizationMethods.keys()
         # (isValid,errorMessage)=crossMethodClass.isValid(self.crossData)
         # if not isValid:
         #     print(errorMessage) 
         return isValid
 
-    def __validateMaxToleranceExponent(self):
-        if(self.maxToleranceExponent is None):
-            print(" 'max_tolerance_exponent' is a required parameter")
-            return False
-        isValid = isinstance(self.maxToleranceExponent,int) and self.maxToleranceExponent<0
-        if(not isValid):
-            print("Illegal max tolerance exponent : Should be an integer negative number (zero not included)")
-        return isValid
 
     def __validateEpsilon(self):
         if(self.epsilon is None):
@@ -142,24 +135,8 @@ class ConfigHelper:
             print("Illegal C")
         return isValid
 
-    # def __checkAll(self,category):
-    #     self.allValid = isinstance(category,str) and category.strip().upper() in possibleAllOptions
-    #     if(self.allValid):
-    #         self.allCategory = category.strip().lower()
-
-    # def __getAll(self):
-    #     onlyfiles = [f for f in listdir(f"./config/exampleConfigs/{self.allCategory}") if isfile(join(f"./config/exampleConfigs/{self.allCategory}", f))]
-    #     helpers = []
-    #     for file in onlyfiles:
-    #         helpers.append(ConfigHelper(f"./config/exampleConfigs/{self.allCategory}/{file}"))
-
-    #     return helpers
-
-    # def getAllCategoryData(self,category):
-    #     if(category is not None):
-    #         categoryDataDict = {'cross':self.crossData,'mutation':self.mutationData,'selection':self.selectionData,'finish_condition':self.finishConditionData}
-    #         return categoryDataDict.get(category)
-    #     return None
+    def setCurrentOptimizationMethod(self,method):
+        self.currentMethod = method.strip().upper()
 
     @staticmethod
     def getOptimizationMethodClass(method):
