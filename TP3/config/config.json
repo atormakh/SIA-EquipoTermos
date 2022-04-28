@@ -1,6 +1,6 @@
 {
 	"neural_net":{
-		"architecture":[2,4,4,4,4,1], 
+		"architecture":[2,4,4,4,4,2], 
 		"activation_function":{
 			"type":"STEP"
 		}
@@ -8,5 +8,6 @@
 	"backtracking": {
 		"learning_rate":0.01
 	},
-	"max_iterations":20
+	"max_iterations":20,
+	"max_tolerance_exponent" : -12
 }

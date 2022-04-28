@@ -41,7 +41,7 @@ def main():
         print('learning rate : '+str(configHelper.learningRate))
         print('max iterations : '+str(configHelper.maxIterations))
 
-        # neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations)
+        # neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
         # (neuralNetHistory) = neuralNetworkManager.start(trainingSet,resultsSet)
 
 if __name__ == "__main__":

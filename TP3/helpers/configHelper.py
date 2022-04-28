@@ -39,10 +39,16 @@ class ConfigHelper:
                     self.maxIterations = data['max_iterations']
                 else:
                     self.maxIterations = None
+                #maxToleranceExponent
+                if('max_tolerance_exponent' in data):
+                    self.maxToleranceExponent = data['max_tolerance_exponent']
+                else:
+                    self.maxToleranceExponent = None
+
 
 
     def validateConfigurationProperties(self):
-        return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateMaxIterations()
+        return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateMaxIterations() and self.__validateMaxToleranceExponent()
 
     def __validateNeuralNetProperties(self):
         return self.__validateArchitecture() and self.__validateActivationFunctionType()
@@ -59,6 +65,15 @@ class ConfigHelper:
             print("Illegal max iterations : Should be an integer positive number")
         return isValid
 
+    def __validateMaxToleranceExponent(self):
+        if(self.maxToleranceExponent is None):
+            print(" 'max_tolerance_exponent' is a required parameter")
+            return False
+        isValid = isinstance(self.maxToleranceExponent,int) and self.maxIterations < 0
+        if(not isValid):
+            print("Illegal max tolerande exponent : Should be an negative positive number (zero not included)")
+        return isValid
+
     def __validateLearningRate(self):
         if(self.learningRate is None):
             print(" 'learning_rate' is a required parameter")
@@ -72,9 +87,9 @@ class ConfigHelper:
         if(self.architecture is None):
             print(" 'architecture' is a required parameter")
             return False
-        isValid = isinstance(self.architecture,list) and len(self.architecture)>=2 and all((isinstance(x, int) and x>0) for x in self.architecture) and self.architecture[len(self.architecture)-1]==1
+        isValid = isinstance(self.architecture,list) and len(self.architecture)>=2 and all((isinstance(x, int) and x>0) for x in self.architecture)
         if(not isValid):
-            print("Illegal architecture : Should be an array of integer positive numbers, with length greater or equal than 2 and with his last item equal to 1")
+            print("Illegal architecture : Should be an array of integer positive numbers, with length greater or equal than 2")
         return isValid
 
     def __validateActivationFunctionType(self):

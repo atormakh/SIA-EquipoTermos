@@ -14,7 +14,21 @@ class Layer:
     def propagate(self,inputs):
         #multiply inputs with weights
         self.h = np.multiply(self.W,inputs)
-        return self.activationFunction.apply(h)
+        self.V = self.activationFunction.apply(self.h)
+        return self.V
+
+    def retroPropagate(self,upperLayerDelta,upperLayer):
+        self.delta = np.multiply(self.activationFunction.applyDerivative(self.h),np.multiply(upperLayer.W,upperLayerDelta))
+        return self.delta
+
+    def setDelta(self,delta):
+        self.delta = delta
+
+    def updateWeights(self,learningRate):
+        for row in range(0,self.amountOfNodes):
+            for column in range(0,self.inputs):
+                deltaW = learningRate*self.delta[row]*self.inputs[column]
+                self.W[row][column]+=deltaW
 
     def __createWeightsMatrix(self):
         aux = []
@@ -24,5 +38,6 @@ class Layer:
                 newCol.append(np.random())
             aux.append(newCol)
         return aux
+        
 #inputs = num columnas
 #amountOfNodes= num filas
