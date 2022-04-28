@@ -69,9 +69,9 @@ class ConfigHelper:
         if(self.maxToleranceExponent is None):
             print(" 'max_tolerance_exponent' is a required parameter")
             return False
-        isValid = isinstance(self.maxToleranceExponent,int) and self.maxIterations < 0
+        isValid = isinstance(self.maxToleranceExponent,int) and self.maxToleranceExponent < 0
         if(not isValid):
-            print("Illegal max tolerande exponent : Should be an negative positive number (zero not included)")
+            print("Illegal max tolerance exponent : Should be an negative  number (zero not included)")
         return isValid
 
     def __validateLearningRate(self):

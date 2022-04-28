@@ -1,7 +1,5 @@
-from curses import ALL_MOUSE_EVENTS
-from random import random
+import random
 import numpy as np
-
 
 class Layer:
     def __init__(self, amountOfNodes,inputs,activationFunction):
@@ -9,16 +7,24 @@ class Layer:
         self.inputs=inputs
         self.activationFunction=activationFunction
         #create weights matrix
-        self.W = np.matrix(self.__createWeightsMatrix())
+        aux = self.__createWeightsMatrix()
+        self.W = np.matrix(aux)
 
     def propagate(self,inputs):
         #multiply inputs with weights
-        self.h = np.multiply(self.W,inputs)
+        print('W :'+str(self.W),"--shape=",np.shape(self.W))
+        print('inputs :'+str(inputs),"--shape=",np.shape(inputs))
+        self.h = np.matmul(self.W,inputs).transpose()
+        print("h=",str(self.h),"--shape==",np.shape(self.h))
         self.V = self.activationFunction.apply(self.h)
         return self.V
 
     def retroPropagate(self,upperLayerDelta,upperLayer):
-        self.delta = np.multiply(self.activationFunction.applyDerivative(self.h),np.multiply(upperLayer.W,upperLayerDelta))
+        print("h==",self.h,"--shape==",np.shape(self.h))
+        print("upperLayerW==",upperLayer.W,"--shape==",np.shape(upperLayer.W))
+        print("upperLayerDelta==",upperLayerDelta,"--shape==",np.shape(upperLayerDelta))
+       # print("upperMatrix==",np.matmul(upperLayer.W,upperLayerDelta),"--shape==",np.shape(np.matmul(upperLayer.W,upperLayerDelta)))
+        self.delta = np.matmul(np.matmul(upperLayerDelta,upperLayer.W),self.activationFunction.applyDerivative(self.h))
         return self.delta
 
     def setDelta(self,delta):
@@ -35,7 +41,7 @@ class Layer:
         for row in range(0,self.amountOfNodes):
             newCol=[]
             for column in range(0,self.inputs):
-                newCol.append(np.random())
+                newCol.append(random.random())
             aux.append(newCol)
         return aux
         

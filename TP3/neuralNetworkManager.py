@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from layer import Layer
 
@@ -10,7 +11,6 @@ class NeuralNetworkManager:
         self.maxToleranceExponent = maxToleranceExponent
         #crear layers segun lo indique la arquitectura
         self.layers=[]
-        
         for i in range(0,len(architecture)-1): #[3,1] len([3,1])=2 2-1=1 range(0,1)
             self.layers.append(Layer(architecture[i+1],architecture[i],activationFunction))
 
@@ -20,21 +20,28 @@ class NeuralNetworkManager:
     
     def start(self,trainingSet,resultsSet):
         i=0
-        error = 2 * len(trainingSet) * len(resultsSet[0])
-        while(np.absolute(error-0)<= np.power(10,self.maxToleranceExponent) or i <self.max_iterations ):
+        error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
+        while( i <self.max_iterations ):
             #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar
-            trainingSet = np.random.shuffle(trainingSet)        
-            for trainingArray in trainingSet: #[[1,1],[-1,1],[-1,-1],[1,-1]]
+            np.random.shuffle(trainingSet)
+            for tr in range(0,len(trainingSet)): #[[1,1],[-1,1],[-1,-1],[1,-1]]
                 # inputs=np.matrix(trainingSet[i]).transpose() #inputs = [1,-1]
+                trainingArray=trainingSet[tr]
                 inputs = np.array(trainingArray).transpose()
                 #propagate
+                j=0
                 for layer in self.layers:
                     output= layer.propagate(inputs) #outputs=V=[-0.09,0.332]
                     inputs=output
+                    j+=1
                 #backpropagation
                 #Calculamos primero el delta de la capa correspondiente a la salida
                 outputLayer = self.layers[-1]
-                currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.substract(resultsSet,outputLayer.V))
+                print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
+                print("resultSets=",resultsSet,"--shape==",np.shape(resultsSet[tr]))
+                print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
+                currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(resultsSet[tr],outputLayer.V))
+                print("DELTA ==",currentDelta)
                 outputLayer.setDelta(currentDelta)
                 #Realizamos la retropropagacion
                 for i in range(len(self.layers)-2,-1,-1):
@@ -59,5 +66,5 @@ class NeuralNetworkManager:
             
                 
     def __calculateError(self,resultsSet,outputSet):
-        return 0.5 * sum(np.power(np.substract(resultsSet,outputSet),2))       
+        return 0.5 * sum(np.power(np.subtract(resultsSet,outputSet),2))       
                 
