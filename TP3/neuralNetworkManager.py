@@ -22,6 +22,7 @@ class NeuralNetworkManager:
         i=0
         error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
         while( i <self.max_iterations ):
+            print('Iteration ',i,' starting. . .')
             #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar
             np.random.shuffle(trainingSet)
             for tr in range(0,len(trainingSet)): #[[1,1],[-1,1],[-1,-1],[1,-1]]
@@ -37,16 +38,16 @@ class NeuralNetworkManager:
                 #backpropagation
                 #Calculamos primero el delta de la capa correspondiente a la salida
                 outputLayer = self.layers[-1]
-                print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
-                print("resultSets=",resultsSet,"--shape==",np.shape(resultsSet[tr]))
-                print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
+                # print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
+                # print("resultSets=",resultsSet,"--shape==",np.shape(resultsSet[tr]))
+                # print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
                 currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(resultsSet[tr],outputLayer.V))
-                print("DELTA ==",currentDelta)
+                # print("DELTA ==",currentDelta)
                 outputLayer.setDelta(currentDelta)
                 #Realizamos la retropropagacion
-                for i in range(len(self.layers)-2,-1,-1):
-                    currentLayer = self.layers[i]
-                    delta = currentLayer.retroPropagate(currentDelta,self.layers[i+1])
+                for j in range(len(self.layers)-2,-1,-1):
+                    currentLayer = self.layers[j]
+                    delta = currentLayer.retroPropagate(currentDelta,self.layers[j+1])
                     currentDelta = delta    
                 #change weights
                 for layer in self.layers:
@@ -60,9 +61,13 @@ class NeuralNetworkManager:
                     output= layer.propagate(inputs)
                     inputs=output
                     outputArray.append(layer.V)
-            error = self.__calculateError(resultsSet,outputArray)
+            # error = self.__calculateError(resultsSet,outputArray)
+            print('Iteration ',i,' finishing. . .')
             i+=1
-
+        #Imprimimos las layers
+        print("FINAL LAYERS")
+        for k in range(0,len(self.layers)):
+            print(self.layers[k])
             
                 
     def __calculateError(self,resultsSet,outputSet):
