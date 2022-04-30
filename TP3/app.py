@@ -61,7 +61,7 @@ def main():
         print('max iterations : '+str(configHelper.maxIterations))
 
         neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
-        (epochs) = neuralNetworkManager.start(trainingSet,resultsSet)
+        (epochs) = neuralNetworkManager.start(train,out)
         plotEpochsError(epochs)
 
 
