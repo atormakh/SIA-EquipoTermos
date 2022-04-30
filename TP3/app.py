@@ -1,4 +1,5 @@
 import argparse,os
+from graph import plotEpochsError
 from helpers.configHelper import ConfigHelper
 from helpers.activationFunctionHelper import ActivationFunctionHelper
 from helpers.parameterHelper import ParameterHelper
@@ -49,7 +50,8 @@ def main():
     if(configHelper.validateConfigurationProperties()):
 
         trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
-        resultsSet=[1,1,-1,-1]
+        resultsSet=[[1,1],[1,1],[-1,-1],[-1,-1]]
+        #resultsSet=[1,1,-1,-1]
         
         activationFunction = activationFunctionHelper.getActivationFunctionType(configHelper.activationFunctionType)
 
@@ -59,7 +61,9 @@ def main():
         print('max iterations : '+str(configHelper.maxIterations))
 
         neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
-        (neuralNetHistory) = neuralNetworkManager.start(trainingSet,resultsSet)
+        (epochs) = neuralNetworkManager.start(trainingSet,resultsSet)
+        plotEpochsError(epochs)
+
 
 if __name__ == "__main__":
     main()

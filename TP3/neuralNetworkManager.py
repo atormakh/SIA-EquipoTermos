@@ -19,8 +19,9 @@ class NeuralNetworkManager:
     
     
     def start(self,trainingSet,resultsSet):
+        epochs=[]
         i=0
-        error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
+        #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
         while( i <self.max_iterations ):
             print('Iteration ',i,' starting. . .')
             #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar
@@ -38,11 +39,11 @@ class NeuralNetworkManager:
                 #backpropagation
                 #Calculamos primero el delta de la capa correspondiente a la salida
                 outputLayer = self.layers[-1]
-                # print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
-                # print("resultSets=",resultsSet,"--shape==",np.shape(resultsSet[tr]))
-                # print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
-                currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(resultsSet[tr],outputLayer.V))
-                # print("DELTA ==",currentDelta)
+                #print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
+                #print("resultSets=",resultsSet[tr],"--shape==",np.shape(resultsSet[tr]))
+                #print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
+                currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(resultsSet[tr],outputLayer.V)).transpose()
+                #print("DELTA ==",currentDelta)
                 outputLayer.setDelta(currentDelta)
                 #Realizamos la retropropagacion
                 for j in range(len(self.layers)-2,-1,-1):
@@ -60,16 +61,33 @@ class NeuralNetworkManager:
                 for layer in self.layers:
                     output= layer.propagate(inputs)
                     inputs=output
-                    outputArray.append(layer.V)
-            # error = self.__calculateError(resultsSet,outputArray)
-            print('Iteration ',i,' finishing. . .')
+                outputArray.append(inputs)
+            error = self.__calculateError(resultsSet,outputArray)
+            print('Iteration ',i,"error:",error,' finishing. . .')
+            epochs.append(epoch(i,self.layers,error))
             i+=1
         #Imprimimos las layers
         print("FINAL LAYERS")
         for k in range(0,len(self.layers)):
             print(self.layers[k])
+        return epochs
             
                 
     def __calculateError(self,resultsSet,outputSet):
-        return 0.5 * sum(np.power(np.subtract(resultsSet,outputSet),2))       
+        print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
+        error2=0
+        for i in range(0,len(resultsSet)):
+            for j in range(0,len(resultsSet[i])):
+                diff=(resultsSet[i][j]-outputSet[i].A[0][j])
+                error2+=0.5*(diff**2)
+        return  error2/len(resultsSet)
+
+class epoch:
+    def __init__(self,iterationNumber,layers,error):
+        self.iterationNumber=iterationNumber
+        self.layers=[]
+        for layer in layers:
+            self.layers.append(layer)
+        self.error=error
+
                 
