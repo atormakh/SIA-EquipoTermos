@@ -1,22 +1,33 @@
 import argparse,os
 from helpers.configHelper import ConfigHelper
 from helpers.activationFunctionHelper import ActivationFunctionHelper
-
+from helpers.parameterHelper import ParameterHelper
 from neuralNetworkManager import NeuralNetworkManager
-
+import sys
+    
 def main():
     print("proyectazo de SIA-TP3")
-
+   
+ 
     configPath="./config/config.json"
+    trainSetFile = 't'
+    outputFile = 'o'
     # resultsFolderName = "results"
     # graphsFolderName = "graphs"
     # graphsPath = f"./{resultsFolderName}/{graphsFolderName}"
     try:
         parser = argparse.ArgumentParser(description='Process some integers.')
         parser.add_argument('-c','--configPath',dest='configPath')
+        parser.add_argument('-t' '--trainSetFile' , dest='trainSetFile')
+        parser.add_argument('-o' ,'--outputFile' , dest='outputFile')
         args = parser.parse_args()
         if(args.configPath is not None):
             configPath=args.configPath
+            
+        if(args.trainSetFile is not None):
+            trainSetFile=args.trainSetFile
+        if(args.outputFile is not None):
+            outputFile = args.outputFile
     except Exception as e:
         print("Error in command line arguments")
         print(e)
@@ -26,14 +37,20 @@ def main():
     #     os.makedirs(graphsPath)
 
     ##Crear los helpers
+    print(trainSetFile)
+    print(outputFile)
+    paramHelper = ParameterHelper(trainSetFile , outputFile)
     configHelper = ConfigHelper(configPath)
     activationFunctionHelper = ActivationFunctionHelper()
-
+    train = paramHelper.readEntrenamineto()
+    out = paramHelper.readSalida()
+    print(train)
+    print(out)
     if(configHelper.validateConfigurationProperties()):
 
         trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
         resultsSet=[1,1,-1,-1]
-
+        
         activationFunction = activationFunctionHelper.getActivationFunctionType(configHelper.activationFunctionType)
 
         print('architecture : '+str(configHelper.architecture))
