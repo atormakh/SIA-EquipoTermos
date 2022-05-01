@@ -1,16 +1,18 @@
 import random
 import numpy as np
 
+HIDDEN_NODE_INPUT=1
 class Layer:
-    def __init__(self, amountOfNodes,inputs,activationFunction):
+    def __init__(self, amountOfNodes,numberOfInputs,activationFunction):
         self.amountOfNodes=amountOfNodes
-        self.inputs=inputs
+        self.numberOfInputs=numberOfInputs
         self.activationFunction=activationFunction
         #create weights matrix
         aux = self.__createWeightsMatrix()
         self.W = np.matrix(aux)
 
     def propagate(self,inputs):
+        inputs= np.insert(inputs,0,[HIDDEN_NODE_INPUT],axis=0)
         self.currentInput = inputs.transpose()
         #multiply inputs with weights
         #print('W :'+str(self.W),"--shape=",np.shape(self.W))
@@ -22,7 +24,10 @@ class Layer:
         return self.V
 
     def retroPropagate(self,upperLayerDelta,upperLayer):
-        self.delta = np.multiply(self.activationFunction.applyDerivative(self.h),np.matmul(upperLayer.W.transpose(),upperLayerDelta))
+        activationFunctionDerivative = self.activationFunction.applyDerivative(self.h)
+        activationFunctionDerivative= np.insert(activationFunctionDerivative,0,[HIDDEN_NODE_INPUT],axis=0)
+        delta = np.multiply(activationFunctionDerivative,np.matmul(upperLayer.W.transpose(),upperLayerDelta))
+        self.delta=  np.delete(delta,0,axis=0)
         return self.delta
 
     #########################################################################################################################################
@@ -55,7 +60,7 @@ class Layer:
         aux = []
         for row in range(0,self.amountOfNodes):
             newCol=[]
-            for column in range(0,self.inputs):
+            for column in range(0,self.numberOfInputs+1):
                 newCol.append(random.random())
             aux.append(newCol)
         return aux

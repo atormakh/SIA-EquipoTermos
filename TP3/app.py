@@ -47,6 +47,9 @@ def main():
     out = paramHelper.readSalida()
     print(train)
     print(out)
+    out=normalize(out,-1,1)
+    print("IGOL CRACK")
+    print(out)
     if(configHelper.validateConfigurationProperties()):
 
         trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
@@ -61,8 +64,19 @@ def main():
         print('max iterations : '+str(configHelper.maxIterations))
 
         neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
-        (epochs) = neuralNetworkManager.start(trainingSet,resultsSet)
+        (epochs) = neuralNetworkManager.start(train,out)
         plotEpochsError(epochs)
+
+def normalize(Y,lowerBoundary,upperBoundary):
+    print("----------------------------------------------------\n",Y)
+    #for elem in Y:
+        #print(max[elem)
+    maxElem = max([max(elem) for elem in Y])
+    minElem = min([min(elem) for elem in Y])
+    fix =lambda elem: (upperBoundary-lowerBoundary)*(elem - minElem)/(maxElem-minElem) + lowerBoundary
+    #fixSublist = lambda sublist: 
+    return [list(map(fix,sublist)) for sublist in Y]
+
 
 
 if __name__ == "__main__":

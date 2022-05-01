@@ -32,6 +32,7 @@ class NeuralNetworkManager:
                 inputs = np.matrix(trainingArray).transpose()
                 #propagate
                 for layer in self.layers:
+                    
                     output= layer.propagate(inputs) #outputs=V=[-0.09,0.332]
                     inputs=output
                 #backpropagation
@@ -80,6 +81,9 @@ class NeuralNetworkManager:
             diff=resultsSet[i]-outputSet[i]
             error+=0.5*np.sum(np.multiply(diff,diff))
         return  error/len(resultsSet)
+
+
+
 
 class epoch:
     def __init__(self,iterationNumber,layers,error):
