@@ -21,11 +21,13 @@ class NeuralNetworkManager:
     def start(self,trainingSet,resultsSet):
         epochs=[]
         i=0
+
         #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
         while( i <self.max_iterations ):
             #print('Iteration ',i,' starting. . .')
             #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar
             np.random.shuffle(trainingSet)
+            outputArray = []
             for tr in range(0,len(trainingSet)): #[[1,1],[-1,1],[-1,-1],[1,-1]]
                 # inputs=np.matrix(trainingSet[i]).transpose() #inputs = [1,-1]
                 trainingArray=trainingSet[tr]
@@ -34,6 +36,7 @@ class NeuralNetworkManager:
                 for layer in self.layers:
                     output= layer.propagate(inputs) #outputs=V=[-0.09,0.332]
                     inputs=output
+                outputArray.append(inputs)
                 #backpropagation
                 #Calculamos primero el delta de la capa correspondiente a la salida
                 outputLayer = self.layers[-1]
@@ -54,14 +57,8 @@ class NeuralNetworkManager:
                 for layer in self.layers:
                     layer.updateWeights(self.learningRate)
             #Calculamos el error e incrementamos el numero de
-            outputArray = []
-            for trainingArray in trainingSet:
-                inputs = np.matrix(trainingArray).transpose()
-                #propagate
-                for layer in self.layers:
-                    output= layer.propagate(inputs)
-                    inputs=output
-                outputArray.append(inputs)
+            
+            
             error = self.__calculateError(resultsSet,outputArray)
             print('Iteration ',i,"error:",error,' finishing. . .')
             epochs.append(epoch(i,self.layers,error))
