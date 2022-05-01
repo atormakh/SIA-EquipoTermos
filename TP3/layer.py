@@ -13,17 +13,17 @@ class Layer:
     def propagate(self,inputs):
         self.currentInput = inputs.transpose()
         #multiply inputs with weights
-        # print('W :'+str(self.W),"--shape=",np.shape(self.W))
-        # print('inputs :'+str(inputs),"--shape=",np.shape(inputs))
-        self.h = np.matmul(self.W,inputs).transpose()
+        #print('W :'+str(self.W),"--shape=",np.shape(self.W))
+        #print('inputs :'+str(inputs),"--shape=",np.shape(inputs))
+        self.h = np.matmul(self.W,inputs)
         # print("h=",str(self.h),"--shape==",np.shape(self.h))
         self.V = self.activationFunction.apply(self.h)
         # print("V=",str(self.V),"--shape==",np.shape(self.V))
         return self.V
 
     def retroPropagate(self,upperLayerDelta,upperLayer):
-          self.delta = np.multiply(self.activationFunction.applyDerivative(self.h),np.matmul(upperLayer.W.transpose(),upperLayerDelta))
-          return self.delta
+        self.delta = np.multiply(self.activationFunction.applyDerivative(self.h),np.matmul(upperLayer.W.transpose(),upperLayerDelta))
+        return self.delta
 
     #########################################################################################################################################
 
@@ -44,10 +44,11 @@ class Layer:
         # print("delta==",self.delta,"--shape==",np.shape(self.delta))
         # print("input==",self.currentInput,"--shape",np.shape(self.currentInput))
         # print(self.inputs)
-        self.currentInput = self.currentInput.reshape([1,self.inputs])
+        #self.currentInput = self.currentInput.reshape([1,self.inputs])
         # print(" new input==",self.currentInput,"--shape",np.shape(self.currentInput))
+        deltaAux=np.matmul(self.delta,self.currentInput)
         deltaW = np.multiply(learningRate,np.matmul(self.delta,self.currentInput))
-        deltaW = np.matrix(deltaW)
+        #deltaW = np.matrix(deltaW)
         self.W += deltaW
 
     def __createWeightsMatrix(self):

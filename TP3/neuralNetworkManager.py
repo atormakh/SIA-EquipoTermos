@@ -23,26 +23,26 @@ class NeuralNetworkManager:
         i=0
         #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
         while( i <self.max_iterations ):
-            print('Iteration ',i,' starting. . .')
+            #print('Iteration ',i,' starting. . .')
             #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar
             np.random.shuffle(trainingSet)
             for tr in range(0,len(trainingSet)): #[[1,1],[-1,1],[-1,-1],[1,-1]]
                 # inputs=np.matrix(trainingSet[i]).transpose() #inputs = [1,-1]
                 trainingArray=trainingSet[tr]
-                inputs = np.array(trainingArray).transpose()
+                inputs = np.matrix(trainingArray).transpose()
                 #propagate
-                j=0
                 for layer in self.layers:
                     output= layer.propagate(inputs) #outputs=V=[-0.09,0.332]
                     inputs=output
-                    j+=1
                 #backpropagation
                 #Calculamos primero el delta de la capa correspondiente a la salida
                 outputLayer = self.layers[-1]
                 #print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
-                #print("resultSets=",resultsSet[tr],"--shape==",np.shape(resultsSet[tr]))
+               # print("resultSets=",resultsSet[tr],"--shape==",np.shape(resultsSet[tr]),"--shapeMatrix===",np.shape(np.matrix(resultsSet[tr]).transpose()))
                 #print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
-                currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(resultsSet[tr],outputLayer.V)).transpose()
+               # substract = np.subtract(np.matrix(resultsSet[tr]).transpose(),outputLayer.V)
+                #print("substract==",substract,"--shape==",np.shape(substract))
+                currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(np.matrix(resultsSet[tr]).transpose(),outputLayer.V))
                 #print("DELTA ==",currentDelta)
                 outputLayer.setDelta(currentDelta)
                 #Realizamos la retropropagacion
@@ -56,7 +56,7 @@ class NeuralNetworkManager:
             #Calculamos el error e incrementamos el numero de
             outputArray = []
             for trainingArray in trainingSet:
-                inputs = np.array(trainingArray).transpose()
+                inputs = np.matrix(trainingArray).transpose()
                 #propagate
                 for layer in self.layers:
                     output= layer.propagate(inputs)
@@ -74,20 +74,17 @@ class NeuralNetworkManager:
             
                 
     def __calculateError(self,resultsSet,outputSet):
-        print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
-        error2=0
+        #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
+        error=0
         for i in range(0,len(resultsSet)):
-            for j in range(0,len(resultsSet[i])):
-                diff=(resultsSet[i][j]-outputSet[i].A[0][j])
-                error2+=0.5*(diff**2)
-        return  error2/len(resultsSet)
+            diff=resultsSet[i]-outputSet[i]
+            error+=0.5*np.sum(np.multiply(diff,diff))
+        return  error/len(resultsSet)
 
 class epoch:
     def __init__(self,iterationNumber,layers,error):
         self.iterationNumber=iterationNumber
-        self.layers=[]
-        for layer in layers:
-            self.layers.append(layer)
+        self.layers=layers
         self.error=error
 
                 
