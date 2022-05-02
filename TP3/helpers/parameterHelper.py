@@ -27,31 +27,50 @@ class ParameterHelper:
                     lineCount = len(line)
                 else:
                     if(lineCount != len(line) ):
-                        print('Invalid elem count')
                         return None
                 for idx , e in enumerate(line):
-                    line[idx] = float(e)
+                    try:
+                        line[idx] = float(e)
+                    except ValueError:
+                        return None
                 list.append(line) 
         return list
 
-    def readEntrenamineto(self):
+    def readTrainingSetFile(self):
         file = open(self.trainSet , 'r')
-        entrenamiento = self.__readFile(file)
+        trainingSet = self.__readFile(file)
         file.close()
-        return entrenamiento
+        return trainingSet
 
-    def readSalida(self):
+    def readResultSetFile(self):
         file = open(self.outputSet , 'r')
-        salida = self.__readFile(file)
+        resultSet = self.__readFile(file)
         file.close()
-        return salida
+        return resultSet
 
     @staticmethod
-    def validateParameters(trainSet , outputSet , shape):
-        if(trainSet is None or outputSet is None):
+    def validateParameters(trainingSet , resultSet , shape):
+        # print('trainingSet before validations ==',trainingSet)
+        # print('resultSet before validations ==',resultSet)
+        if(trainingSet is None or resultSet is None):
+            print("Illegal training and result set: Every element of each set must have the same count of items, and must be an integer or decimal number")
             return False
-        if( len(shape[0]) != len(trainSet[0])):
+        # print('shape == ',shape)
+        # print('trainSet == ',trainingSet)
+        # print('trainSet[0] == ',len(trainingSet[0]))
+        # print('shape[0]==',shape[0])
+        # print('len(trainSet)==',len(trainingSet))
+        # print('len(outputSet)==',len(resultSet))
+        if( shape[0] != len(trainingSet[0])):
+            print("Illegal training set: Length of elements do not match with architecture")
+            return False
+        if(shape[-1] != len(resultSet[0])):
+            print("Illegal result set: Length of elements do not match with architecture")
             return False
 
-        if(len(shape[-1]) != len(outputSet[0])):
+        trainingSetLength = len(trainingSet)
+        resultSetLength = len(resultSet)
+        if(trainingSetLength!=resultSetLength):
+            print("Illegal training and result set: There must be a result for each element in training set")
             return False
+        return True 

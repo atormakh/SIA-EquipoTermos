@@ -11,11 +11,11 @@ def main():
    
  
     configPath="./config/config.json"
-    trainSetFile = 't'
-    outputFile = 'o'
-    # resultsFolderName = "results"
-    # graphsFolderName = "graphs"
-    # graphsPath = f"./{resultsFolderName}/{graphsFolderName}"
+    trainSetFile = None
+    outputFile = None
+    resultsFolderName = "results"
+    graphsFolderName = "graphs"
+    graphsPath = f"./{resultsFolderName}/{graphsFolderName}"
     try:
         parser = argparse.ArgumentParser(description='Process some integers.')
         parser.add_argument('-c','--configPath',dest='configPath')
@@ -33,39 +33,46 @@ def main():
         print("Error in command line arguments")
         print(e)
 
-    # ##Crear la carpeta de resultados con la subcarpeta de graficos y estadisticas en caso de que no existan
-    # if(not os.path.exists(graphsPath)):
-    #     os.makedirs(graphsPath)
+    ##Crear la carpeta de resultados con la subcarpeta de graficos y estadisticas en caso de que no existan
+    if(not os.path.exists(graphsPath)):
+        os.makedirs(graphsPath)
 
-    ##Crear los helpers
-    print(trainSetFile)
-    print(outputFile)
-    paramHelper = ParameterHelper(trainSetFile , outputFile)
-    configHelper = ConfigHelper(configPath)
-    activationFunctionHelper = ActivationFunctionHelper()
-    train = paramHelper.readEntrenamineto()
-    out = paramHelper.readSalida()
-    print(train)
-    print(out)
-    out=normalize(out,-1,1)
-    print("IGOL CRACK")
-    print(out)
-    if(configHelper.validateConfigurationProperties()):
+    ##Checkeamos que nos hayan pasado los paths correspondientes al archivo de entrenamiento y el de salida
+    if(trainSetFile is not None and outputFile is not None):
+        ##Crear los helpers
+        # print(trainSetFile)
+        # print(outputFile)
+        paramHelper = ParameterHelper(trainSetFile , outputFile)
+        configHelper = ConfigHelper(configPath)
+        activationFunctionHelper = ActivationFunctionHelper()
+        trainingSet = paramHelper.readTrainingSetFile()
+        resultSet = paramHelper.readResultSetFile()
+        # print(trainingSet)
+        # print(resultSet)
+        if(configHelper.validateConfigurationProperties()):
 
-        trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
-        resultsSet=[[1,1],[1,1],[-1,-1],[-1,-1]]
-        #resultsSet=[1,1,-1,-1]
-        
-        activationFunction = activationFunctionHelper.getActivationFunctionType(configHelper.activationFunctionType)
+            fileParametersValid = ParameterHelper.validateParameters(trainingSet,resultSet,(configHelper.architecture[0],configHelper.architecture[-1]))
+            if(fileParametersValid):
+   
+                # trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
+                # resultsSet=[[1,1],[1,1],[-1,-1],[1,1]]
+                #resultsSet=[1,1,-1,-1]
 
-        print('architecture : '+str(configHelper.architecture))
-        print('activation function : '+activationFunction.name)
-        print('learning rate : '+str(configHelper.learningRate))
-        print('max iterations : '+str(configHelper.maxIterations))
+                #Normalizamos el conjunto de salida
+                resultSet=normalize(resultSet,-1,1)
+                
+                activationFunction = activationFunctionHelper.getActivationFunctionType(configHelper.activationFunctionType)
 
-        neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
-        (epochs) = neuralNetworkManager.start(train,out)
-        plotEpochsError(epochs)
+                # print('architecture : '+str(configHelper.architecture))
+                # print('activation function : '+activationFunction.name)
+                # print('learning rate : '+str(configHelper.learningRate))
+                # print('max iterations : '+str(configHelper.maxIterations))
+
+                neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
+                (epochs) = neuralNetworkManager.start(trainingSet,resultSet)
+                plotEpochsError(epochs)
+    else:
+        print("Training set and results set files\'s pathnames are required")
 
 def normalize(Y,lowerBoundary,upperBoundary):
     print("----------------------------------------------------\n",Y)
