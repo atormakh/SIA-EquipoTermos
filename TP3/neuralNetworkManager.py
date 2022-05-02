@@ -22,7 +22,8 @@ class NeuralNetworkManager:
         epochs=[]
         i=0
         #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
-        while( i <self.max_iterations ):
+        error=None
+        while((error==None or error>=math.pow(10,self.maxToleranceExponent)) and  i <self.max_iterations ):
             #print('Iteration ',i,' starting. . .')
             #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar
             np.random.shuffle(trainingSet)
