@@ -5,11 +5,15 @@ from helpers.activationFunctionHelper import ActivationFunctionHelper
 from helpers.parameterHelper import ParameterHelper
 from neuralNetworkManager import NeuralNetworkManager
 import sys
-    
+import numpy as np
+import random    
+
 def main():
     print("proyectazo de SIA-TP3")
    
- 
+    np.random.seed(10)
+    random.seed(10)
+
     configPath="./config/config.json"
     trainSetFile = None
     outputFile = None
