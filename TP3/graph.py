@@ -26,7 +26,7 @@ def plotEpochsError(epochs):
 def plotPointsEj1(W,trainingSet,i):
     # x = np.array([1,-1])
     x = np.linspace(-1, 1, 100)
-    print('x==',x)
+    # print('x==',x)
     destinationPath = "./results/graphs/"
     fileName = f"Ej1_plot{i}"
     plt.figure(i)

@@ -45,6 +45,11 @@ class ConfigHelper:
                 else:
                     self.maxToleranceExponent = None
 
+    def __str__(self):
+        return f"\t-Architecture : {self.architecture}\n\t\t-Activation function :{self.activationFunctionType}\n\t\t-Learning rate : {self.learningRate} \n\t\t-Max iterations : {self.maxIterations}\n\t\t-Error bound : 1e^{self.maxToleranceExponent}"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
     def validateConfigurationProperties(self):
