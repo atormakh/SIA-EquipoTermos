@@ -1,4 +1,5 @@
 import math
+import time
 import numpy as np
 from layer import Layer
 from graph import plotPointsEj1
@@ -19,6 +20,10 @@ class NeuralNetworkManager:
     
     
     def start(self,trainingSet,resultsSet):
+        
+        #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
+        initTime = time.perf_counter()
+
         epochs=[]
         i=0
         #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
@@ -67,7 +72,7 @@ class NeuralNetworkManager:
                     output= layer.propagate(inputs)
                     inputs=output
                 outputArray.append(inputs)
-            plotPointsEj1(self.layers[0].W,trainingSet,i)
+            # plotPointsEj1(self.layers[0].W,trainingSet,i)
             error = self.__calculateError(resultsSet,outputArray)
             print('Iteration ',i,"error:",error,' finishing. . .')
             epochs.append(epoch(i,self.layers,error))
@@ -76,7 +81,11 @@ class NeuralNetworkManager:
         print("FINAL LAYERS")
         for k in range(0,len(self.layers)):
             print(self.layers[k])
-        return epochs
+
+        #Parar el cronometro
+        endTime = time.perf_counter()            
+        
+        return (epochs,endTime-initTime)
             
                 
     def __calculateError(self,resultsSet,outputSet):

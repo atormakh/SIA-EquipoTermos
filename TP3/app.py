@@ -4,6 +4,7 @@ from graph import plotEpochsError
 from helpers.configHelper import ConfigHelper
 from helpers.activationFunctionHelper import ActivationFunctionHelper
 from neuralNetworkManager import NeuralNetworkManager
+from output import Output
 import numpy as np
 import random    
 
@@ -71,8 +72,14 @@ def main():
                 # print('max iterations : '+str(configHelper.maxIterations))
 
                 neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
-                (epochs) = neuralNetworkManager.start(trainingSet,resultSet)
+                (epochs,executionTime) = neuralNetworkManager.start(trainingSet,resultSet)
+                 ##Imprimir la salida correspondiente
+                print("FINISH-------------------------------------------------------------------------------------------")
+                output = Output(configHelper,epochs[-1].error,epochs[-1].iterationNumber,executionTime)
+                output.printOutput()
+                #plot
                 plotEpochsError(epochs)
+
     else:
         print("Training set and results set files\'s pathnames are required")
 
