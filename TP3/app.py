@@ -1,10 +1,9 @@
 import argparse,os
+from helpers.readSetFiles import readSetFiles,validateParameters
 from graph import plotEpochsError
 from helpers.configHelper import ConfigHelper
 from helpers.activationFunctionHelper import ActivationFunctionHelper
-from helpers.parameterHelper import ParameterHelper
 from neuralNetworkManager import NeuralNetworkManager
-import sys
 import numpy as np
 import random    
 
@@ -46,16 +45,14 @@ def main():
         ##Crear los helpers
         # print(trainSetFile)
         # print(outputFile)
-        paramHelper = ParameterHelper(trainSetFile , outputFile)
+        (trainingSet,resultSet) = readSetFiles(trainSetFile , outputFile)
         configHelper = ConfigHelper(configPath)
         activationFunctionHelper = ActivationFunctionHelper()
-        trainingSet = paramHelper.readTrainingSetFile()
-        resultSet = paramHelper.readResultSetFile()
         # print(trainingSet)
         # print(resultSet)
         if(configHelper.validateConfigurationProperties()):
 
-            fileParametersValid = ParameterHelper.validateParameters(trainingSet,resultSet,(configHelper.architecture[0],configHelper.architecture[-1]))
+            fileParametersValid = validateParameters(trainingSet,resultSet,(configHelper.architecture[0],configHelper.architecture[-1]))
             if(fileParametersValid):
    
                 # trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
@@ -63,7 +60,8 @@ def main():
                 #resultsSet=[1,1,-1,-1]
 
                 #Normalizamos el conjunto de salida
-                resultSet=normalize(resultSet,-1,1)
+                resultSet=normalize(resultSet,0.05,0.98)
+                trainingSet=normalize(trainingSet,-0.98,0.98)
                 
                 activationFunction = activationFunctionHelper.getActivationFunctionType(configHelper.activationFunctionType)
 
