@@ -1,13 +1,13 @@
 {
   "neural_net": {
-    "architecture": [2, 3, 1],
+    "architecture": [2,1],
     "activation_function": {
-      "type": "SIGMOIDAL"
+      "type": "STEP"
     }
   },
   "backtracking": {
     "learning_rate": 0.01
   },
-  "max_iterations": 20,
+  "max_iterations": 100,
   "max_tolerance_exponent": -12
 }
