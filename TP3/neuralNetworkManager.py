@@ -74,7 +74,7 @@ class NeuralNetworkManager:
                 outputArray.append(inputs)
             # plotPointsEj1(self.layers[0].W,trainingSet,i)
             error = self.__calculateError(resultsSet,outputArray)
-            print('Iteration ',i,"error:",error,' finishing. . .')
+            #print('Iteration ',i,"error:",error,' finishing. . .')
             epochs.append(epoch(i,self.layers,error))
             i+=1
         #Imprimimos las layers

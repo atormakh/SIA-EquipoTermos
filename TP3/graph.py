@@ -15,13 +15,14 @@ def plotEpochsError(epochs):
         
 
     table = pd.DataFrame(data)
-    print(table.head())
     table.plot(x="Epoch")
     destinationPath = "./results/graphs/"
     fileName = "Graph"
     #if(allCategory is not None):
     #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
-    plt.savefig(f"{destinationPath}{fileName}")
+    plt.figure(0)
+    #plt.savefig(f"{destinationPath}{fileName}")
+    plt.show()
 
 def plotPointsEj1(W,trainingSet,i):
     # x = np.array([1,-1])
@@ -36,7 +37,8 @@ def plotPointsEj1(W,trainingSet,i):
         x = trainingArray[0]
         y = trainingArray[1]
         plt.scatter(x,y,c=getColor(x,y,False))
-    plt.savefig(f"{destinationPath}{fileName}")
+    #plt.savefig(f"{destinationPath}{fileName}")
+    plt.show()
 
 def functionEj1(W,x):
     w0 = W.A[0][0]

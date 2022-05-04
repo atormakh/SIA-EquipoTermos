@@ -24,15 +24,18 @@ class ConfigHelper:
                 else:
                     self.architecture = None
                 #activationFunction (type y beta si este ultimo fue especificado)
-                if('activation_function' in data['neural_net'] and 'type' in data['neural_net']['activation_function']):
-                    self.activationFunctionType = data['neural_net']['activation_function']['type']
-                else:
-                    self.activationFunctionType = None
+                
                 if('activation_function' in data['neural_net'] and 'beta' in data['neural_net']['activation_function']):
                     self.beta = data['neural_net']['activation_function']['beta']
                 else:
                     self.beta = None
 
+                if('activation_function' in data['neural_net'] and 'type' in data['neural_net']['activation_function']):
+                    self.activationFunctionType = data['neural_net']['activation_function']['type']
+                    self.activationFunctionClass = self.getActivationFunctionClass(self.activationFunctionType.strip().upper()).getType(self.beta)
+                else:
+                    self.activationFunctionType = None
+                
                 ##Pidiendo las propiedades de backtracking
                 #learningRate
                 if('learning_rate' in data['backtracking']):
@@ -69,7 +72,7 @@ class ConfigHelper:
         return self.__str__()
 
     def getProperties(self):
-        return (self.architecture,self.activationFunctionType,self.beta,self.learningRate,self.maxIterations,self.maxToleranceExponent)
+        return (self.architecture,self.activationFunctionClass,self.beta,self.learningRate,self.maxIterations,self.maxToleranceExponent)
 
     def validateConfigurationProperties(self):
         return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateGeneralProperties()

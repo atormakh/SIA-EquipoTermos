@@ -55,7 +55,7 @@ def main():
             random.seed(configHelper.randomSeed)
             np.random.seed(configHelper.randomSeed)
 
-            (architecture,activationFunctionType,beta,learningRate,maxIterations,maxToleranceExponent) = configHelper.getProperties()
+            (architecture,activationFunction,beta,learningRate,maxIterations,maxToleranceExponent) = configHelper.getProperties()
             # print('architecture : '+str(architecture))
             # print('activation function : '+activationFunctionType)
             # print('beta : '+str(beta))
@@ -65,16 +65,10 @@ def main():
 
             fileParametersValid = validateParameters(trainingSet,resultSet,(architecture[0],architecture[-1]))
             if(fileParametersValid):
-   
-                # trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
-                # resultsSet=[[1,1],[1,1],[-1,-1],[1,1]]
-                #resultsSet=[1,1,-1,-1]
 
                 #Normalizamos el conjunto de salida
                 resultSet=normalize(resultSet,0.05,0.98)
                 trainingSet=normalize(trainingSet,-0.98,0.98)
-                
-                activationFunction = activationFunctionHelper.getActivationFunctionType(activationFunctionType,beta)
 
                 # print('architecture : '+str(configHelper.architecture))
                 # print('activation function : '+activationFunction.name)
