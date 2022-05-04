@@ -14,7 +14,7 @@ class StepActivationFunction:
         return np.full(np.shape(h),1.0)
 
     @classmethod
-    def getType(cls,beta=None):
+    def getType(cls,beta=1):
         return cls()
 
     

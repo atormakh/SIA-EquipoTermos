@@ -14,5 +14,7 @@ class SigmoidalActivationFunction:
         return np.multiply(np.multiply(2*self.beta,self.apply(h)),np.subtract(oneArray,self.apply(h)))
 
     @classmethod
-    def getType(cls,beta):
+    def getType(cls,beta=1):
+        if beta is None:
+            beta=1
         return cls(beta)

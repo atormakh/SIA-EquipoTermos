@@ -15,4 +15,6 @@ class HyperbolicTangentActivationFunction:
 
     @classmethod
     def getType(cls,beta):
+        if beta is None:
+            beta=1
         return cls(beta)

@@ -91,9 +91,10 @@ class NeuralNetworkManager:
     def __calculateError(self,resultsSet,outputSet):
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
+        pow = lambda x: x**2
         for i in range(0,len(resultsSet)):
             diff=resultsSet[i]-outputSet[i]
-            error+=0.5*np.sum(np.multiply(diff,diff))
+            error+=0.5*np.sum(np.vectorize(pow)(diff))
         return  error/len(resultsSet)
         # return  error
 

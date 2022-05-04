@@ -45,7 +45,6 @@ def main():
         # print(outputFile)
         (trainingSet,resultSet) = readSetFiles(trainSetFile , outputFile)
         configHelper = ConfigHelper(configPath)
-        activationFunctionHelper = ActivationFunctionHelper()
         # print(trainingSet)
         # print(resultSet)
         # print(configHelper)
@@ -67,8 +66,8 @@ def main():
             if(fileParametersValid):
 
                 #Normalizamos el conjunto de salida
-                resultSet=normalize(resultSet,0.05,0.98)
-                trainingSet=normalize(trainingSet,-0.98,0.98)
+                #resultSet=normalize(resultSet,0.05,0.98)
+                #trainingSet=normalize(trainingSet,-0.98,0.98)
 
                 # print('architecture : '+str(configHelper.architecture))
                 # print('activation function : '+activationFunction.name)
@@ -88,7 +87,7 @@ def main():
         print("Training set and results set files\'s pathnames are required")
 
 def normalize(Y,lowerBoundary,upperBoundary):
-    print("----------------------------------------------------\n",Y)
+    #print("----------------------------------------------------\n",Y)
     #for elem in Y:
         #print(max[elem)
     maxElem = max([max(elem) for elem in Y])
