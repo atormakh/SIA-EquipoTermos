@@ -1,17 +1,18 @@
 import numpy as np
 class SigmoidalActivationFunction:
 
-    def __init__(self):
+    def __init__(self,beta):
         self.name = 'SIGMOIDAL'
+        self.beta = beta
     
     def apply(self,h):
-        return 1 / (1 + np.exp(-h))
+        return 1 / (1 + np.exp(np.multiply(-2*self.beta,h)))
 
     def applyDerivative(self,h):
 
         oneArray = np.full(np.shape(h),1.0)
-        return np.multiply(self.apply(h),np.subtract(oneArray,self.apply(h)))
+        return np.multiply(np.multiply(2*self.beta,self.apply(h)),np.subtract(oneArray,self.apply(h)))
 
     @classmethod
-    def getType(cls):
-        return cls()
+    def getType(cls,beta):
+        return cls(beta)

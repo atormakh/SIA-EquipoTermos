@@ -37,7 +37,6 @@ def __readFile(file):
             list.append(line) 
     return list
 
-@staticmethod
 def validateParameters(trainingSet , resultSet , shape):
     # print('trainingSet before validations ==',trainingSet)
     # print('resultSet before validations ==',resultSet)

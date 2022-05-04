@@ -1,16 +1,18 @@
 import numpy as np
 class HyperbolicTangentActivationFunction:
 
-    def __init__(self):
+    def __init__(self,beta):
         self.name = 'TANH'
+        self.beta = beta
     
     def apply(self,h):
-        return np.tanh(h)
+        return np.tanh(np.multiply(self.beta,h))
 
     def applyDerivative(self,h):
-        pow = lambda e: e**2 
-        return 1.0 - np.vectorize(pow)(np.tanh(h))
+        pow = lambda e: e**2
+        oneArray = np.full(np.shape(h),1.0)
+        return np.multiply(self.beta,np.subtract(oneArray,np.vectorize(pow)(self.apply(h))))
 
     @classmethod
-    def getType(cls):
-        return cls()
+    def getType(cls,beta):
+        return cls(beta)

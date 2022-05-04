@@ -1,12 +1,14 @@
 {
+  "random_seed": 11,
   "neural_net": {
-    "architecture": [2,1],
+    "architecture": [3,1],
     "activation_function": {
-      "type": "STEP"
+      "type": "TANH",
+      "beta": 0.5
     }
   },
   "backtracking": {
-    "learning_rate": 0.01
+    "learning_rate": 0.1
   },
   "max_iterations": 100,
   "max_tolerance_exponent": -12

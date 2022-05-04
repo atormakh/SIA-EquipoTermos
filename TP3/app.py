@@ -11,9 +11,6 @@ import random
 def main():
     print("proyectazo de SIA-TP3")
    
-    np.random.seed(10)
-    random.seed(10)
-
     configPath="./config/config.json"
     trainSetFile = None
     outputFile = None
@@ -51,9 +48,22 @@ def main():
         activationFunctionHelper = ActivationFunctionHelper()
         # print(trainingSet)
         # print(resultSet)
-        if(configHelper.validateConfigurationProperties()):
+        # print(configHelper)
+        if(configHelper.isValid):
 
-            fileParametersValid = validateParameters(trainingSet,resultSet,(configHelper.architecture[0],configHelper.architecture[-1]))
+            ##Setear el seed para todos los random que se utilicen en el algoritmo
+            random.seed(configHelper.randomSeed)
+            np.random.seed(configHelper.randomSeed)
+
+            (architecture,activationFunctionType,beta,learningRate,maxIterations,maxToleranceExponent) = configHelper.getProperties()
+            # print('architecture : '+str(architecture))
+            # print('activation function : '+activationFunctionType)
+            # print('beta : '+str(beta))
+            # print('learning rate : '+str(learningRate))
+            # print('max iterations : '+str(maxIterations))
+            # print('max tolerance exponent : '+str(maxToleranceExponent))
+
+            fileParametersValid = validateParameters(trainingSet,resultSet,(architecture[0],architecture[-1]))
             if(fileParametersValid):
    
                 # trainingSet=[[-1,1],[1,-1],[-1,-1],[1,1]]
@@ -64,14 +74,14 @@ def main():
                 resultSet=normalize(resultSet,0.05,0.98)
                 trainingSet=normalize(trainingSet,-0.98,0.98)
                 
-                activationFunction = activationFunctionHelper.getActivationFunctionType(configHelper.activationFunctionType)
+                activationFunction = activationFunctionHelper.getActivationFunctionType(activationFunctionType,beta)
 
                 # print('architecture : '+str(configHelper.architecture))
                 # print('activation function : '+activationFunction.name)
                 # print('learning rate : '+str(configHelper.learningRate))
                 # print('max iterations : '+str(configHelper.maxIterations))
 
-                neuralNetworkManager = NeuralNetworkManager(configHelper.architecture,activationFunction,configHelper.learningRate,configHelper.maxIterations,configHelper.maxToleranceExponent)
+                neuralNetworkManager = NeuralNetworkManager(architecture,activationFunction,learningRate,maxIterations,maxToleranceExponent)
                 (epochs,executionTime) = neuralNetworkManager.start(trainingSet,resultSet)
                  ##Imprimir la salida correspondiente
                 print("FINISH-------------------------------------------------------------------------------------------")
