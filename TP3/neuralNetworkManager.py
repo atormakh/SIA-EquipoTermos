@@ -1,8 +1,8 @@
 import math
 import time
+import copy
 import numpy as np
 from layer import Layer
-from graph import plotPointsEj1
 class NeuralNetworkManager:
     def __init__(self,architecture,activationFunction,learningRate,max_iterations,maxToleranceExponent):
         self.architecture=architecture
@@ -76,8 +76,7 @@ class NeuralNetworkManager:
                     outputArray.append(inputs)
                 # plotPointsEj1(self.layers[0].W,trainingSet,i)
                 error = self.__calculateError(resultsSet,outputArray)
-                #print('Iteration ',i,"error:",error,' finishing. . .')
-                epochs.append(epoch(i,self.layers,error))
+                epochs.append(epoch(i,copy.deepcopy(self.layers),error))
                 i+=1
             except Exception as e:
                 exception=True

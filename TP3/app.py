@@ -1,8 +1,7 @@
 import argparse,os
 from helpers.readSetFiles import readSetFiles,validateParameters
-from graph import plotEpochsError
+from graph import plotEpochsError,plotGraphEj1
 from helpers.configHelper import ConfigHelper
-from helpers.activationFunctionHelper import ActivationFunctionHelper
 from neuralNetworkManager import NeuralNetworkManager
 from output import Output
 import numpy as np
@@ -82,6 +81,8 @@ def main():
                 output.printOutput()
                 #plot
                 plotEpochsError(epochs)
+                # isXOR = False
+                # plotGraphEj1(trainingSet,isXOR,epochs)
 
     else:
         print("Training set and results set files\'s pathnames are required")

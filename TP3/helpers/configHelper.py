@@ -32,7 +32,7 @@ class ConfigHelper:
 
                 if('activation_function' in data['neural_net'] and 'type' in data['neural_net']['activation_function']):
                     self.activationFunctionType = data['neural_net']['activation_function']['type']
-                    self.activationFunctionClass = self.getActivationFunctionClass(self.activationFunctionType.strip().upper()).getType(self.beta)
+                    # self.activationFunctionClass = self.getActivationFunctionClass(self.activationFunctionType.strip().upper()).getType(self.beta)
                 else:
                     self.activationFunctionType = None
                 
@@ -72,7 +72,9 @@ class ConfigHelper:
         return self.__str__()
 
     def getProperties(self):
-        return (self.architecture,self.activationFunctionClass,self.beta,self.learningRate,self.maxIterations,self.maxToleranceExponent)
+        activationFunctionClass = self.getActivationFunctionClass(self.activationFunctionType.strip().upper())
+        activationFunction = activationFunctionClass.getType(self.beta)
+        return (self.architecture,activationFunction,self.beta,self.learningRate,self.maxIterations,self.maxToleranceExponent)
 
     def validateConfigurationProperties(self):
         return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateGeneralProperties()
