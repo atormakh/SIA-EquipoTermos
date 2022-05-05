@@ -75,7 +75,7 @@ def main():
                 # print('max iterations : '+str(configHelper.maxIterations))
 
                 neuralNetworkManager = NeuralNetworkManager(architecture,activationFunction,learningRate,maxIterations,maxToleranceExponent)
-                (epochs,executionTime) = neuralNetworkManager.start(trainingSet,resultSet)
+                (epochs,executionTime,exception) = neuralNetworkManager.start(trainingSet,resultSet)
                  ##Imprimir la salida correspondiente
                 print("FINISH-------------------------------------------------------------------------------------------")
                 output = Output(configHelper,epochs[-1].error,epochs[-1].iterationNumber,executionTime)
