@@ -1,5 +1,14 @@
 import re
+import math
 
+def readNumberSetFiles(trainSetPath,outputSetPath):
+    file = open(trainSetPath , 'r')
+    trainingSet = __readNumbersFile(file)
+    file.close()
+    file = open(outputSetPath , 'r')
+    resultSet = __readFile(file)
+    file.close()
+    return (trainingSet,resultSet)
 
 def readSetFiles(trainSetPath,outputSetPath):
     file = open(trainSetPath , 'r')
@@ -36,6 +45,51 @@ def __readFile(file):
                     return None
             list.append(line) 
     return list
+
+def __readNumbersFile(file):
+    read = True
+    linesList = []
+    numbersList = []
+    lineCount = None
+    numberOfColumns = 5
+    numberOfRows = 7
+    numbersIndex = 0
+    while read:
+        line = file.readline()
+        
+        if not line:
+            read = False
+        else:
+            line = re.sub(r"[\t\n]+", " ", line)
+            line = re.sub(r"[\s]+" , " " , line )
+            line = line.strip()
+            line = line.split(' ')
+            if not lineCount:
+                lineCount = len(line)
+                #Valida que cada linea tenga 5 numeros
+                if lineCount!=numberOfColumns:
+                    return None
+            else:
+                if(lineCount != len(line) ):
+                    return None
+            for idx , e in enumerate(line):
+                try:
+                    num = int(e)
+                    if(num==0 or num==1):
+                        line[idx]=float(num)
+                    else:
+                        return None
+                except ValueError:
+                    return None
+            linesList.append(line)
+            #Si la cantidad de lineas leidas es multiplo de la cantidad de lineas por nro, agregamos el numero correspondiente
+            if(len(linesList)%numberOfRows==0):
+                numbersList.append([float(numbersIndex)])
+                numbersIndex+=1
+    #Finalmente, si la cantidad de lineas totales es multiplo de la cantidad de lineas por nro, devolvemos la lista de los mismos. Caso contrario se retorna None
+    if(len(linesList)%numberOfRows==0):
+        return numbersList
+    return None
 
 def validateParameters(trainingSet , resultSet , shape):
     # print('trainingSet before validations ==',trainingSet)

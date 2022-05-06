@@ -1,0 +1,15 @@
+{
+    "neural_net": {
+      "architecture": [1,3,3,4,1],
+      "activation_function": {
+        "type": "TANH",
+        "beta":0.45
+      }
+    },
+    "backtracking": {
+      "learning_rate": 0.1
+    },
+    "max_iterations": 100,
+    "max_tolerance_exponent": -12
+}
+  

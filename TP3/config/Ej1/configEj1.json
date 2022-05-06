@@ -1,5 +1,4 @@
 {
-  "random_seed": 11,
   "neural_net": {
     "architecture": [2, 1],
     "activation_function": {
@@ -7,7 +6,7 @@
     }
   },
   "backtracking": {
-    "learning_rate": 0.1
+    "learning_rate": 0.001
   },
   "max_iterations": 100,
   "max_tolerance_exponent": -12
