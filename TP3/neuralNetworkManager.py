@@ -86,7 +86,7 @@ class NeuralNetworkManager:
         
         return (epochs,endTime-initTime,exception)
 
-    def test(self,testingSet,resultsSet):
+    def test(self,testingSet,resultsSet,metrics=None):
         
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
         initTime = time.perf_counter()
@@ -105,13 +105,20 @@ class NeuralNetworkManager:
                 outputArray.append(inputs)
 
             error = self.__calculateError(resultsSet,outputArray)
+            #Si se paso la instancia de metricas, se calculan las metricas de la epoca
+            metricsDict = None
+            if(metrics is not None):
+                #Modificamos la matriz de confusion y obtenemos las metricas correspondientes
+                metrics.modifyConfussionMatrix(resultsSet,outputArray)
+                metricsDict = metrics.getMetrics()
         except Exception as e:
+            print(e)
             error = errorDefault
             exception = True
         #Parar el cronometro
         endTime = time.perf_counter()            
         
-        return (error,endTime-initTime,exception)
+        return (error,endTime-initTime,exception,metricsDict)
             
                 
     def __calculateError(self,resultsSet,outputSet):
@@ -124,16 +131,15 @@ class NeuralNetworkManager:
         return  error/len(resultsSet)
         # return  error
 
-    def crossValidation(self,trainingSet,resultsSet,k=None):
+    def crossValidation(self,trainingSet,resultsSet,k,metrics=None):
         
         error = None
+        maxAccuracy = None
         trainingPercentage = None
         maxKValue = len(trainingSet)
 
         #Primero, validamos el k
-        if(k is None):
-            k = maxKValue
-        elif(not isinstance(k,int) or k<2 or k>maxKValue):
+        if(not isinstance(k,int) or k<2 or k>maxKValue):
             print(f"Illegal k : Should be an integer number between 2 and {maxKValue}")
             return (error,trainingPercentage)
 
@@ -171,6 +177,10 @@ class NeuralNetworkManager:
             # print("current training set == ",currentTrainingSet)
             # print("current results set == ",currentResultsSet)
 
+            #Si se paso la instancia de metricas, creamos una instancia de la misma para el testeo
+            testingMetrics = None
+            if(metrics is not None):
+                testingMetrics = copy.deepcopy(metrics)
 
             #Entrenamos la red con el conjunto de entrenamiento y su salida
             # print('\tStart net training. . .')
@@ -179,27 +189,37 @@ class NeuralNetworkManager:
 
             #Luego, lo probamos con el conjunto de testeo
             # print('\tStart net testing. . .')
-            (testingError,testingExecutionTime,testingException) = self.test(testingSet,testingResultsSet)
+            (testingError,testingExecutionTime,testingException,testingMetricsDict) = self.test(testingSet,testingResultsSet,testingMetrics)
             # print('\tNet testing finished. . .')
 
             #Checkeamos si el error de testeo es menor que el error minimo
             if(error is None or testingError<error):
                 error = testingError
 
+            #Nos guardamos la accuracy maxima en caso de que se haya pedido analizar las metricas
+            if(metrics is not None and (maxAccuracy is None or testingMetricsDict['accuracy']>maxAccuracy)):
+                maxAccuracy = testingMetricsDict['accuracy']
+
             #Si tiro excepcion en el testing, imprimimos y retornamos
             if(testingException):
                 print(f"Cross validation with k={k} results:")
                 print('\terror min ==',error)
                 print('\ttraining percentage ==',trainingPercentage)
+                if(metrics is not None):
+                    print('\tmetrics == ',testingMetricsDict)
+                    print('\tmax accuracy == ',maxAccuracy)
 
-                return (error,trainingPercentage)
+                return (error,trainingPercentage,testingMetricsDict,maxAccuracy)
 
         
         print(f"Cross validation with k={k} results:")
         print('\terror min ==',error)
         print('\ttraining percentage ==',trainingPercentage)
+        if(metrics is not None):
+            print('\tmetrics == ',testingMetricsDict)
+            print('\tmax accuracy == ',maxAccuracy)
 
-        return (error,trainingPercentage)
+        return (error,trainingPercentage,testingMetricsDict,maxAccuracy)
 
 
 

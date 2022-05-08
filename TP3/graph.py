@@ -6,6 +6,58 @@ import matplotlib.cm as cm
 from matplotlib.animation import FuncAnimation
 import numpy as np
 
+def plotMetricAgainstVariable(metricArray,metricTitle,variableArray,variableTitle):
+    plt.figure(f"{metricTitle} vs {variableTitle}")
+    data = {
+        'Metric':[],
+        'Variable':[],
+    }
+    for i in range(0,len(variableArray)):
+        
+        data["Metric"].append(metricArray[i])
+        data["Variable"].append(variableArray[i])
+        
+
+    table = pd.DataFrame(data)
+    table.plot(x="Variable")
+    destinationPath = "./results/graphs/"
+    fileName = "Graph"
+    #if(allCategory is not None):
+    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
+    #plt.savefig(f"{destinationPath}{fileName}")
+    plt.xlabel(f"{variableTitle}")
+    plt.ylabel(f"{metricTitle}")
+    plt.show()
+
+
+def plotMetricsAgainstVariable(metricsDict,variableArray,variableTitle):
+    
+    for metric,values in metricsDict.items():
+        plt.figure(f"{metric} vs {variableTitle}")
+        data = {
+            'Metric':[],
+            'Variable':[],
+        }
+        # for net in epochs:
+            
+        #     data["Epoch"].append(net.iterationNumber)
+        #     data["Error"].append(net.error)
+        for i in range(0,len(variableArray)):
+            data["Metric"].append(values[i])
+            data["Variable"].append(variableArray[i])
+    
+        table = pd.DataFrame(data)
+        table.plot(x="Variable")
+        destinationPath = "./results/graphs/"
+        fileName = "Graph"
+    #if(allCategory is not None):
+    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
+    #plt.savefig(f"{destinationPath}{fileName}")
+        plt.title(f"{metric} vs {variableTitle}")
+        plt.xlabel(f"{variableTitle}")
+        plt.ylabel(f"{metric}")
+        plt.show()
+
 
 def plotEpochsError(epochs,title=None,denormalizeFn=None):
     data = {
