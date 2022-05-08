@@ -53,7 +53,6 @@ def __readNumbersFile(file):
     lineCount = None
     numberOfColumns = 5
     numberOfRows = 7
-    numbersIndex = 0
     while read:
         line = file.readline()
         
@@ -81,11 +80,11 @@ def __readNumbersFile(file):
                         return None
                 except ValueError:
                     return None
-            linesList.append(line)
+            linesList.extend(line)
             #Si la cantidad de lineas leidas es multiplo de la cantidad de lineas por nro, agregamos el numero correspondiente
             if(len(linesList)%numberOfRows==0):
-                numbersList.append([float(numbersIndex)])
-                numbersIndex+=1
+                numbersList.append(linesList)
+                linesList = []
     #Finalmente, si la cantidad de lineas totales es multiplo de la cantidad de lineas por nro, devolvemos la lista de los mismos. Caso contrario se retorna None
     if(len(linesList)%numberOfRows==0):
         return numbersList
