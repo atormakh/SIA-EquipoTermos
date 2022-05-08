@@ -1,4 +1,6 @@
 import argparse,os
+
+from bs4 import ResultSet
 from helpers.readSetFiles import readSetFiles,validateParameters
 from graph import plotEpochsError,plotGraphEj1
 from helpers.configHelper import ConfigHelper
@@ -87,15 +89,20 @@ def main():
     else:
         print("Training set and results set files\'s pathnames are required")
 
-def normalize(Y,lowerBoundary,upperBoundary):
+def normalize(Y,lowerBoundary,upperBoundary): # -1,1
+                                              # minElement= -50
+                                              # maxElement = 50
+                                              # y = 2*(x--50)/(100) + -1
+                                              # x = minElem + ((y -lowerBoundary)* (maxElem-minElem))/(upperBoundary-lowerBoundary)
     #print("----------------------------------------------------\n",Y)
     #for elem in Y:
         #print(max[elem)
     maxElem = max([max(elem) for elem in Y])
     minElem = min([min(elem) for elem in Y])
     fix =lambda elem: (upperBoundary-lowerBoundary)*(elem - minElem)/(maxElem-minElem) + lowerBoundary
+    fixnt= lambda elem: minElem + ((elem -lowerBoundary)* (maxElem-minElem))/(upperBoundary-lowerBoundary)
     #fixSublist = lambda sublist: 
-    return [list(map(fix,sublist)) for sublist in Y]
+    return ([list(map(fix,sublist)) for sublist in Y],fixnt)
 
 
 

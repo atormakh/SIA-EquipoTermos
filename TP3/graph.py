@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 
 
-def plotEpochsError(epochs,title=None):
+def plotEpochsError(epochs,title=None,denormalizeFn=None):
     data = {
         'Epoch':[],
         'Error':[],
@@ -16,20 +16,24 @@ def plotEpochsError(epochs,title=None):
         
         data["Epoch"].append(net.iterationNumber)
         data["Error"].append(net.error)
+
+    if(denormalizeFn is not None):
+        data["RealError"]=[]
+        for net in epochs:
+            data["RealError"].append(denormalizeFn(net.error))
         
 
     table = pd.DataFrame(data)
-    table.plot(x="Epoch")
-    destinationPath = "./results/graphs/"
-    fileName = "Graph"
-    #if(allCategory is not None):
-    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
-    #plt.savefig(f"{destinationPath}{fileName}")
+    table.plot(x="Epoch",y="Error")
     if title is not None:
         plt.title(title)
     plt.figure("Error vs Epoch")
     plt.show()
-
+    if denormalizeFn is not None:
+        table.plot(x="Epoch",y="RealError")
+        if title is not None:
+            plt.title(f"{title} Real Error ")
+        plt.show()
 def plotErrorAgainstKGraph(errors,ks):
     data = {
         'K':[],
