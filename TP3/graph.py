@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 
 
-def plotEpochsError(epochs):
+def plotEpochsError(epochs,title=None):
     data = {
         'Epoch':[],
         'Error':[],
@@ -25,6 +25,8 @@ def plotEpochsError(epochs):
     #if(allCategory is not None):
     #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
     #plt.savefig(f"{destinationPath}{fileName}")
+    if title is not None:
+        plt.title(title)
     plt.figure("Error vs Epoch")
     plt.show()
 
