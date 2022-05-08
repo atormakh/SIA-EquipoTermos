@@ -1,6 +1,7 @@
 import random
 import numpy as np
 
+#W0s
 HIDDEN_NODE_INPUT=1
 class Layer:
     def __init__(self, amountOfNodes,numberOfInputs,activationFunction):
@@ -10,6 +11,7 @@ class Layer:
         #create weights matrix
         aux = self.__createWeightsMatrix()
         self.W = np.matrix(aux)
+        self.lastDelta = None
 
     def propagate(self,inputs):
         inputs= np.insert(inputs,0,[HIDDEN_NODE_INPUT],axis=0)
@@ -45,7 +47,7 @@ class Layer:
     def setDelta(self,delta):
         self.delta = delta
 
-    def updateWeights(self,learningRate):
+    def updateWeights(self,learningRate , momentum=0):
         # print("delta==",self.delta,"--shape==",np.shape(self.delta))
         # print("input==",self.currentInput,"--shape",np.shape(self.currentInput))
         # print(self.inputs)
@@ -55,6 +57,11 @@ class Layer:
         deltaW = np.multiply(learningRate,np.matmul(self.delta,self.currentInput))
         #deltaW = np.matrix(deltaW)
         self.W += deltaW
+        deltaMomentum = 0 
+        if self.lastDelta is not None:
+            deltaMomentum = np.dot(momentum , deltaW)
+            self.W += deltaMomentum
+        self.lastDelta = deltaW + deltaMomentum
 
     def __createWeightsMatrix(self):
         aux = []
