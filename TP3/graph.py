@@ -80,7 +80,8 @@ def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None):
         
 
     table = pd.DataFrame(data)
-    
+    plt.ylabel("Error")
+    plt.xlabel("Epoch")
     plt.plot(data["Epoch"],data["Error"])
     if title is not None:
         plt.title(title)
@@ -155,6 +156,8 @@ def plotGraphEj1(trainingSet,isXOR,epochs):
     #Finalmente, mostramos el grafico
     # if(not isXOR):
     #     plt.legend()
+    plt.xlabel("x")
+    plt.ylabel("y")
     plt.show()
 
 def plotGraphEj1Animated(trainingSet,isXOR,epochs,isEj1):
