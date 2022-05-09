@@ -88,6 +88,7 @@ class NeuralNetworkManager:
 
     def test(self,testingSet,resultsSet,metrics=None):
         
+        metricsDict = None
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
         initTime = time.perf_counter()
         exception=False
@@ -105,8 +106,10 @@ class NeuralNetworkManager:
                 outputArray.append(inputs)
 
             error = self.__calculateError(resultsSet,outputArray)
+            if(math.isnan(error)):
+                error = errorDefault
+                exception = True
             #Si se paso la instancia de metricas, se calculan las metricas de la epoca
-            metricsDict = None
             if(metrics is not None):
                 #Modificamos la matriz de confusion y obtenemos las metricas correspondientes
                 metrics.modifyConfussionMatrix(resultsSet,outputArray)
@@ -206,20 +209,18 @@ class NeuralNetworkManager:
                 print('\terror min ==',error)
                 print('\ttraining percentage ==',trainingPercentage)
                 if(metrics is not None):
-                    print('\tmetrics == ',testingMetricsDict)
                     print('\tmax accuracy == ',maxAccuracy)
 
-                return (error,trainingPercentage,testingMetricsDict,maxAccuracy)
+                return (error,trainingPercentage,maxAccuracy)
 
         
         print(f"Cross validation with k={k} results:")
         print('\terror min ==',error)
         print('\ttraining percentage ==',trainingPercentage)
         if(metrics is not None):
-            print('\tmetrics == ',testingMetricsDict)
             print('\tmax accuracy == ',maxAccuracy)
 
-        return (error,trainingPercentage,testingMetricsDict,maxAccuracy)
+        return (error,trainingPercentage,maxAccuracy)
 
 
 

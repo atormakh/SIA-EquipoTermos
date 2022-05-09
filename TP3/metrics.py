@@ -2,13 +2,15 @@ import numpy as np
 
 class Metrics:
 
-    def __init__(self,classes,isNumbers): 
+    def __init__(self,classes,isNumbers,lowerBoundary,upperBoundary): 
         #Creamos la matriz de confusion en funcion de un array con las clases a analizar, y un diccionario de indices para modificar la misma
         classesLength = len(classes)
         dimension = (classesLength,classesLength)
         self.confussionMatrix = np.zeros(dimension)
         self.classesDict = dict()
         self.isNumbers = isNumbers
+        self.lowerBoundary = lowerBoundary
+        self.upperBoundary = upperBoundary
         for i in range(0,classesLength):
             classItem = classes[i]
             self.classesDict[classItem]=i
@@ -111,7 +113,7 @@ class Metrics:
             calculatedValue = calculatedValueMatrix.A[0][0]
             #Si no lo es, si el valor es menor a 0.5, corresponde al -1, y sino al 1
             classItem = 1
-            if(calculatedValue<0):
+            if(calculatedValue<((self.lowerBoundary+self.upperBoundary)/2)):
                 classItem = -1
         else:
             #Si es el ejercicio de los numero, tomamos como clase el indice el numero maximo
