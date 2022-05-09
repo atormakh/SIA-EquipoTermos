@@ -1,5 +1,4 @@
 import pandas as pd
-import math
 import os
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -59,7 +58,8 @@ def plotMetricsAgainstVariable(metricsDict,variableArray,variableTitle):
         plt.show()
 
 
-def plotEpochsError(epochs,title=None,denormalizeFn=None):
+def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None):
+    plt.figure("Error vs Epoch")
     data = {
         'Epoch':[],
         'Error':[],
@@ -73,19 +73,25 @@ def plotEpochsError(epochs,title=None,denormalizeFn=None):
         data["RealError"]=[]
         for net in epochs:
             data["RealError"].append(denormalizeFn(net.error))
+    if(testingSetErrors is not None):
+        data["TestingSetError"]=[]
+        for err in testingSetErrors:
+            data["TestingSetError"].append(err)
         
 
     table = pd.DataFrame(data)
-    table.plot(x="Epoch",y="Error")
+    
+    plt.plot(data["Epoch"],data["Error"])
     if title is not None:
         plt.title(title)
-    plt.figure("Error vs Epoch")
-    plt.show()
+    
+    if testingSetErrors is not None:
+        plt.plot(data["Epoch"],data["TestingSetError"],c="orange")
     if denormalizeFn is not None:
-        table.plot(x="Epoch",y="RealError")
+        plt.plot(data["Epoch"],data["RealError"])
         if title is not None:
             plt.title(f"{title} Real Error ")
-        plt.show()
+    plt.show()
 def plotErrorAgainstKGraph(errors,ks):
     data = {
         'K':[],

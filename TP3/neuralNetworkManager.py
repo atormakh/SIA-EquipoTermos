@@ -86,7 +86,7 @@ class NeuralNetworkManager:
         
         return (epochs,endTime-initTime,exception)
 
-    def test(self,testingSet,resultsSet,metrics=None):
+    def test(self,testingSet,resultsSet,metrics=None,layers=None):
         
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
         initTime = time.perf_counter()
@@ -99,7 +99,9 @@ class NeuralNetworkManager:
             for testingArray in testingSet:
                 inputs = np.matrix(testingArray).transpose()
                 #propagate
-                for layer in self.layers:
+                if(layers is None):
+                    layers=self.layers
+                for layer in layers:
                     output= layer.propagate(inputs)
                     inputs=output
                 outputArray.append(inputs)
