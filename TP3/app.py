@@ -49,18 +49,18 @@ def main():
             random.seed(configHelper.randomSeed)
             np.random.seed(configHelper.randomSeed)
 
-            (architecture,activationFunction,beta,learningRate,maxIterations,maxToleranceExponent) = configHelper.getProperties()
+            (architecture,activationFunction,beta,learningRate,maxEpochs,maxToleranceExponent,randomSeed) = configHelper.getProperties()
 
             fileParametersValid = validateParameters(trainingSet,resultSet,(architecture[0],architecture[-1]))
             if(fileParametersValid):
 
 
 
-                neuralNetworkManager = NeuralNetworkManager(architecture,activationFunction,learningRate,maxIterations,maxToleranceExponent)
+                neuralNetworkManager = NeuralNetworkManager(architecture,activationFunction,learningRate,maxEpochs,maxToleranceExponent)
                 (epochs,executionTime,exception) = neuralNetworkManager.start(trainingSet,resultSet)
                  ##Imprimir la salida correspondiente
                 print("FINISH-------------------------------------------------------------------------------------------")
-                output = Output(configHelper,epochs[-1].error,epochs[-1].iterationNumber,executionTime)
+                output = Output(configHelper,epochs[-1].error,epochs[-1].epochNumber,executionTime)
                 output.printOutput()
                 #plot
                 plotEpochsError(epochs)
