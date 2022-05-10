@@ -3,12 +3,13 @@
   "neural_net": {
     "architecture": [3, 1],
     "activation_function": {
-      "type": "LINEAL"
+      "type": "SIGMOIDAL",
+      "beta": 0.6
     }
   },
   "backtracking": {
-    "learning_rate": 0.1
+    "learning_rate": 0.01
   },
-  "max_epochs": 1000,
-  "max_tolerance_exponent": -12
+  "max_epochs": 300,
+  "max_tolerance_exponent": -5
 }
