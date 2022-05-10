@@ -1,15 +1,14 @@
 {
   "random_seed": 11,
   "neural_net": {
-    "architecture": [3,1],
+    "architecture": [3, 1],
     "activation_function": {
-      "type": "TANH",
-      "beta": 0.5
+      "type": "LINEAL"
     }
   },
   "backtracking": {
     "learning_rate": 0.1
   },
-  "max_iterations": 100,
-  "max_tolerance_exponent": -12
+  "max_epochs": 1000,
+  "max_tolerance_exponent": -5
 }

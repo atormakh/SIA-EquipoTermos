@@ -44,11 +44,11 @@ class ConfigHelper:
                     self.learningRate = None
 
                 ##Pidiendo las propiedades del problema en general
-                #maxIterations
-                if('max_iterations' in data):
-                    self.maxIterations = data['max_iterations']
+                #maxEpochs
+                if('max_epochs' in data):
+                    self.maxEpochs = data['max_epochs']
                 else:
-                    self.maxIterations = None
+                    self.maxEpochs = None
                 #maxToleranceExponent
                 if('max_tolerance_exponent' in data):
                     self.maxToleranceExponent = data['max_tolerance_exponent']
@@ -66,7 +66,7 @@ class ConfigHelper:
 
 
     def __str__(self):
-        return f"\t-Architecture : {self.architecture}\n\t\t-Activation function :{self.activationFunctionType}\n\t\t-Beta : {self.beta}\n\t\t-Learning rate : {self.learningRate} \n\t\t-Max iterations : {self.maxIterations}\n\t\t-Error bound : 1e^{self.maxToleranceExponent}"
+        return f"\t-Architecture : {self.architecture}\n\t\t-Activation function :{self.activationFunctionType}\n\t\t-Beta : {self.beta}\n\t\t-Learning rate : {self.learningRate} \n\t\t-Max epochs : {self.maxEpochs}\n\t\t-Error bound : 1e^{self.maxToleranceExponent}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -74,7 +74,7 @@ class ConfigHelper:
     def getProperties(self):
         activationFunctionClass = self.getActivationFunctionClass(self.activationFunctionType.strip().upper())
         activationFunction = activationFunctionClass.getType(self.beta)
-        return (self.architecture,activationFunction,self.beta,self.learningRate,self.maxIterations,self.maxToleranceExponent)
+        return (self.architecture,activationFunction,self.beta,self.learningRate,self.maxEpochs,self.maxToleranceExponent,self.randomSeed)
 
     def validateConfigurationProperties(self):
         return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateGeneralProperties()
@@ -86,7 +86,7 @@ class ConfigHelper:
         return self.__validateLearningRate()
 
     def __validateGeneralProperties(self):
-        return self.__validateMaxIterations() and self.__validateMaxToleranceExponent() and self.__validateRandomSeed()
+        return self.__validateMaxEpochs() and self.__validateMaxToleranceExponent() and self.__validateRandomSeed()
 
     def __validateLearningRate(self):
         if(self.learningRate is None):
@@ -126,11 +126,11 @@ class ConfigHelper:
             print("Illegal beta : Should be a positive decimal number between 0 and 1 (zero excluded, one included)")
         return isValid
 
-    def __validateMaxIterations(self):
-        if(self.maxIterations is None):
-            print(" 'max_iterations' is a required parameter")
+    def __validateMaxEpochs(self):
+        if(self.maxEpochs is None):
+            print(" 'max_epochs' is a required parameter")
             return False
-        isValid = isinstance(self.maxIterations,int) and self.maxIterations > 0
+        isValid = isinstance(self.maxEpochs,int) and self.maxEpochs > 0
         if(not isValid):
             print("Illegal max iterations : Should be an integer positive number")
         return isValid

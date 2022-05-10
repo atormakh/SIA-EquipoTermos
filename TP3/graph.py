@@ -66,7 +66,7 @@ def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None):
     }
     for net in epochs:
         
-        data["Epoch"].append(net.iterationNumber)
+        data["Epoch"].append(net.epochNumber)
         data["Error"].append(net.error)
 
     if(denormalizeFn is not None):

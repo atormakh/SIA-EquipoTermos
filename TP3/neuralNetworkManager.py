@@ -4,11 +4,11 @@ import copy
 import numpy as np
 from layer import Layer
 class NeuralNetworkManager:
-    def __init__(self,architecture,activationFunction,learningRate,max_iterations,maxToleranceExponent):
+    def __init__(self,architecture,activationFunction,learningRate,maxEpochs,maxToleranceExponent):
         self.architecture=architecture
         self.activationFunction=activationFunction
         self.learningRate=learningRate
-        self.max_iterations=max_iterations
+        self.maxEpochs=maxEpochs
         self.maxToleranceExponent = maxToleranceExponent
         #crear layers segun lo indique la arquitectura
         self.layers=[]
@@ -29,7 +29,7 @@ class NeuralNetworkManager:
         #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
         exception=False
         error=None
-        while((not exception) and (error==None or error>=math.pow(10,self.maxToleranceExponent)) and  i <self.max_iterations ):
+        while((not exception) and (error==None or error>=math.pow(10,self.maxToleranceExponent)) and  i <self.maxEpochs ):
             try:
                 #print('Iteration ',i,' starting. . .')
                 #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar, y reordenamos la salida de la misma manera
@@ -228,8 +228,8 @@ class NeuralNetworkManager:
 
 
 class epoch:
-    def __init__(self,iterationNumber,layers,error):
-        self.iterationNumber=iterationNumber
+    def __init__(self,epochNumber,layers,error):
+        self.epochNumber=epochNumber
         self.layers=layers
         self.error=error
 

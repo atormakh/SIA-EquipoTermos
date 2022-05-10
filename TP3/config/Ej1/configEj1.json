@@ -8,6 +8,7 @@
   "backtracking": {
     "learning_rate": 0.001
   },
-  "max_iterations": 100,
-  "max_tolerance_exponent": -12
+  "max_epochs": 100,
+  "max_tolerance_exponent": -12,
+  "random_seed": 11
 }

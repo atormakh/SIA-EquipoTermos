@@ -9,7 +9,7 @@
     "backtracking": {
       "learning_rate": 0.1
     },
-    "max_iterations": 100,
+    "max_epochs": 100,
     "max_tolerance_exponent": -12
 }
   
