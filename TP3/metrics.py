@@ -112,9 +112,9 @@ class Metrics:
         if(not self.isNumbers):
             calculatedValue = calculatedValueMatrix.A[0][0]
             #Si no lo es, si el valor es menor a 0.5, corresponde al -1, y sino al 1
-            classItem = 1
+            classItem = self.upperBoundary
             if(calculatedValue<((self.lowerBoundary+self.upperBoundary)/2)):
-                classItem = -1
+                classItem = self.lowerBoundary
         else:
             #Si es el ejercicio de los numero, tomamos como clase el indice el numero maximo
             calculatedValue = np.squeeze(np.asarray(calculatedValueMatrix))
