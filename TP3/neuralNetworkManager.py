@@ -12,7 +12,7 @@ class NeuralNetworkManager:
         self.maxToleranceExponent = maxToleranceExponent
         #crear layers segun lo indique la arquitectura
         self.layers=[]
-        for i in range(0,len(architecture)-1): #[3,1] len([3,1])=2 2-1=1 range(0,1)
+        for i in range(0,len(architecture)-1):
             self.layers.append(Layer(architecture[i+1],architecture[i],activationFunction))
 
 
@@ -26,36 +26,26 @@ class NeuralNetworkManager:
 
         epochs=[]
         i=0
-        #error = 2 * len(trainingSet) * len(resultsSet)#math.fabs(error)<= np.power(10,self.maxToleranceExpsonent) or
         exception=False
         error=None
         while((not exception) and (error==None or error>=math.pow(10,self.maxToleranceExponent)) and  i <self.maxEpochs ):
             try:
-                #print('Iteration ',i,' starting. . .')
                 #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar, y reordenamos la salida de la misma manera
                 combinatedTrainingResultSet = list(zip(trainingSet,resultsSet))
                 np.random.shuffle(combinatedTrainingResultSet)
                 shuffledTrainingSet, shuffledResultSet = zip(*combinatedTrainingResultSet)
-                # np.random.shuffle(trainingSet)
                 for tr in range(0,len(shuffledTrainingSet)): #[[1,1],[-1,1],[-1,-1],[1,-1]]
-                    # inputs=np.matrix(trainingSet[i]).transpose() #inputs = [1,-1]
                     trainingArray=shuffledTrainingSet[tr]
                     inputs = np.matrix(trainingArray).transpose()
                     #propagate
                     for layer in self.layers:
                         
-                        output= layer.propagate(inputs) #outputs=V=[-0.09,0.332]
+                        output= layer.propagate(inputs) 
                         inputs=output
                     #backpropagation
                     #Calculamos primero el delta de la capa correspondiente a la salida
                     outputLayer = self.layers[-1]
-                    #print("output H==",outputLayer.h,"--shape==",np.shape(outputLayer.h))
-                # print("resultSets=",resultsSet[tr],"--shape==",np.shape(resultsSet[tr]),"--shapeMatrix===",np.shape(np.matrix(resultsSet[tr]).transpose()))
-                    #print("outputLayer V",outputLayer.V,"--shape==",np.shape(outputLayer.V))
-                # substract = np.subtract(np.matrix(resultsSet[tr]).transpose(),outputLayer.V)
-                    #print("substract==",substract,"--shape==",np.shape(substract))
                     currentDelta = np.multiply(self.activationFunction.applyDerivative(outputLayer.h),np.subtract(np.matrix(shuffledResultSet[tr]).transpose(),outputLayer.V))
-                    #print("DELTA ==",currentDelta)
                     outputLayer.setDelta(currentDelta)
                     #Realizamos la retropropagacion
                     for j in range(len(self.layers)-2,-1,-1):
@@ -161,7 +151,6 @@ class NeuralNetworkManager:
 
         #Realizamos los distintos entrenamientos (uno por cada testingSet a utilizar)
         for i in range(0,len(testingResultsSets)):
-            # print('Training ',i+1)
             testingSet, testingResultsSet = zip(*testingResultsSets[i])
             testingSet = list(testingSet)
             testingResultsSet = list(testingResultsSet)
@@ -179,23 +168,16 @@ class NeuralNetworkManager:
             currentTrainingSet = originalTrainingSet
             currentResultsSet = originalResultsSet
 
-            # print("current training set == ",currentTrainingSet)
-            # print("current results set == ",currentResultsSet)
-
             #Si se paso la instancia de metricas, creamos una instancia de la misma para el testeo
             testingMetrics = None
             if(metrics is not None):
                 testingMetrics = copy.deepcopy(metrics)
 
             #Entrenamos la red con el conjunto de entrenamiento y su salida
-            # print('\tStart net training. . .')
             (trainingEpochs,trainingExecutionTime,trainingException) = self.start(currentTrainingSet,currentResultsSet)
-            # print('\tNet training finished. . .')
 
             #Luego, lo probamos con el conjunto de testeo
-            # print('\tStart net testing. . .')
             (testingError,testingExecutionTime,testingException,testingMetricsDict) = self.test(testingSet,testingResultsSet,testingMetrics)
-            # print('\tNet testing finished. . .')
 
             #Checkeamos si el error de testeo es menor que el error minimo
             if(error is None or testingError<error):
