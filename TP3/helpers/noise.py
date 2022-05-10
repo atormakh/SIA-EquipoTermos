@@ -1,6 +1,6 @@
 import numpy as np
-def createTrainingSetWithNoise(trainingSet):
-    modify=lambda x: changeBooleanNumber(x) if np.random.random() < 0.22 else x
+def createTrainingSetWithNoise(trainingSet,probability):
+    modify=lambda x: changeBooleanNumber(x) if np.random.random() < probability else x
     return np.vectorize(modify)(trainingSet)
 
 def changeBooleanNumber(num):

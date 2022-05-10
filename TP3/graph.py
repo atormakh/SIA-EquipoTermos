@@ -60,6 +60,26 @@ def plotMetricsAgainstVariable(metricsDict,variableArray,variableTitle):
         plt.show()
 
 
+def plotProbabilityTestingError(probabilities,title=None,testingSetErrors=None):
+    plt.figure("Testing error vs Probability")
+    data = {
+        'Probability':[],
+        'TestingError':[],
+    }
+    for i in range(0,len(probabilities)):
+        
+        data["Probability"].append(probabilities[i])
+        data["TestingError"].append(testingSetErrors[i])
+
+    plt.ylabel("Testing error")
+    plt.xlabel("Probability")
+    plt.plot(data["Probability"],data["TestingError"] , label = "Testing Error")
+    if title is not None:
+        plt.title(title)
+    
+    plt.legend(loc='upper right')
+    plt.show()
+
 def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None , log=False):
     plt.figure("Error vs Epoch")
     data = {
