@@ -1,3 +1,5 @@
+from cProfile import label
+from re import I
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
@@ -58,7 +60,7 @@ def plotMetricsAgainstVariable(metricsDict,variableArray,variableTitle):
         plt.show()
 
 
-def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None):
+def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None , log=False):
     plt.figure("Error vs Epoch")
     data = {
         'Epoch':[],
@@ -82,17 +84,30 @@ def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None):
     table = pd.DataFrame(data)
     plt.ylabel("Error")
     plt.xlabel("Epoch")
-    plt.plot(data["Epoch"],data["Error"])
+    plt.plot(data["Epoch"],data["Error"] , label = "Training Error")
     if title is not None:
         plt.title(title)
     
     if testingSetErrors is not None:
-        plt.plot(data["Epoch"],data["TestingSetError"],c="orange")
+        plt.plot(data["Epoch"],data["TestingSetError"],c="orange" , label="Testing Error")
+   
+    if log:
+        plt.yscale('log')
+    plt.legend(loc='upper right')
+    plt.show()
+
     if denormalizeFn is not None:
-        plt.plot(data["Epoch"],data["RealError"])
+        plt.figure('Real error vs epochs')
+        plt.ylabel("Error")
+        plt.xlabel("Epoch")    
+        if log:
+            plt.yscale('log')
+        plt.plot(data["Epoch"],data["RealError"], label="Real Error")
         if title is not None:
             plt.title(f"{title} Real Error ")
-    plt.show()
+        plt.legend(loc='upper right')
+        plt.show()
+        
 def plotErrorAgainstKGraph(errors,ks):
     data = {
         'K':[],
