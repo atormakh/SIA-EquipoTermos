@@ -21,11 +21,6 @@ def plotMetricAgainstVariable(metricArray,metricTitle,variableArray,variableTitl
 
     table = pd.DataFrame(data)
     table.plot(x="Variable")
-    destinationPath = "./results/graphs/"
-    fileName = "Graph"
-    #if(allCategory is not None):
-    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
-    #plt.savefig(f"{destinationPath}{fileName}")
     plt.xlabel(f"{variableTitle}")
     plt.ylabel(f"{metricTitle}")
     plt.show()
@@ -39,21 +34,12 @@ def plotMetricsAgainstVariable(metricsDict,variableArray,variableTitle):
             'Metric':[],
             'Variable':[],
         }
-        # for net in epochs:
-            
-        #     data["Epoch"].append(net.iterationNumber)
-        #     data["Error"].append(net.error)
         for i in range(0,len(variableArray)):
             data["Metric"].append(values[i])
             data["Variable"].append(variableArray[i])
     
         table = pd.DataFrame(data)
         table.plot(x="Variable")
-        destinationPath = "./results/graphs/"
-        fileName = "Graph"
-    #if(allCategory is not None):
-    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
-    #plt.savefig(f"{destinationPath}{fileName}")
         plt.title(f"{metric} vs {variableTitle}")
         plt.xlabel(f"{variableTitle}")
         plt.ylabel(f"{metric}")
@@ -81,7 +67,6 @@ def plotEpochsError(epochs,title=None,denormalizeFn=None,testingSetErrors=None ,
             data["TestingSetError"].append(err)
         
 
-    table = pd.DataFrame(data)
     plt.ylabel("Error")
     plt.xlabel("Epoch")
     plt.plot(data["Epoch"],data["Error"] , label = "Training Error")
@@ -115,20 +100,11 @@ def plotErrorAgainstKGraph(errors,ks):
     }
     data["K"] = ks
     data["Error"]=errors
-    # for net in epochs:
-        
-    #     data["Epoch"].append(net.iterationNumber)
-    #     data["Error"].append(net.error)
         
 
     table = pd.DataFrame(data)
     table.plot(x="K")
-    destinationPath = "./results/graphs/"
-    fileName = "Graph"
-    #if(allCategory is not None):
-    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
     plt.figure("Error vs K")
-    #plt.savefig(f"{destinationPath}{fileName}")
     plt.show()
 
 def plotErrorAgainstTrainingPercentageGraph(errors,trainingPercentages):
@@ -138,20 +114,11 @@ def plotErrorAgainstTrainingPercentageGraph(errors,trainingPercentages):
     }
     data["Training percentage"] = trainingPercentages
     data["Error"]=errors
-    # for net in epochs:
-        
-    #     data["Epoch"].append(net.iterationNumber)
-    #     data["Error"].append(net.error)
         
 
     table = pd.DataFrame(data)
     table.plot(x="Training percentage")
-    destinationPath = "./results/graphs/"
-    fileName = "Graph"
-    #if(allCategory is not None):
-    #    fileName = f"Graph_{allCategory}_{allCategoryData['method'].lower()}"
     plt.figure("Error vs Training percentage")
-    #plt.savefig(f"{destinationPath}{fileName}")
     plt.show()
 
 def plotGraphEj1(trainingSet,isXOR,epochs):
@@ -169,8 +136,6 @@ def plotGraphEj1(trainingSet,isXOR,epochs):
         W = epochs[i].layers[0].W
         plt.plot(x,__functionEj1(W,x),c=__getRandomColor(),label = f"epoch {i}")
     #Finalmente, mostramos el grafico
-    # if(not isXOR):
-    #     plt.legend()
     plt.xlabel("x")
     plt.ylabel("y")
     plt.show()
@@ -198,10 +163,7 @@ def plotGraphEj1Animated(trainingSet,isXOR,epochs,isEj1):
     def animate(i):
         x = np.linspace(-1, 1, 100)
         W = epochs[i].layers[0].W
-        # x = np.linspace(0, 1, 100)
-        # y = fermi(x, 0.5, T[i])
         f_d.set_data(x, __functionEj1(W,x))
-        # randomColor = __getRandomColor()
         color = 'green'
         f_d.set_color(color)
         text.set_text(f"epoch {i}")
@@ -221,16 +183,9 @@ def plotGraphEj1Animated(trainingSet,isXOR,epochs,isEj1):
         
 
 def __functionEj1(W,x):
-    # print("W in func==",W)
-    # w0 = W.item((0,0))
-    # w1 = W.item((0,1))
-    # w2 = W.item((0,2))
     w0 = W.A[0][0]
     w1 = W.A[0][1]
     w2 = W.A[0][2]
-    # print('w0==',w0)
-    # print('w1==',w1)
-    # print('w2==',w2)
 
     return (-w1/w2)* x - w0/w2
 
