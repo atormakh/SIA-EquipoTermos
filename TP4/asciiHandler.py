@@ -36,4 +36,8 @@ def asciiStringToLettersMatrix():
                 index+=1
             index+=1
             l+=1 
-    return alphabetASCII
+    alphabetASCIIBipolar=[]
+    for letter in alphabetASCII:
+        bipolarLetter = [1 if e=='#' else -1 for e in letter]
+        alphabetASCIIBipolar.append(bipolarLetter)
+    return (alphabetASCII,alphabetASCIIBipolar)
