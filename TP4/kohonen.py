@@ -5,15 +5,16 @@ import numpy as np
 
 class Kohonen:
     def __init__(self, inputSize , n , radiusFunction= lambda t : np.sqrt(2) , learningFunction= lambda t : 1/t):
+        #Numero de filas y columnas de la grilla de salida
         self.n = n
         self.radiusFunction = radiusFunction
         self.learningFunction = learningFunction
-        self.grid = self.__initializeGridRandom()
         self.inputSize = inputSize
+        self.grid = self.__initializeGridRandom()
         self.t = 1
 
 
-    #Initialize functions
+    #Funciones de inicializacion
     
     def __getInitialWeight(self):
         return np.random.uniform(-1,1)
@@ -28,9 +29,9 @@ class Kohonen:
         return np.array(matrix)
 
     
-    #Exposed functions
+    #Funciones expuestas
     def train(self , xp):
-        wk = test(xp)
+        wk = self.test(xp)
         nearNeurons = self.__nearNeurons(wk)
         for n in nearNeurons:
             self.grid[n[0]][n[1]] = self.grid[n[0]][n[1]] + self.learningFunction(self.t) * (xp - self.grid[n[0]][n[1]])
@@ -43,7 +44,7 @@ class Kohonen:
         minDistance = self.n ** 2
         position = ( -1 , -1 )
         for i in range(0 , self.n):
-            for j in enumerate(0 , self.n):
+            for j in range(0 , self.n):
                 d = self.__wDistance(xp , self.grid[i][j])
                 if d < minDistance:
                     minDistance = d
@@ -53,13 +54,13 @@ class Kohonen:
     
     #
     def __isNear(self , p1 , p2):
-        distance = np.sqrt((p1[0]-p2[0])**2 + (p1[0]-p2[0])**2 )
+        distance = np.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2 )
         return distance <= self.radiusFunction(self.t)
 
     def __nearNeurons(self , pos):
         near =  []
         for i in range(0 , self.n):
-            for j in enumerate(0 , self.n):
+            for j in range(0 , self.n):
                 if self.__isNear(pos , (i , j)) and pos != (i,j):
                     near.append((i,j))
         return near
