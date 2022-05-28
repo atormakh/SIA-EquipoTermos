@@ -4,15 +4,16 @@ from tkinter import N
 import numpy as np
 
 class Kohonen:
-    def __init__(self, inputSize , n , radiusFunction= lambda t : np.sqrt(2) , learningFunction= lambda t : 1/t):
+    def __init__(self, inputSize , n , trainingSet, initialRandomWeights=False, radiusFunction= lambda t : np.sqrt(2) , learningFunction= lambda t : 1/t):
+        self.inputSize = inputSize
         #Numero de filas y columnas de la grilla de salida
         self.n = n
+        self.trainingSet = trainingSet
+        self.initialRandomWeights = initialRandomWeights
         self.radiusFunction = radiusFunction
         self.learningFunction = learningFunction
-        self.inputSize = inputSize
         self.grid = self.__initializeGridRandom()
         self.t = 1
-
 
     #Funciones de inicializacion
     
@@ -24,7 +25,13 @@ class Kohonen:
         for j in range(0 , self.n):
             row = []
             for i in range(0 , self.n):
-                row.append( [self.__getInitialWeight() for k in range(0 , self.inputSize) ])
+                weights = []
+                for k in range(0 , self.inputSize):
+                    weight = np.random.choice(self.trainingSet[:,k],size=1)[0]
+                    if(self.initialRandomWeights):
+                        weight = self.__getInitialWeight()
+                    weights.append(weight)
+                row.append(weights)
             matrix.append(row)    
         return np.array(matrix)
 
