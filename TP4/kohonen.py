@@ -1,17 +1,16 @@
-
-from cgi import test
-from tkinter import N
 import numpy as np
 
 class Kohonen:
-    def __init__(self, inputSize , n , trainingSet, initialRandomWeights=False, radiusFunction= lambda t : np.sqrt(2) , learningFunction= lambda t : 1/t):
+    def __init__(self, inputSize , k , r0, maxEpochs, initialLearningRate, trainingSet, initialRandomWeights=False):
         self.inputSize = inputSize
-        #Numero de filas y columnas de la grilla de salida
-        self.n = n
+        self.k = k
+        self.r0 = r0
+        self.maxEpochs = maxEpochs
+        self.initialLearningRate = initialLearningRate
         self.trainingSet = trainingSet
+        self.radiusFunction = lambda t : self.__decayRadius(t)
+        self.learningFunction = lambda t : self.__decayLearningRate(t)
         self.initialRandomWeights = initialRandomWeights
-        self.radiusFunction = radiusFunction
-        self.learningFunction = learningFunction
         self.grid = self.__initializeGridRandom()
         self.t = 1
 
@@ -22,9 +21,9 @@ class Kohonen:
 
     def __initializeGridRandom(self):
         matrix = [] 
-        for j in range(0 , self.n):
+        for j in range(0 , self.k):
             row = []
-            for i in range(0 , self.n):
+            for i in range(0 , self.k):
                 weights = []
                 for k in range(0 , self.inputSize):
                     weight = np.random.choice(self.trainingSet[:,k],size=1)[0]
@@ -37,27 +36,62 @@ class Kohonen:
 
     
     #Funciones expuestas
-    def train(self , xp):
+    def train(self ,xp, t):
+        self.t = t
         wk = self.test(xp)
         nearNeurons = self.__nearNeurons(wk)
         for n in nearNeurons:
             self.grid[n[0]][n[1]] = self.grid[n[0]][n[1]] + self.learningFunction(self.t) * (xp - self.grid[n[0]][n[1]])
 
-        self.t += 1
         return wk
 
 
     def test(self , xp):
-        minDistance = self.n ** 2
+        minDistance = self.k ** 2
         position = ( -1 , -1 )
-        for i in range(0 , self.n):
-            for j in range(0 , self.n):
+        for i in range(0 , self.k):
+            for j in range(0 , self.k):
                 d = self.__wDistance(xp , self.grid[i][j])
                 if d < minDistance:
                     minDistance = d
                     position = ( i , j )
 
         return position
+
+    def createUMatrix(self):
+        #Creamos la matriz U de kxk
+        uMatrix = np.zeros((self.k,self.k))
+        for i in range(0,self.k):
+            for j in range(0,self.k):
+                sumDistances = 0
+                currentNeuron = ( i , j )
+                #Buscamos las neuronas vecinas a la actual
+                nearNeurons = self.__nearNeurons(currentNeuron)
+                #Por cada neurona vecina, acumulamos las distancias euclideas entre el vector de pesos de la neurona actual y la neurona vecina correspondiente
+                for nearNeuron in nearNeurons:
+                    currentNeuronWeights = self.grid[currentNeuron[0]][currentNeuron[1]]
+                    nearNeuronWeights = self.grid[nearNeuron[0]][nearNeuron[1]]
+                    sumDistances = sumDistances + self.__wDistance(currentNeuronWeights,nearNeuronWeights)
+                #Luego, en la posicion i,j de la matriz U insertamos el promedio de dichas distancias
+                uMatrix[i][j] = sumDistances/len(nearNeurons)
+        return uMatrix
+
+    def createUMatrixPerCharacteristic(self,characteristicIndex):
+        characteristicUMatrix = np.zeros((self.k,self.k))
+        for i in range(0,self.k):
+            for j in range(0,self.k):
+                sumDistances = 0
+                currentNeuron = ( i , j )
+                #Buscamos las neuronas vecinas a la actual
+                nearNeurons = self.__nearNeurons(currentNeuron)
+                #Por cada neurona vecina, acumulamos las distancias euclideas entre el vector de pesos de la neurona actual y la neurona vecina correspondiente
+                for nearNeuron in nearNeurons:
+                    currentNeuronCharacteristic = self.grid[currentNeuron[0]][currentNeuron[1]][characteristicIndex]
+                    nearNeuronCharacteristic = self.grid[nearNeuron[0]][nearNeuron[1]][characteristicIndex]
+                    sumDistances = sumDistances + np.sqrt(np.square(currentNeuronCharacteristic-nearNeuronCharacteristic))
+                #Luego, en la posicion i,j de la matriz U insertamos el promedio de dichas distancias
+                characteristicUMatrix[i][j] = sumDistances/len(nearNeurons)
+        return characteristicUMatrix
     
     #
     def __isNear(self , p1 , p2):
@@ -66,8 +100,8 @@ class Kohonen:
 
     def __nearNeurons(self , pos):
         near =  []
-        for i in range(0 , self.n):
-            for j in range(0 , self.n):
+        for i in range(0 , self.k):
+            for j in range(0 , self.k):
                 if self.__isNear(pos , (i , j)) and pos != (i,j):
                     near.append((i,j))
         return near
@@ -76,7 +110,8 @@ class Kohonen:
         aux = np.sum(np.square(x1 - x2))
         return np.sqrt(aux)
 
+    def __decayRadius(self,t):
+        return self.r0 * np.exp(-t*(np.log(self.r0)/self.maxEpochs))
 
-
-
-    
+    def __decayLearningRate(self,t):
+        return self.initialLearningRate * (1/t)
