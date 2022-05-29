@@ -1,5 +1,7 @@
 import seaborn as sns
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def calculateWeights(patterns):
     W=np.zeros((25,25))
@@ -12,15 +14,19 @@ def calculateWeights(patterns):
 
 def propagatePattern(W,pattern):
     results = []
+    energies = []
     prevResult = sgn(np.matmul(W,pattern))
     currentResult=None
     results.append(prevResult)
-    while currentResult is None or  not (prevResult==currentResult).all() :
+    energies.append(calculateEnergy(W,np.transpose(pattern)))
+    energies.append(calculateEnergy(W,np.transpose(prevResult)))
+    while currentResult is None or  not (prevResult==currentResult).all():
         if currentResult is not  None:
             prevResult=currentResult
         currentResult=sgn(np.matmul(prevResult,W))
+        energies.append(calculateEnergy(W,np.transpose(currentResult)))
         results.append(currentResult)
-    return results
+    return (results,energies)
 
 def sgn(pattern):
     sgn = lambda x: -1 if x<=0 else 1
@@ -52,3 +58,32 @@ def plotLetterMap(letter_arr,axes=None):
         sns.heatmap(data=np.reshape(letter_arr,(5,5)),cmap=sns.color_palette("Greens"))
     else:
         sns.heatmap(ax=axes,data=np.reshape(letter_arr,(5,5)),cmap=sns.color_palette("Greens"))
+
+def plotEnergy(energies,patternLetters):
+    energyData = {
+        'energy':[],
+        'iterations':[],
+        'letters':[]
+    }
+
+    for i in range(0,len(patternLetters)):
+        letterEnergies= energies[i]
+        for j in range(0,len(letterEnergies)):
+            energyData["energy"].append(letterEnergies[j])
+            energyData["iterations"].append(j)
+            energyData["letters"].append(patternLetters[i])
+
+    energyDataDF = pd.DataFrame(energyData)
+
+    plt.figure(figsize = (15,9))
+    plt.title(f"Energia vs Iteraciones")
+    sns.lineplot(data=energyDataDF, x="iterations", y="energy",hue="letters")
+
+
+
+def calculateEnergy(W,state):
+    energy = 0
+    for (rowIndex,row) in enumerate(W):
+        currentEnergy = (np.dot(row,state)*state[rowIndex])
+        energy += currentEnergy.item((0, 0))
+    return (-0.5) * energy
