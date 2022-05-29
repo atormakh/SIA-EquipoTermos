@@ -1,13 +1,14 @@
 import numpy as np
 
 class Kohonen:
-    def __init__(self, inputSize , k , r0, maxEpochs, initialLearningRate, trainingSet, initialRandomWeights=False):
+    def __init__(self, inputSize , k , r0, maxEpochs, initialLearningRate, trainingSet, namesSet, initialRandomWeights=False):
         self.inputSize = inputSize
         self.k = k
         self.r0 = r0
         self.maxEpochs = maxEpochs
         self.initialLearningRate = initialLearningRate
         self.trainingSet = trainingSet
+        self.namesSet = namesSet
         self.radiusFunction = lambda t : self.__decayRadius(t)
         self.learningFunction = lambda t : self.__decayLearningRate(t)
         self.initialRandomWeights = initialRandomWeights
@@ -36,14 +37,31 @@ class Kohonen:
 
     
     #Funciones expuestas
-    def train(self ,xp, t):
+    def train(self,t):
+        #Reordenamos el trainingSet aleatoriamente para sacar conjuntos al azar, y reordenamos el set de nombres (en nuestro caso los paises) de la misma manera
+        combinatedTrainingNamesSet = list(zip(self.trainingSet,self.namesSet))
+        np.random.shuffle(combinatedTrainingNamesSet)
+        shuffledTrainingSet, shuffledNamesSet = zip(*combinatedTrainingNamesSet)
+        #Creamos una matriz para mapear los distintos paises a las neuronas de salida
+        countriesMatrix = np.empty((self.k,self.k),object)
+        #Actualizamos el t
         self.t = t
-        wk = self.test(xp)
-        nearNeurons = self.__nearNeurons(wk)
-        for n in nearNeurons:
-            self.grid[n[0]][n[1]] = self.grid[n[0]][n[1]] + self.learningFunction(self.t) * (xp - self.grid[n[0]][n[1]])
+        #Iteramos por el trainingSet
+        for i in range(0,len(shuffledTrainingSet)):
+            xp = shuffledTrainingSet[i]
+        # self.t = t
+            wk = self.test(xp)
+            nearNeurons = self.__nearNeurons(wk)
+            for n in nearNeurons:
+                self.grid[n[0]][n[1]] = self.grid[n[0]][n[1]] + self.learningFunction(self.t) * (xp - self.grid[n[0]][n[1]])
+            #Insertamos el pais en la matriz
+            if(countriesMatrix[wk[0]][wk[1]] is None):
+                countriesMatrix[wk[0]][wk[1]] = [shuffledNamesSet[i]]
+            else:
+                countriesMatrix[wk[0]][wk[1]].append(shuffledNamesSet[i])
 
-        return wk
+        #Devolvemos la matriz de paises
+        return countriesMatrix
 
 
     def test(self , xp):
@@ -115,3 +133,4 @@ class Kohonen:
 
     def __decayLearningRate(self,t):
         return self.initialLearningRate * (1/t)
+
