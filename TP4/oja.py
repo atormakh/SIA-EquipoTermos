@@ -3,7 +3,7 @@ import numpy as np
 def getWeights(dimension):
     w = []
     for i in range(0,dimension):
-        w.append(np.random.random())
+        w.append(np.random.uniform(-1,1))
     return np.array(w)
 
 def applyOja(epochs,data,w,learningRate):
