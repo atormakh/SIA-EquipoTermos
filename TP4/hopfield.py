@@ -61,7 +61,7 @@ def plotLetterMap(letter_arr,axes=None):
 
 def plotEnergy(energies,patternLetters):
     energyData = {
-        'energy':[],
+        'energy':[], 
         'iterations':[],
         'letters':[]
     }
@@ -80,6 +80,27 @@ def plotEnergy(energies,patternLetters):
     sns.lineplot(data=energyDataDF, x="iterations", y="energy",hue="letters")
 
 
+def plotSpuriousStatesCountPerNoiseProbability(patterns_letters,noiseProbabilities,spuriousStatesCount):
+    data = {
+        'patterns':[],
+        'Spurious states count':[],
+        'Noise probabilities':[]
+    }
+
+    for p in patterns_letters:
+        pattern="".join(p)
+        for i in range(0,len(noiseProbabilities)):
+            data['Spurious states count'].append(spuriousStatesCount[p][i])
+            data['Noise probabilities'].append(noiseProbabilities[i])
+            data['patterns'].append(pattern)
+
+    spuriousStatesCountDataDF = pd.DataFrame(data)
+
+    plt.figure(figsize = (15,9))
+    plt.title(f"Cantidad de estados espureos vs Probabilidad de ruido")
+    sns.lineplot(data=spuriousStatesCountDataDF, x="Noise probabilities", y="Spurious states count",hue="pattern")
+
+
 
 def calculateEnergy(W,state):
     energy = 0
@@ -87,3 +108,9 @@ def calculateEnergy(W,state):
         currentEnergy = (np.dot(row,state)*state[rowIndex])
         energy += currentEnergy.item((0, 0))
     return (-0.5) * energy
+
+def isPattern(currentPattern,savedPatterns):
+    for i in range(0,len(savedPatterns)):
+        if((currentPattern==savedPatterns[i]).all()):
+            return True
+    return False
