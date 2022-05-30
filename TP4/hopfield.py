@@ -83,22 +83,23 @@ def plotEnergy(energies,patternLetters):
 def plotSpuriousStatesCountPerNoiseProbability(patterns_letters,noiseProbabilities,spuriousStatesCount):
     data = {
         'patterns':[],
-        'Spurious states count':[],
-        'Noise probabilities':[]
+        'Probabilidad de ruido':[],
+        'Proporcion de estados espureos':[]
     }
 
-    for p in patterns_letters:
-        pattern="".join(p)
+    for p in range(0,len(patterns_letters)):
+        pattern="".join(patterns_letters[p])
         for i in range(0,len(noiseProbabilities)):
-            data['Spurious states count'].append(spuriousStatesCount[p][i])
-            data['Noise probabilities'].append(noiseProbabilities[i])
+            data['Proporcion de estados espureos'].append(spuriousStatesCount[p][i]*100)
+            data['Probabilidad de ruido'].append(noiseProbabilities[i])
             data['patterns'].append(pattern)
 
     spuriousStatesCountDataDF = pd.DataFrame(data)
 
     plt.figure(figsize = (15,9))
-    plt.title(f"Cantidad de estados espureos vs Probabilidad de ruido")
-    sns.lineplot(data=spuriousStatesCountDataDF, x="Noise probabilities", y="Spurious states count",hue="pattern")
+    plt.title(f"Proporcion de estados espureos (%) vs Probabilidad de ruido")
+    plt.ylabel("Proporcion de estados espureos (%)")
+    sns.lineplot(data=spuriousStatesCountDataDF, x="Probabilidad de ruido", y="Proporcion de estados espureos",hue="patterns")
 
 
 
@@ -109,8 +110,10 @@ def calculateEnergy(W,state):
         energy += currentEnergy.item((0, 0))
     return (-0.5) * energy
 
+
 def isPattern(currentPattern,savedPatterns):
+    aux = np.array(currentPattern)
     for i in range(0,len(savedPatterns)):
-        if((currentPattern==savedPatterns[i]).all()):
+        if((aux==savedPatterns[i]).all()):
             return True
     return False
