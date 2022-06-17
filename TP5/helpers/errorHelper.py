@@ -7,36 +7,11 @@ class ErrorHelper:
         self.trainingSet = trainingSet
         self.resultsSet = resultsSet
         self.layers = layers
-    
-    # # X = (W0, W1, W2, w11, w12, w13, w21, w22, w23, , w01, w02)
-
-    # def f(self,genes,epsilon):
-    #     #Modelamos los genes del individuo como los arrays y matrices mostrados en el enunciado
-    #     W = np.array(genes[0:3])
-    #     w = np.array([genes[3:6],genes[6:9]])
-    #     w0 = np.array(genes[9:11])
-
-    #     (rowsCount, columsCount) = w.shape
-
-    #     #Calculamos la funcion F
-        
-    #     totalAcum = 0
-
-    #     for j in range(0,rowsCount):
-    #         colAcum = 0
-    #         for k in range(0,columsCount):
-    #             colAcum+=(w[j][k]*epsilon[k])
-    #         totalAcum += (W[j]*self.g(colAcum-w0[j]))
-    #     return self.g(totalAcum - W[0])
-
-    # def g(self,x):
-    #     try:
-    #         return math.exp(x)/(1+math.exp(x))
-    #     except:
-    #         return 1
 
     def error(self,weightsFlattened,step=None):
         outputArray = []
+        #Actualizamos los pesos de las layers
+        self.updateLayerWeights(weightsFlattened)
         for trainingArray in self.trainingSet:
             inputs = np.matrix(trainingArray).transpose()
             #propagate
@@ -51,4 +26,18 @@ class ErrorHelper:
             diff=self.resultsSet[i]-outputArray[i]
             error+=0.5*np.sum(np.vectorize(pow)(diff))
         return  error/len(self.resultsSet)
+
+    #Pone los pesos finales en las matrices de cada layer
+    def updateLayerWeights(self,finalW):
+        #  currentIndex = 0
+         for i in range(0,len(self.layers)):
+            #Obtenemos las dimensiones de la layer en cuestion y el ultimo indice hasta el cual se deben agarrar los pesos
+            rows,cols = self.layers[i].W.shape
+            elemsCount = rows*cols 
+            #Agarramos los pesos correspondientes
+            currentWeights = finalW[:elemsCount]
+            #Actualizamos los pesos, almacenandolos como una matriz con las dimensiones que correspondan
+            self.layers[i].W = currentWeights.reshape(rows,cols)
+            #Actualizamos el finalW para la proxima iteracion
+            finalW = finalW[elemsCount:]
         

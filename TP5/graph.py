@@ -6,6 +6,24 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib.animation import FuncAnimation
 import numpy as np
+import seaborn as sns
+
+def plotErrorAgainstSteps(errors,steps):
+    data = {
+        'errors':[], 
+        'steps':[]
+    }
+
+    for i in range(0,len(steps)):
+        data["errors"].append(errors[i])
+        data["steps"].append(steps[i])
+
+    dataDF = pd.DataFrame(data)
+
+    plt.figure(figsize = (15,9))
+    plt.title(f"Error vs Steps")
+    sns.lineplot(data=dataDF, x="steps", y="errors")
+
 
 def plotMetricAgainstVariable(metricArray,metricTitle,variableArray,variableTitle):
     plt.figure(f"{metricTitle} vs {variableTitle}")

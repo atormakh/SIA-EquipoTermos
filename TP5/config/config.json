@@ -10,7 +10,7 @@
   "backtracking": {
     "learning_rate": 0.1
   },
-  "max_epochs": 1000,
+  "max_epochs": 100,
   "max_tolerance_exponent": -5,
   "font":"FONT2"
 }
