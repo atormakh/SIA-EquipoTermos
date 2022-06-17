@@ -137,11 +137,12 @@ def getFormattedCharacter(encodedCharacter):
             currentRow >>= 1
     return binArray
 
-#Devuelve el caracter en un heatmap
-def getCharacterMap(formattedFont):
+# Recibe una matriz de 7x5
+# Devuelve el caracter en un heatmap
+def getCharacterMap(formattedCharacter):
     monocromaticCmap = plt.get_cmap('binary')
     return heatmap(
-        formattedFont, 
+        formattedCharacter, 
         linewidths=0.2, 
         cbar=False, 
         square=True,
