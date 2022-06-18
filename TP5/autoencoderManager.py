@@ -9,16 +9,19 @@ from helpers.errorHelper import ErrorHelper
 
 class AutoencoderManager:
     
-    def __init__(self,architecture,activationFunction,learningRate,maxEpochs):
+    def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs):
         self.architecture=architecture
-        self.activationFunction=activationFunction
+        # self.activationFunction=activationFunction
+        self.encoderActivationFunction = encoderActivationFunction
+        self.latentSpaceActivationFunction = latentSpaceActivationFunction
+        self.decoderActivationFucntion = decoderActivationFunction
         self.learningRate=learningRate
         self.maxEpochs=maxEpochs
     
         #crear layers segun lo indique la arquitectura
         self.layers=[]
         for i in range(0,len(architecture)-1):
-            self.layers.append(Layer(architecture[i+1],architecture[i],activationFunction))
+            self.layers.append(Layer(architecture[i+1],architecture[i],self.__getActivationFunction(i)))
 
     def start(self,trainingSet,resultsSet):
         
@@ -54,3 +57,12 @@ class AutoencoderManager:
         self.steps.append(self.currentStep)
         self.errors.append(self.errorHelper.error(w))
         self.currentStep+=1
+
+    def __getActivationFunction(self,layerIndex):
+        latentSpaceIndex = len(self.architecture)//2-1
+        if(layerIndex<latentSpaceIndex):
+            return self.encoderActivationFunction
+        elif(layerIndex>latentSpaceIndex):
+            return self.decoderActivationFucntion
+        else:
+            return self.latentSpaceActivationFunction

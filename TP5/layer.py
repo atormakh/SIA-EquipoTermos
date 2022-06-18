@@ -14,7 +14,7 @@ class Layer:
         self.lastDelta = None
 
     def propagate(self,inputs):
-        inputs= np.insert(inputs,0,[HIDDEN_NODE_INPUT],axis=0)
+        # inputs= np.insert(inputs,0,[HIDDEN_NODE_INPUT],axis=0)
         self.currentInput = inputs.transpose()
         self.h = np.matmul(self.W,inputs)
         self.V = self.activationFunction.apply(self.h)
@@ -43,7 +43,7 @@ class Layer:
         aux = []
         for row in range(0,self.amountOfNodes):
             newCol=[]
-            for column in range(0,self.numberOfInputs+1):
+            for column in range(0,self.numberOfInputs):
                 newCol.append(random.random())
             aux.append(newCol)
         return aux
