@@ -1,4 +1,5 @@
 import math
+from typing import final
 import numpy as np
 
 class ErrorHelper:
@@ -13,7 +14,7 @@ class ErrorHelper:
         #Actualizamos los pesos de las layers
         self.updateLayerWeights(weightsFlattened)
         for trainingArray in self.trainingSet:
-            inputs = np.matrix(trainingArray).transpose()
+            inputs = np.array(trainingArray).transpose()
             #propagate
             for layer in self.layers:
                 output= layer.propagate(inputs)
@@ -21,23 +22,32 @@ class ErrorHelper:
             outputArray.append(inputs)
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
-        pow = lambda x: x**2
-        for i in range(0,len(self.resultsSet)):
-            diff=self.resultsSet[i]-outputArray[i]
-            error+=0.5*np.sum(np.vectorize(pow)(diff))
+        for d in zip(self.resultsSet , outputArray):
+            diff = d[0]-d[1]
+            error+=np.sum(np.square(diff))
+        error = error * 0.5
         return  error/len(self.resultsSet)
 
     #Pone los pesos finales en las matrices de cada layer
     def updateLayerWeights(self,finalW):
         #  currentIndex = 0
-         for i in range(0,len(self.layers)):
-            #Obtenemos las dimensiones de la layer en cuestion y el ultimo indice hasta el cual se deben agarrar los pesos
-            rows,cols = self.layers[i].W.shape
-            elemsCount = rows*cols 
-            #Agarramos los pesos correspondientes
-            currentWeights = finalW[:elemsCount]
-            #Actualizamos los pesos, almacenandolos como una matriz con las dimensiones que correspondan
-            self.layers[i].W = currentWeights.reshape(rows,cols)
-            #Actualizamos el finalW para la proxima iteracion
-            finalW = finalW[elemsCount:]
+        # for i in range(0,len(self.layers)):
+        #     #Obtenemos las dimensiones de la layer en cuestion y el ultimo indice hasta el cual se deben agarrar los pesos
+        #     rows,cols = self.layers[i].W.shape
+        #     elemsCount = rows*cols 
+        #     #Agarramos los pesos correspondientes
+        #     currentWeights = finalW[:elemsCount]
+        #     #Actualizamos los pesos, almacenandolos como una matriz con las dimensiones que correspondan
+        #     self.layers[i].W = currentWeights.reshape(rows,cols)
+        #     #Actualizamos el finalW para la proxima iteracion
+        #     finalW = finalW[elemsCount:]
         
+        for layer in self.layers:
+            rows,cols = layer.W.shape
+            elemsCount = rows*cols
+            #Saco los primeros elementos de un array ??
+            currentsWeights = finalW[:elemsCount]
+
+            layer.W = currentsWeights.reshape(rows,cols)
+
+            finalW = finalW[elemsCount:]
