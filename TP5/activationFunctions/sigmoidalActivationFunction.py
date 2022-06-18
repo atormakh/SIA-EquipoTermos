@@ -6,7 +6,10 @@ class SigmoidalActivationFunction:
         self.beta = beta
     
     def apply(self,h):
-        return 1 / (1 + np.exp(np.multiply(-2*self.beta,h)))
+        try:
+            return 1 / (1 + np.exp(np.multiply(-2*self.beta,h)))
+        except:
+            return 1
 
     def applyDerivative(self,h):
 

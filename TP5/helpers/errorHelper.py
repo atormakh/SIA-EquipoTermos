@@ -14,12 +14,9 @@ class ErrorHelper:
         #Actualizamos los pesos de las layers
         self.updateLayerWeights(weightsFlattened)
         for trainingArray in self.trainingSet:
-            inputs = np.array(trainingArray).transpose()
-            #propagate
-            for layer in self.layers:
-                output= layer.propagate(inputs)
-                inputs=output
-            outputArray.append(inputs)
+            propagation_output = self.propagateCharacter(trainingArray)
+            outputArray.append(propagation_output)
+            
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
         for d in zip(self.resultsSet , outputArray):
@@ -27,6 +24,13 @@ class ErrorHelper:
             error+=np.sum(np.square(diff))
         error = error * 0.5
         return  error/len(self.resultsSet)
+
+    def propagateCharacter(self,characterArray):
+        inputs = np.array(characterArray).transpose()
+        #propagate
+        for layer in self.layers:
+            inputs=layer.propagate(inputs)
+        return inputs
 
     #Pone los pesos finales en las matrices de cada layer
     def updateLayerWeights(self,finalW):

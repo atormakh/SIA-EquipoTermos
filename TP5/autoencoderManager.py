@@ -39,8 +39,12 @@ class AutoencoderManager:
         # self.updateLayerWeights(wFinal)
         
         # return (epochs,executionTime,exception)
-    
+        self.wFinal = wFinal
         return (wFinal,self.errors[-1])
+    
+    def propagate(self,trainingCharacter):
+
+        return self.errorHelper.propagateCharacter(trainingCharacter)
 
 
     #Devuelve los pesos de los layers como un array 1D

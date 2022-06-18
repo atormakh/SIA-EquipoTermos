@@ -6,7 +6,7 @@ class ReluActivationFunction:
 
     def apply(self,h):
         
-        step = lambda e: 0 if e<=0 else h 
+        step = lambda e: 0 if e<=0 else e
             
         return np.vectorize(step)(h)
 
