@@ -23,12 +23,17 @@ class AutoencoderManager:
         for i in range(0,len(architecture)-1):
             self.layers.append(Layer(architecture[i+1],architecture[i],self.__getActivationFunction(i)))
 
-    def start(self,trainingSet,resultsSet):
+    def initilizeWeights(self,trainingSet,initialWeight):
+        self.errorHelper = ErrorHelper(trainingSet,self.layers)
+        self.errorHelper.updateLayerWeights(initialWeight)
+
+
+    def start(self,trainingSet):
         
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
         self.initTime = time.perf_counter()
 
-        self.errorHelper = ErrorHelper(trainingSet,resultsSet,self.layers)
+        self.errorHelper = ErrorHelper(trainingSet,self.layers)
         self.currentStep = 1
         self.errors = []
         self.steps = []
@@ -45,6 +50,9 @@ class AutoencoderManager:
     def propagate(self,trainingCharacter):
 
         return self.errorHelper.propagateCharacter(trainingCharacter)
+
+    def getLatentSpaceConfig(self,characterArray):
+        return self.errorHelper.getLatentSpaceConfig(characterArray)
 
 
     #Devuelve los pesos de los layers como un array 1D

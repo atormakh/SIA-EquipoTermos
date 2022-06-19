@@ -4,9 +4,8 @@ import numpy as np
 
 class ErrorHelper:
 
-    def __init__(self,trainingSet,resultsSet,layers):
+    def __init__(self,trainingSet,layers):
         self.trainingSet = trainingSet
-        self.resultsSet = resultsSet
         self.layers = layers
         # self.noiseProbability = noiseProbability
         # self.noiseRange = noiseRange
@@ -28,17 +27,23 @@ class ErrorHelper:
             
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
-        for d in zip(self.resultsSet , outputArray):
+        for d in zip(self.trainingSet , outputArray):
             diff = d[0]-d[1]
             error+=np.sum(np.square(diff))
         error = error * 0.5
-        return  error/len(self.resultsSet)
+        return  error/len(self.trainingSet)
 
     def propagateCharacter(self,characterArray):
         inputs = np.array(characterArray).transpose()
         #propagate
         for layer in self.layers:
             inputs=layer.propagate(inputs)
+        return inputs
+
+    def getLatentSpaceConfig(self,characterArray):
+        inputs = np.array(characterArray).transpose()
+        for i in range(0, math.ceil(len(self.layers)/2)):
+            inputs=self.layers[i].propagate(inputs)
         return inputs
 
     #Pone los pesos finales en las matrices de cada layer
