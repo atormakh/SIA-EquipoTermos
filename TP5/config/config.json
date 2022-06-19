@@ -1,7 +1,7 @@
 {
   "random_seed": 11,
   "neural_net": {
-    "architecture": [3,2,3],
+    "architecture": [35 , 15, 2, 15, 35],
     "activation_function": {
       "encoder":{
         "type": "LINEAL"
@@ -11,14 +11,14 @@
       },
       "decoder":{
         "type": "SIGMOIDAL",
-        "beta":0.4
+        "beta":1
       }
     }
   },
   "backtracking": {
     "learning_rate": 0.1
   },
-  "max_epochs": 100,
-  "max_tolerance_exponent": -5,
+  "max_epochs": 1000,
+  "max_tolerance_exponent": -12,
   "font":"FONT2"
 }

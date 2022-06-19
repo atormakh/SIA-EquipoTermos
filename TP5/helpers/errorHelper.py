@@ -8,12 +8,21 @@ class ErrorHelper:
         self.trainingSet = trainingSet
         self.resultsSet = resultsSet
         self.layers = layers
+        # self.noiseProbability = noiseProbability
+        # self.noiseRange = noiseRange
+        # self.noise = noise
 
     def error(self,weightsFlattened,step=None):
         outputArray = []
         #Actualizamos los pesos de las layers
         self.updateLayerWeights(weightsFlattened)
+        # combinatedTrainingResultSet = list(zip(self.trainingSet,self.resultsSet))
+        # np.random.shuffle(combinatedTrainingResultSet)
+        # shuffledTrainingSet, shuffledResultSet = zip(*combinatedTrainingResultSet)
         for trainingArray in self.trainingSet:
+            # trainingArrayToPropagate=trainingArray
+            # if(self.noise):
+            #     trainingArrayToPropagate=self.addNoise(trainingArray)
             propagation_output = self.propagateCharacter(trainingArray)
             outputArray.append(propagation_output)
             
@@ -55,3 +64,16 @@ class ErrorHelper:
             layer.W = currentsWeights.reshape(rows,cols)
 
             finalW = finalW[elemsCount:]
+
+    def addNoise(self,trainingArray):
+        #Creamos un nuevo array para el trainingArray con ruido
+        noiseTrainingArray = []
+        
+        #Iteramos por los valores del trainingArray
+        for i in range(0,len(trainingArray)):
+            #Si el random es menor que cierta probabilidad, agregamos ruido
+            if(np.random.random()<=self.noiseProbability):
+                noise = np.random.uniform(-self.noiseRange,self.noiseRange)
+                noiseTrainingArray.append(trainingArray[i]+noise)
+
+        return noiseTrainingArray

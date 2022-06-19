@@ -26,7 +26,7 @@ class AutoencoderManager:
     def start(self,trainingSet,resultsSet):
         
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
-        initTime = time.perf_counter()
+        self.initTime = time.perf_counter()
 
         self.errorHelper = ErrorHelper(trainingSet,resultsSet,self.layers)
         self.currentStep = 1
@@ -57,9 +57,14 @@ class AutoencoderManager:
         return np.array(weightsFlattened)
 
     def callbackFunctionAdam(self,w):
-        print('W : '+str(w))
+        # print('W : '+str(w))
+        endStepTime = time.perf_counter()
+        print('Iteration : ',self.currentStep)
+        error = self.errorHelper.error(w)
+        print('\tError : ',error)
+        print('\tEnd time : ',endStepTime-self.initTime)
         self.steps.append(self.currentStep)
-        self.errors.append(self.errorHelper.error(w))
+        self.errors.append(error)
         self.currentStep+=1
 
     def __getActivationFunction(self,layerIndex):

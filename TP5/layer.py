@@ -44,7 +44,7 @@ class Layer:
         for row in range(0,self.amountOfNodes):
             newCol=[]
             for column in range(0,self.numberOfInputs):
-                newCol.append(random.random())
+                newCol.append(np.random.uniform(-1,1))
             aux.append(newCol)
         return aux
 
