@@ -3,6 +3,7 @@ class ReluActivationFunction:
 
     def __init__(self):
         self.name = 'STEP'
+        self.beta = None
 
     def apply(self,h):
         

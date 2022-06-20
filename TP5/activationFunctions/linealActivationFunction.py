@@ -3,6 +3,7 @@ class LinealActivationFunction:
 
     def __init__(self):
         self.name = 'LINEAL'
+        self.beta = None
     
     def apply(self,h):
         return h
