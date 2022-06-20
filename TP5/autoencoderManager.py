@@ -19,7 +19,7 @@ class AutoencoderManager:
         self.decoderActivationFucntion = decoderActivationFunction
         self.learningRate=learningRate
         self.maxEpochs=maxEpochs
-    
+        self.errorHelper = None
 
         if initWeights:
             #crear layers segun lo indique la arquitectura
@@ -63,7 +63,14 @@ class AutoencoderManager:
         return (wFinal,self.errors[-1])
     
     def propagate(self,trainingCharacter):
-        return self.errorHelper.propagateCharacter(trainingCharacter)
+        if self.errorHelper is not None:
+            return self.errorHelper.propagateCharacter(trainingCharacter)
+        
+        input = np.array(trainingCharacter).transpose()
+
+        for layer in self.layers:
+            input=layer.propagate(input)
+        return input
 
     def decodeFromLatentSpace(self,latentSpace):
         return self.errorHelper.decodeFromLatentSpace(latentSpace)

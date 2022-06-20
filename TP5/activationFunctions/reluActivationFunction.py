@@ -2,7 +2,7 @@ import numpy as np
 class ReluActivationFunction:
 
     def __init__(self):
-        self.name = 'STEP'
+        self.name = 'RELU'
         self.beta = None
 
     def apply(self,h):
