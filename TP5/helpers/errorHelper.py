@@ -9,6 +9,7 @@ class ErrorHelper:
         self.layers = layers
         self.trainingSetTransposed = [ np.array(x).transpose() for x in trainingSet]
         self.trainingMatrix = np.array(self.trainingSetTransposed).transpose()
+        print(f'training matrix {self.trainingMatrix.shape}')
         # self.noiseProbability = noiseProbability
         # self.noiseRange = noiseRange
         # self.noise = noise
@@ -52,7 +53,7 @@ class ErrorHelper:
         return inputs
 
     def propagateMatrix(self,trainingSet):
-        print('yeet')
+      #  print('yeet')
         inputs = trainingSet
         for layer in self.layers:
             inputs=layer.propagateMatrix(inputs)

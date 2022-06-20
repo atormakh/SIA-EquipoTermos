@@ -22,11 +22,10 @@ class Layer:
         return self.V
 
     def propagateMatrix(self,inputs):
-        print(f'inputMatrix = {len(inputs)} x {len(inputs[0])}')
-        
+      #  print(f'inputMatrix = {len(inputs)} x {len(inputs[0])}')
         self.currentInputMatrix = inputs
-        print(f'W = {len(self.W)} x {len(self.W[0])}')
-        return self.activationFunction.apply(np.matmul(np.transpose(self.W) , self.currentInputMatrix))
+      #  print(f'W = {len(self.W)} x {len(self.W[0])}')
+        return self.activationFunction.apply(np.matmul(self.W , self.currentInputMatrix))
       
 
     def retroPropagate(self,upperLayerDelta,upperLayer):
