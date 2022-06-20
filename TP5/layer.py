@@ -1,6 +1,5 @@
 import random
 import numpy as np
-from numba import jit
 
 #W0s
 HIDDEN_NODE_INPUT=1
@@ -22,7 +21,6 @@ class Layer:
         self.V = self.activationFunction.apply(self.h)
         return self.V
         
-    @jit(nopython=True)
     def propagateMatrix(self,inputs):
       #  print(f'inputMatrix = {len(inputs)} x {len(inputs[0])}')
         self.currentInputMatrix = inputs

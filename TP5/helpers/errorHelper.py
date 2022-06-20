@@ -1,8 +1,7 @@
+import imp
 import math
 from typing import final
 import numpy as np
-from numba import jit
-
 
 class ErrorHelper:
 
@@ -16,7 +15,6 @@ class ErrorHelper:
         # self.noiseRange = noiseRange
         # self.noise = noise
 
-    @jit(nopython=True)
     def error(self,weightsFlattened,step=None):
         outputArray = []
         #Actualizamos los pesos de las layers
@@ -55,7 +53,6 @@ class ErrorHelper:
             inputs=layer.propagate(inputs)
         return inputs
 
-    @jit(nopython=True)
     def propagateMatrix(self,trainingSet):
       #  print('yeet')
         inputs = trainingSet

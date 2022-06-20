@@ -55,7 +55,7 @@ class AutoencoderManager:
         self.steps = []
         self.stepStartTime = time.perf_counter()
         # wFinal = adam(nd.Gradient(self.errorHelper.error),self.getWeightsFlattened(),step_size=0.80085,num_iters=self.maxEpochs,callback=self.callbackFunctionAdam)
-        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs , 'xtol': 0.1, 'ftol': 0.1,}).x 
+        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs , 'xtol': 0.01, 'ftol': 0.01,}).x 
 
         # #Actualizar los pesos de la red
         # self.updateLayerWeights(wFinal)
@@ -129,7 +129,6 @@ class AutoencoderManager:
                                     ],
             'weights': w
         }
-        print(data)
         with open(name, 'w') as file:
             json.dump(data, file)
 
