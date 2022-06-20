@@ -9,6 +9,8 @@ import numdifftools as nd
 from helpers.errorHelper import ErrorHelper
 import json
 from helpers.configHelper import ConfigHelper
+from numba import jit
+
 class AutoencoderManager:
     
     def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs , initWeights=True):
@@ -53,7 +55,7 @@ class AutoencoderManager:
         self.steps = []
         self.stepStartTime = time.perf_counter()
         # wFinal = adam(nd.Gradient(self.errorHelper.error),self.getWeightsFlattened(),step_size=0.80085,num_iters=self.maxEpochs,callback=self.callbackFunctionAdam)
-        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs}).x 
+        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs , 'xtol': 0.1, 'ftol': 0.1,}).x 
 
         # #Actualizar los pesos de la red
         # self.updateLayerWeights(wFinal)
@@ -62,6 +64,7 @@ class AutoencoderManager:
         self.wFinal = wFinal
         return (wFinal,self.errors[-1])
     
+
     def propagate(self,trainingCharacter):
         if self.errorHelper is not None:
             return self.errorHelper.propagateCharacter(trainingCharacter)

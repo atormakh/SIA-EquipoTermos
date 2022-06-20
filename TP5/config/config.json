@@ -11,7 +11,7 @@
       },
       "decoder":{
         "type": "SIGMOIDAL",
-        "beta":1
+        "beta":0.8
       }
     }
   },

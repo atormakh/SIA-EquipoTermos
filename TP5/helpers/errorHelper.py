@@ -1,6 +1,8 @@
 import math
 from typing import final
 import numpy as np
+from numba import jit
+
 
 class ErrorHelper:
 
@@ -14,6 +16,7 @@ class ErrorHelper:
         # self.noiseRange = noiseRange
         # self.noise = noise
 
+    @jit(nopython=True)
     def error(self,weightsFlattened,step=None):
         outputArray = []
         #Actualizamos los pesos de las layers
@@ -29,7 +32,7 @@ class ErrorHelper:
         #     outputArray.append(propagation_output)
        # pool = multiprocessing.Pool(multiprocessing.cpu_count())
         #print pool.map(f, range(10))
-        propagateFunction = lambda trainingArray: self.propagateCharacter(trainingArray)
+       # propagateFunction = lambda trainingArray: self.propagateCharacter(trainingArray)
        # outputArray = np.vectorize(propagateFunction)(np.asarray(self.trainingSet))
         #outputArray = pool.map(propagateFunction , self.trainingSet)
        # outputArray = list(map(propagateFunction ,  self.trainingSetTransposed))
@@ -52,6 +55,7 @@ class ErrorHelper:
             inputs=layer.propagate(inputs)
         return inputs
 
+    @jit(nopython=True)
     def propagateMatrix(self,trainingSet):
       #  print('yeet')
         inputs = trainingSet
