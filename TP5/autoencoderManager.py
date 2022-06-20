@@ -1,3 +1,4 @@
+from platform import architecture
 from layer import Layer
 import time
 import math
@@ -6,10 +7,11 @@ from autograd.misc.optimizers import adam
 from scipy.optimize import minimize
 import numdifftools as nd
 from helpers.errorHelper import ErrorHelper
-
+import json
+from helpers.configHelper import ConfigHelper
 class AutoencoderManager:
     
-    def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs):
+    def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs , initWeights=True):
         self.architecture=architecture
         # self.activationFunction=activationFunction
         self.encoderActivationFunction = encoderActivationFunction
@@ -18,16 +20,28 @@ class AutoencoderManager:
         self.learningRate=learningRate
         self.maxEpochs=maxEpochs
     
-        #crear layers segun lo indique la arquitectura
+
+        if initWeights:
+            #crear layers segun lo indique la arquitectura
+            self.layers=[]
+            for i in range(0,len(architecture)-1):
+                self.layers.append(Layer(architecture[i+1],architecture[i],self.__getActivationFunction(i)))
+
+
+
+
+    def setLayers(self , w):
         self.layers=[]
-        for i in range(0,len(architecture)-1):
-            self.layers.append(Layer(architecture[i+1],architecture[i],self.__getActivationFunction(i)))
-
-    def initilizeWeights(self,trainingSet,initialWeight):
-        self.errorHelper = ErrorHelper(trainingSet,self.layers)
-        self.errorHelper.updateLayerWeights(initialWeight)
-
-
+        for i in range(0,len(self.architecture)-1):
+            layer = Layer(self.architecture[i+1],self.architecture[i],self.__getActivationFunction(i))
+            weights = np.array(w[i]).reshape((self.architecture[i+1], self.architecture[i] ))
+            layer.W = weights
+            self.layers.append(layer)
+    
+    def initilizeWeights(self, trainingSet , initialWeights):
+        self.errorHelper = ErrorHelper(trainingSet , self.layers)
+        self.errorHelper.updateLayerWeights(initialWeights)
+        
     def start(self,trainingSet):
         
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
@@ -87,3 +101,40 @@ class AutoencoderManager:
             return self.decoderActivationFucntion
         else:
             return self.latentSpaceActivationFunction
+
+
+    def saveNetwork(self, name):
+        w = []
+        for l in self.layers:
+            w.append(np.asarray(l.W).tolist())
+        
+
+        data = {
+            'total_layers': len(self.layers),
+            'nodes_per_layer': [self.layers[0].numberOfInputs] + [ l.amountOfNodes for l in self.layers],
+            'learning_rate': self.learningRate,
+            'activation_functions': [ [self.encoderActivationFunction.name , self.encoderActivationFunction.beta] ,
+                                      [ self.latentSpaceActivationFunction.name , self.latentSpaceActivationFunction.beta] ,
+                                      [ self.decoderActivationFucntion.name , self.decoderActivationFucntion.beta ]
+                                    ],
+            'weights': w
+        }
+        print(data)
+        with open(name, 'w') as file:
+            json.dump(data, file)
+
+    @classmethod
+    def networkFromFile(cls  , name):
+        with open(name, 'r') as file:
+            data = json.loads(file.read())
+            functions = data['activation_functions'] 
+            encoderF = ConfigHelper.getActivationFunctionClass(functions[0][0]).getType(functions[0][1])
+            latentF = ConfigHelper.getActivationFunctionClass(functions[1][0]).getType(functions[1][1])
+            decoderF = ConfigHelper.getActivationFunctionClass(functions[2][0]).getType(functions[2][1])
+
+            aux = AutoencoderManager(data['nodes_per_layer'], encoderF , latentF , decoderF , 
+                                data['learning_rate'], 0 , initWeights=True )
+
+            aux.setLayers(data['weights'])
+           
+            return aux

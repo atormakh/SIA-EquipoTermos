@@ -3,7 +3,7 @@ class StepActivationFunction:
 
     def __init__(self):
         self.name = 'STEP'
-
+        self.beta = None
     def apply(self,h):
         
         step = lambda e: -1 if e<0 else 1 
