@@ -46,7 +46,15 @@ class ErrorHelper:
 
     def getLatentSpaceConfig(self,characterArray):
         inputs = np.array(characterArray).transpose()
-        for i in range(0, math.ceil(len(self.layers)/2)):
+        for i in range(0, len(self.layers)//2):
+            inputs=self.layers[i].propagate(inputs)
+        return inputs
+
+    def decodeFromLatentSpace(self,latentSpace):
+        #Decodificamos la matriz de latentSpace  35 25 15 2 15 25 35
+                                            # [ 35->25, 25->15, 15->2, 2->15, 15->25, 25->35]
+        inputs = np.array(latentSpace).transpose()
+        for i in range(len(self.layers)//2,len(self.layers)):
             inputs=self.layers[i].propagate(inputs)
         return inputs
 

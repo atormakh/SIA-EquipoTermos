@@ -49,8 +49,10 @@ class AutoencoderManager:
         return (wFinal,self.errors[-1])
     
     def propagate(self,trainingCharacter):
-
         return self.errorHelper.propagateCharacter(trainingCharacter)
+
+    def decodeFromLatentSpace(self,latentSpace):
+        return self.errorHelper.decodeFromLatentSpace(latentSpace)
 
     def getLatentSpaceConfig(self,characterArray):
         return self.errorHelper.getLatentSpaceConfig(characterArray)
