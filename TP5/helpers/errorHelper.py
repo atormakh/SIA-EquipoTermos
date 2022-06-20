@@ -7,6 +7,8 @@ class ErrorHelper:
     def __init__(self,trainingSet,layers):
         self.trainingSet = trainingSet
         self.layers = layers
+        self.trainingSetTransposed = [ np.array(x).transpose() for x in trainingSet]
+        self.trainingMatrix = np.array(self.trainingSetTransposed).transpose()
         # self.noiseProbability = noiseProbability
         # self.noiseRange = noiseRange
         # self.noise = noise
@@ -24,25 +26,37 @@ class ErrorHelper:
         #     #     trainingArrayToPropagate=self.addNoise(trainingArray)
         #     propagation_output = self.propagateCharacter(trainingArray)
         #     outputArray.append(propagation_output)
-
+       # pool = multiprocessing.Pool(multiprocessing.cpu_count())
+        #print pool.map(f, range(10))
         propagateFunction = lambda trainingArray: self.propagateCharacter(trainingArray)
-        # outputArray = np.vectorize(propagateFunction)(np.asarray(self.trainingSet))
-        outputArray = list(map(propagateFunction, self.trainingSet))
-            
+       # outputArray = np.vectorize(propagateFunction)(np.asarray(self.trainingSet))
+        #outputArray = pool.map(propagateFunction , self.trainingSet)
+       # outputArray = list(map(propagateFunction ,  self.trainingSetTransposed))
+        outputArray = self.propagateMatrix(self.trainingMatrix)
+        #pool.close()
+        #pool.join()      
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
         for d in zip(self.trainingSet , outputArray):
             diff = d[0]-d[1]
             error+=np.sum(np.square(diff))
         error = error * 0.5
+      
         return  error/len(self.trainingSet)
 
     def propagateCharacter(self,characterArray):
-        inputs = np.array(characterArray).transpose()
+        inputs = characterArray
         #propagate
         for layer in self.layers:
             inputs=layer.propagate(inputs)
         return inputs
+
+    def propagateMatrix(self,trainingSet):
+        print('yeet')
+        inputs = trainingSet
+        for layer in self.layers:
+            inputs=layer.propagateMatrix(inputs)
+        return inputs.transpose()
 
     def getLatentSpaceConfig(self,characterArray):
         inputs = np.array(characterArray).transpose()
