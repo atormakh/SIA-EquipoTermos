@@ -102,6 +102,11 @@ class ConfigHelper:
                     self.font = data['font']
                 else:
                     self.font = None
+                ##noiseProbability
+                if('noise_probability' in data):
+                    self.noiseProbability = data['noise_probability']
+                else:
+                    self.noiseProbability = None
                 
             #Finalmente, le asignamos una propiedad que indique si las anteriores leidas son validas o no
             self.isValid = self.validateConfigurationProperties()
@@ -126,7 +131,7 @@ class ConfigHelper:
         decoderActivationFunctionClass = self.getActivationFunctionClass(self.decoderActivationFunctionType.strip().upper())
         decoderActivationFunction = decoderActivationFunctionClass.getType(self.decoderBeta)
         font = self.font.strip().upper()
-        return (self.architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,self.encoderBeta,self.latentSpaceBeta,self.decoderBeta,self.learningRate,self.maxEpochs,self.maxToleranceExponent,self.randomSeed,font)
+        return (self.architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,self.encoderBeta,self.latentSpaceBeta,self.decoderBeta,self.learningRate,self.maxEpochs,self.maxToleranceExponent,self.randomSeed,font,self.noiseProbability)
 
     def validateConfigurationProperties(self):
         return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateGeneralProperties()
@@ -138,7 +143,7 @@ class ConfigHelper:
         return self.__validateLearningRate()
 
     def __validateGeneralProperties(self):
-        return self.__validateMaxEpochs() and self.__validateMaxToleranceExponent() and self.__validateRandomSeed() and self.__validateFont()
+        return self.__validateMaxEpochs() and self.__validateMaxToleranceExponent() and self.__validateRandomSeed() and self.__validateFont() and self.__validateNoiseProbability()
 
     def __validateLearningRate(self):
         if(self.learningRate is None):
@@ -220,6 +225,15 @@ class ConfigHelper:
         isValid = self.font.strip().upper() in possibleFonts
         if(not isValid):
             print("Illegal font : Font do not exists")
+        return isValid
+
+    def __validateNoiseProbability(self):
+        if(self.noiseProbability is None):
+            print(" 'noise_probability' is a required parameter")
+            return False
+        isValid = (isinstance(self.noiseProbability,float) and self.noiseProbability > 0 and self.noiseProbability<=1) or (isinstance(self.noiseProbability,int) and self.noiseProbability==1)
+        if(not isValid):
+            print("Illegal noise probability : Should be a positive decimal number between 0 and 1")
         return isValid
 
     @staticmethod

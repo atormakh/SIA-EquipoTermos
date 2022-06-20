@@ -20,5 +20,6 @@
   },
   "max_epochs": 1000,
   "max_tolerance_exponent": -12,
-  "font":"FONT2"
+  "font":"FONT2",
+  "noise_probability":0.1
 }

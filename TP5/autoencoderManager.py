@@ -37,6 +37,7 @@ class AutoencoderManager:
         self.currentStep = 1
         self.errors = []
         self.steps = []
+        self.stepStartTime = time.perf_counter()
         # wFinal = adam(nd.Gradient(self.errorHelper.error),self.getWeightsFlattened(),step_size=0.80085,num_iters=self.maxEpochs,callback=self.callbackFunctionAdam)
         wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs}).x 
 
@@ -70,7 +71,8 @@ class AutoencoderManager:
         print('Iteration : ',self.currentStep)
         error = self.errorHelper.error(w)
         print('\tError : ',error)
-        print('\tEnd time : ',endStepTime-self.initTime)
+        print('\tTime : ',endStepTime-self.stepStartTime)
+        self.stepStartTime = endStepTime
         self.steps.append(self.currentStep)
         self.errors.append(error)
         self.currentStep+=1

@@ -18,12 +18,16 @@ class ErrorHelper:
         # combinatedTrainingResultSet = list(zip(self.trainingSet,self.resultsSet))
         # np.random.shuffle(combinatedTrainingResultSet)
         # shuffledTrainingSet, shuffledResultSet = zip(*combinatedTrainingResultSet)
-        for trainingArray in self.trainingSet:
-            # trainingArrayToPropagate=trainingArray
-            # if(self.noise):
-            #     trainingArrayToPropagate=self.addNoise(trainingArray)
-            propagation_output = self.propagateCharacter(trainingArray)
-            outputArray.append(propagation_output)
+        # for trainingArray in self.trainingSet:
+        #     # trainingArrayToPropagate=trainingArray
+        #     # if(self.noise):
+        #     #     trainingArrayToPropagate=self.addNoise(trainingArray)
+        #     propagation_output = self.propagateCharacter(trainingArray)
+        #     outputArray.append(propagation_output)
+
+        propagateFunction = lambda trainingArray: self.propagateCharacter(trainingArray)
+        # outputArray = np.vectorize(propagateFunction)(np.asarray(self.trainingSet))
+        outputArray = list(map(propagateFunction, self.trainingSet))
             
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
