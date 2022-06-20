@@ -9,6 +9,7 @@ import numdifftools as nd
 from helpers.errorHelper import ErrorHelper
 import json
 from helpers.configHelper import ConfigHelper
+
 class AutoencoderManager:
     
     def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs , initWeights=True):
@@ -19,7 +20,7 @@ class AutoencoderManager:
         self.decoderActivationFucntion = decoderActivationFunction
         self.learningRate=learningRate
         self.maxEpochs=maxEpochs
-    
+        self.errorHelper = None
 
         if initWeights:
             #crear layers segun lo indique la arquitectura
@@ -53,7 +54,7 @@ class AutoencoderManager:
         self.steps = []
         self.stepStartTime = time.perf_counter()
         # wFinal = adam(nd.Gradient(self.errorHelper.error),self.getWeightsFlattened(),step_size=0.80085,num_iters=self.maxEpochs,callback=self.callbackFunctionAdam)
-        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs}).x 
+        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs , 'xtol': 0.01, 'ftol': 0.01,}).x 
 
         # #Actualizar los pesos de la red
         # self.updateLayerWeights(wFinal)
@@ -62,8 +63,16 @@ class AutoencoderManager:
         self.wFinal = wFinal
         return (wFinal,self.errors[-1])
     
+
     def propagate(self,trainingCharacter):
-        return self.errorHelper.propagateCharacter(trainingCharacter)
+        if self.errorHelper is not None:
+            return self.errorHelper.propagateCharacter(trainingCharacter)
+        
+        input = np.array(trainingCharacter).transpose()
+
+        for layer in self.layers:
+            input=layer.propagate(input)
+        return input
 
     def decodeFromLatentSpace(self,latentSpace):
         return self.errorHelper.decodeFromLatentSpace(latentSpace)
@@ -119,7 +128,6 @@ class AutoencoderManager:
                                     ],
             'weights': w
         }
-        print(data)
         with open(name, 'w') as file:
             json.dump(data, file)
 

@@ -1,7 +1,7 @@
 {
   "random_seed": 11,
   "neural_net": {
-    "architecture": [35 , 15, 2, 15, 35],
+    "architecture": [35 , 20 , 15 , 2, 15, 20 , 35],
     "activation_function": {
       "encoder":{
         "type": "LINEAL"
@@ -11,7 +11,7 @@
       },
       "decoder":{
         "type": "SIGMOIDAL",
-        "beta":1
+        "beta":0.8
       }
     }
   },
