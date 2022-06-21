@@ -1,13 +1,13 @@
 {
   "random_seed": 11,
   "neural_net": {
-    "architecture": [35 , 20 , 15 , 2, 15, 20 , 35],
+    "architecture": [35 ,10  , 2, 10 , 35],
     "activation_function": {
       "encoder":{
-        "type": "LINEAL"
+        "type": "RELU"
       },
       "latent_space":{
-        "type": "RELU"
+        "type": "LINEAL"
       },
       "decoder":{
         "type": "SIGMOIDAL",

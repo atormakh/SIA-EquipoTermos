@@ -112,7 +112,7 @@ class AutoencoderManager:
             return self.latentSpaceActivationFunction
 
 
-    def saveNetwork(self, name):
+    def saveNetwork(self, name , errors=None):
         w = []
         for l in self.layers:
             w.append(np.asarray(l.W).tolist())
@@ -128,6 +128,9 @@ class AutoencoderManager:
                                     ],
             'weights': w
         }
+        if errors is not None:
+           data['erros'] = errors
+
         with open(name, 'w') as file:
             json.dump(data, file)
 
@@ -144,5 +147,4 @@ class AutoencoderManager:
                                 data['learning_rate'], 0 , initWeights=True )
 
             aux.setLayers(data['weights'])
-           
-            return aux
+            return (aux , data['errors'])
