@@ -13,13 +13,13 @@
 ## Indice
 
 - [72.27 Sistemas de Inteligencia Artificial 1er cuatrimestre 2022](#7227-sistemas-de-inteligencia-artificial-1er-cuatrimestre-2022)
-  - [TP 5 : Deep Learning](#tp-5--deep-learning)
-    - [Instituto Tecnológico de Buenos Aires (ITBA)](#instituto-tecnológico-de-buenos-aires-itba)
-  - [Autores (Equipo "Termos")](#autores-equipo-termos)
+  - [TP 5 : Deep Learning](#tp-5---deep-learning)
+    - [Instituto Tecnológico de Buenos Aires (ITBA)](#instituto-tecnol-gico-de-buenos-aires--itba-)
+  - [Autores (Equipo "Termos")](#autores--equipo--termos--)
   - [Indice](#indice)
   - [Descripcion del problema](#descripcion-del-problema)
-    - [Ejercicio 1.A](#ejercicio-1.A)
-    - [Ejercicio 1.B](#ejercicio-1.B)
+    - [Ejercicio 1.A](#ejercicio-1a)
+    - [Ejercicio 1.B](#ejercicio-1b)
     - [Ejercicio 2](#ejercicio-2)
   - [Requerimientos previos](#requerimientos-previos)
   - [Instalacion y ejecucion](#instalacion-y-ejecucion)
@@ -27,8 +27,8 @@
     - [Archivos de configuracion](#archivos-de-configuracion)
     - [Ejecucion con Jupyter Notebook](#ejecucion-con-jupyter-notebook)
   - [Ejemplos de configuracion](#ejemplos-de-configuracion)
-    - [Ejemplo 1 : Ejecucion con 3 capas ocultas entre encoder y decoder](#ejemplo-1--ejecucion-con-3-capas-ocultas-entre-encoder-y-decoder)
-    - [Ejemplo 2 : Ejecucion con 1 capa oculta entre encoder y decoder](#ejemplo-ejecucion-con-arquitecturas-con-1-capa-oculta-entre-encoder-y-decoder)
+    - [Ejemplo 1 : Ejecucion con arquitecturas con 3 capas ocultas entre encoder y decoder](#ejemplo-1---ejecucion-con-arquitecturas-con-3-capas-ocultas-entre-encoder-y-decoder)
+    - [Ejemplo 2 : Ejecucion con arquitecturas con 1 capa oculta entre encoder y decoder](#ejemplo-2---ejecucion-con-arquitecturas-con-1-capa-oculta-entre-encoder-y-decoder)
 
 ## Descripcion del problema
 
@@ -123,7 +123,7 @@ El config.json cuenta con los siguientes parametros:
     - encoder
     - latent_space
     - decoder
-    en donde para especificar esta configuracion se deben indicar 1 o 2 parametros correspondientes a la funcion de activacion, estos son:
+      en donde para especificar esta configuracion se deben indicar 1 o 2 parametros correspondientes a la funcion de activacion, estos son:
     - "type": Es un string que indica que funcion de activacion se desea tomar, las opciones posibles son:
       - "SIGMOIDAL": funcion logistica
       - "STEP": funcion escalon
