@@ -1,26 +1,23 @@
 {
   "random_seed": 11,
   "neural_net": {
-    "architecture": [35 ,10  , 2, 10 , 35],
+    "architecture": [35, 10, 2, 10, 35],
     "activation_function": {
-      "encoder":{
+      "encoder": {
         "type": "RELU"
       },
-      "latent_space":{
+      "latent_space": {
         "type": "LINEAL"
       },
-      "decoder":{
+      "decoder": {
         "type": "SIGMOIDAL",
-        "beta":0.8
+        "beta": 0.8
       }
     }
   },
-  "backtracking": {
-    "learning_rate": 0.1
-  },
   "max_epochs": 1000,
   "max_tolerance_exponent": -12,
-  "font":"FONT2",
-  "noise_probability":0.1,
-  "noise_range":0.5
+  "font": "FONT2",
+  "noise_probability": 0.1,
+  "noise_range": 0.5
 }
