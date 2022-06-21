@@ -27,17 +27,6 @@ class ConfigHelper:
                 else:
                     self.architecture = None
 
-                # #activationFunction (type y beta si este ultimo fue especificado)
-                # if('activation_function' in data['neural_net'] and 'beta' in data['neural_net']['activation_function']):
-                #     self.beta = data['neural_net']['activation_function']['beta']
-                # else:
-                #     self.beta = None
-
-                # if('activation_function' in data['neural_net'] and 'type' in data['neural_net']['activation_function']):
-                #     self.activationFunctionType = data['neural_net']['activation_function']['type']
-                # else:
-                #     self.activationFunctionType = None
-
                 #Pedimos las funciones de activacion del encoder, el espacio latente y el decoder
                 #Encoder
                 if('activation_function' in data['neural_net'] and 'encoder' in data['neural_net']['activation_function'] and 'type' in data['neural_net']['activation_function']['encoder']):
@@ -73,13 +62,6 @@ class ConfigHelper:
                 else:
                     self.decoderBeta = None
                 
-                
-                ##Pidiendo las propiedades de backtracking
-                #learningRate
-                if('learning_rate' in data['backtracking']):
-                    self.learningRate = data['backtracking']['learning_rate']
-                else:
-                    self.learningRate = None
 
                 ##Pidiendo las propiedades del problema en general
                 #maxEpochs
@@ -87,11 +69,6 @@ class ConfigHelper:
                     self.maxEpochs = data['max_epochs']
                 else:
                     self.maxEpochs = None
-                #maxToleranceExponent
-                if('max_tolerance_exponent' in data):
-                    self.maxToleranceExponent = data['max_tolerance_exponent']
-                else:
-                    self.maxToleranceExponent = None
                 ##randomSeed
                 if('random_seed' in data):
                     self.randomSeed = data['random_seed']
@@ -117,13 +94,6 @@ class ConfigHelper:
             self.isValid = self.validateConfigurationProperties()
         
 
-
-    def __str__(self):
-        return f"\t-Architecture : {self.architecture}\n\t\t-Activation function :{self.activationFunctionType}\n\t\t-Beta : {self.beta}\n\t\t-Learning rate : {self.learningRate} \n\t\t-Max epochs : {self.maxEpochs}\n\t\t-Error bound : 1e^{self.maxToleranceExponent}"
-
-    def __repr__(self) -> str:
-        return self.__str__()
-
     def getProperties(self):
         #Obtenemos las funciones de activacion del encoder, espacio latente y el decoder
         #Encoder
@@ -136,28 +106,16 @@ class ConfigHelper:
         decoderActivationFunctionClass = self.getActivationFunctionClass(self.decoderActivationFunctionType.strip().upper())
         decoderActivationFunction = decoderActivationFunctionClass.getType(self.decoderBeta)
         font = self.font.strip().upper()
-        return (self.architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,self.encoderBeta,self.latentSpaceBeta,self.decoderBeta,self.learningRate,self.maxEpochs,self.maxToleranceExponent,self.randomSeed,font,self.noiseProbability,self.noiseRange)
+        return (self.architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,self.encoderBeta,self.latentSpaceBeta,self.decoderBeta,self.maxEpochs,self.randomSeed,font,self.noiseProbability,self.noiseRange)
 
     def validateConfigurationProperties(self):
-        return self.__validateNeuralNetProperties() and self.__validateBacktrackingProperties() and self.__validateGeneralProperties()
+        return self.__validateNeuralNetProperties() and self.__validateGeneralProperties()
 
     def __validateNeuralNetProperties(self):
         return self.__validateArchitecture() and self.__validateActivationFunctionsType() and self.__validateBetas()
 
-    def __validateBacktrackingProperties(self):
-        return self.__validateLearningRate()
-
     def __validateGeneralProperties(self):
-        return self.__validateMaxEpochs() and self.__validateMaxToleranceExponent() and self.__validateRandomSeed() and self.__validateFont() and self.__validateNoiseProbability() and self.__validateNoiseRange()
-
-    def __validateLearningRate(self):
-        if(self.learningRate is None):
-            print(" 'learning_rate' is a required parameter")
-            return False
-        isValid = (isinstance(self.learningRate,float) and self.learningRate > 0 and self.learningRate<=1) or (isinstance(self.learningRate,int) and self.learningRate==1)
-        if(not isValid):
-            print("Illegal learning rate : Should be a positive decimal number between 0 and 1 (zero excluded, one included)")
-        return isValid
+        return self.__validateMaxEpochs() and self.__validateRandomSeed() and self.__validateFont() and self.__validateNoiseProbability() and self.__validateNoiseRange()
 
     def __validateArchitecture(self):
         if(self.architecture is None):
@@ -205,16 +163,7 @@ class ConfigHelper:
             return False
         isValid = isinstance(self.maxEpochs,int) and self.maxEpochs > 0
         if(not isValid):
-            print("Illegal max iterations : Should be an integer positive number")
-        return isValid
-
-    def __validateMaxToleranceExponent(self):
-        if(self.maxToleranceExponent is None):
-            print(" 'max_tolerance_exponent' is a required parameter")
-            return False
-        isValid = isinstance(self.maxToleranceExponent,int) and self.maxToleranceExponent < 0
-        if(not isValid):
-            print("Illegal max tolerance exponent : Should be an negative  number (zero not included)")
+            print("Illegal max epochs : Should be an integer positive number")
         return isValid
 
     def __validateRandomSeed(self):

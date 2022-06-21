@@ -12,12 +12,11 @@ from helpers.configHelper import ConfigHelper
 
 class AutoencoderManager:
     
-    def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs , initWeights=True):
+    def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,maxEpochs , initWeights=True):
         self.architecture=architecture
         self.encoderActivationFunction = encoderActivationFunction
         self.latentSpaceActivationFunction = latentSpaceActivationFunction
         self.decoderActivationFucntion = decoderActivationFunction
-        self.learningRate=learningRate
         self.maxEpochs=maxEpochs
         self.errorHelper = None
 
@@ -53,7 +52,7 @@ class AutoencoderManager:
         self.errors = []
         self.steps = []
         self.stepStartTime = time.perf_counter()
-        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs , 'xtol': 0.01, 'ftol': 0.01,}).x 
+        wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunction, options={'maxiter': self.maxEpochs , 'xtol': 0.01, 'ftol': 0.01,}).x 
 
         self.wFinal = wFinal
         return (wFinal,self.errors[-1])
@@ -85,7 +84,7 @@ class AutoencoderManager:
         
         return np.array(weightsFlattened)
 
-    def callbackFunctionAdam(self,w):
+    def callbackFunction(self,w):
         endStepTime = time.perf_counter()
         print('Iteration : ',self.currentStep)
         error = self.errorHelper.error(w)
@@ -115,7 +114,6 @@ class AutoencoderManager:
         data = {
             'total_layers': len(self.layers),
             'nodes_per_layer': [self.layers[0].numberOfInputs] + [ l.amountOfNodes for l in self.layers],
-            'learning_rate': self.learningRate,
             'activation_functions': [ [self.encoderActivationFunction.name , self.encoderActivationFunction.beta] ,
                                       [ self.latentSpaceActivationFunction.name , self.latentSpaceActivationFunction.beta] ,
                                       [ self.decoderActivationFucntion.name , self.decoderActivationFucntion.beta ]
@@ -137,8 +135,7 @@ class AutoencoderManager:
             latentF = ConfigHelper.getActivationFunctionClass(functions[1][0]).getType(functions[1][1])
             decoderF = ConfigHelper.getActivationFunctionClass(functions[2][0]).getType(functions[2][1])
 
-            aux = AutoencoderManager(data['nodes_per_layer'], encoderF , latentF , decoderF , 
-                                data['learning_rate'], 0 , initWeights=True )
+            aux = AutoencoderManager(data['nodes_per_layer'], encoderF , latentF , decoderF , 0 , initWeights=True )
 
             aux.setLayers(data['weights'])
             return (aux , data['errors'])

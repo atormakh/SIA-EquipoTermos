@@ -10,21 +10,17 @@ class Layer:
         self.activationFunction=activationFunction
         #create weights matrix
         aux = self.__createWeightsMatrix()
-        #self.W = np.matrix(aux)
         self.W = np.array(aux)
         self.lastDelta = None
 
     def propagate(self,inputs):
-        # inputs= np.insert(inputs,0,[HIDDEN_NODE_INPUT],axis=0)
         self.currentInput = inputs.transpose()
         self.h = np.matmul(self.W,inputs)
         self.V = self.activationFunction.apply(self.h)
         return self.V
         
     def propagateMatrix(self,inputs):
-      #  print(f'inputMatrix = {len(inputs)} x {len(inputs[0])}')
         self.currentInputMatrix = inputs
-      #  print(f'W = {len(self.W)} x {len(self.W[0])}')
         return self.activationFunction.apply(np.matmul(self.W , self.currentInputMatrix))
       
 

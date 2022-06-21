@@ -19,25 +19,7 @@ class ErrorHelper:
         outputArray = []
         #Actualizamos los pesos de las layers
         self.updateLayerWeights(weightsFlattened)
-        # combinatedTrainingResultSet = list(zip(self.trainingSet,self.resultsSet))
-        # np.random.shuffle(combinatedTrainingResultSet)
-        # shuffledTrainingSet, shuffledResultSet = zip(*combinatedTrainingResultSet)
-        # for trainingArray in self.trainingSet:
-        #     # trainingArrayToPropagate=trainingArray
-        #     # if(self.noise):
-        #     #     trainingArrayToPropagate=self.addNoise(trainingArray)
-        #     propagation_output = self.propagateCharacter(trainingArray)
-        #     outputArray.append(propagation_output)
-        # pool = multiprocessing.Pool(multiprocessing.cpu_count())
-        # print pool.map(f, range(10))
-        # propagateFunction = lambda trainingArray: self.propagateCharacter(trainingArray)
-        # outputArray = np.vectorize(propagateFunction)(np.asarray(self.trainingSet))
-        # outputArray = pool.map(propagateFunction , self.trainingSet)
-        # outputArray = list(map(propagateFunction ,  self.trainingSetTransposed))
         outputArray = self.propagateMatrix(self.trainingMatrix)
-        #pool.close()
-        #pool.join()      
-        #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
         for d in zip(self.resultsSet , outputArray):
             diff = d[0]-d[1]
@@ -66,8 +48,7 @@ class ErrorHelper:
         return inputs
 
     def decodeFromLatentSpace(self,latentSpace):
-        #Decodificamos la matriz de latentSpace  35 25 15 2 15 25 35
-                                            # [ 35->25, 25->15, 15->2, 2->15, 15->25, 25->35]
+        #Decodificamos la matriz de latentSpace
         inputs = np.array(latentSpace).transpose()
         for i in range(len(self.layers)//2,len(self.layers)):
             inputs=self.layers[i].propagate(inputs)
