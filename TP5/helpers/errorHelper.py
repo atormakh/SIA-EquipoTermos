@@ -5,15 +5,15 @@ import numpy as np
 
 class ErrorHelper:
 
-    def __init__(self,trainingSet,layers):
+    def __init__(self,trainingSet,layers,resultsSet=None):
         self.trainingSet = trainingSet
         self.layers = layers
         self.trainingSetTransposed = [ np.array(x).transpose() for x in trainingSet]
         self.trainingMatrix = np.array(self.trainingSetTransposed).transpose()
         print(f'training matrix {self.trainingMatrix.shape}')
-        # self.noiseProbability = noiseProbability
-        # self.noiseRange = noiseRange
-        # self.noise = noise
+        self.resultsSet = trainingSet
+        if(resultsSet is not None):
+            self.resultsSet = resultsSet
 
     def error(self,weightsFlattened,step=None):
         outputArray = []
@@ -39,7 +39,7 @@ class ErrorHelper:
         #pool.join()      
         #print("Result Set =",str(resultsSet), "outputSet", str(outputSet))
         error=0
-        for d in zip(self.trainingSet , outputArray):
+        for d in zip(self.resultsSet , outputArray):
             diff = d[0]-d[1]
             error+=np.sum(np.square(diff))
         error = error * 0.5
@@ -54,7 +54,6 @@ class ErrorHelper:
         return inputs
 
     def propagateMatrix(self,trainingSet):
-      #  print('yeet')
         inputs = trainingSet
         for layer in self.layers:
             inputs=layer.propagateMatrix(inputs)
@@ -76,37 +75,12 @@ class ErrorHelper:
 
     #Pone los pesos finales en las matrices de cada layer
     def updateLayerWeights(self,finalW):
-        #  currentIndex = 0
-        # for i in range(0,len(self.layers)):
-        #     #Obtenemos las dimensiones de la layer en cuestion y el ultimo indice hasta el cual se deben agarrar los pesos
-        #     rows,cols = self.layers[i].W.shape
-        #     elemsCount = rows*cols 
-        #     #Agarramos los pesos correspondientes
-        #     currentWeights = finalW[:elemsCount]
-        #     #Actualizamos los pesos, almacenandolos como una matriz con las dimensiones que correspondan
-        #     self.layers[i].W = currentWeights.reshape(rows,cols)
-        #     #Actualizamos el finalW para la proxima iteracion
-        #     finalW = finalW[elemsCount:]
-        
         for layer in self.layers:
             rows,cols = layer.W.shape
             elemsCount = rows*cols
-            #Saco los primeros elementos de un array ??
+
             currentsWeights = finalW[:elemsCount]
 
             layer.W = currentsWeights.reshape(rows,cols)
 
             finalW = finalW[elemsCount:]
-
-    def addNoise(self,trainingArray):
-        #Creamos un nuevo array para el trainingArray con ruido
-        noiseTrainingArray = []
-        
-        #Iteramos por los valores del trainingArray
-        for i in range(0,len(trainingArray)):
-            #Si el random es menor que cierta probabilidad, agregamos ruido
-            if(np.random.random()<=self.noiseProbability):
-                noise = np.random.uniform(-self.noiseRange,self.noiseRange)
-                noiseTrainingArray.append(trainingArray[i]+noise)
-
-        return noiseTrainingArray

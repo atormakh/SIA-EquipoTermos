@@ -14,7 +14,6 @@ class AutoencoderManager:
     
     def __init__(self,architecture,encoderActivationFunction,latentSpaceActivationFunction,decoderActivationFunction,learningRate,maxEpochs , initWeights=True):
         self.architecture=architecture
-        # self.activationFunction=activationFunction
         self.encoderActivationFunction = encoderActivationFunction
         self.latentSpaceActivationFunction = latentSpaceActivationFunction
         self.decoderActivationFucntion = decoderActivationFunction
@@ -44,23 +43,18 @@ class AutoencoderManager:
         self.errorHelper.updateLayerWeights(initialWeights)
         self.errors= errors
         
-    def start(self,trainingSet):
+    def start(self,trainingSet,resultsSet=None):
         
         #Iniciar el cronometro para medir el tiempo de ejecucion del algoritmo
         self.initTime = time.perf_counter()
 
-        self.errorHelper = ErrorHelper(trainingSet,self.layers)
+        self.errorHelper = ErrorHelper(trainingSet,self.layers,resultsSet)
         self.currentStep = 1
         self.errors = []
         self.steps = []
         self.stepStartTime = time.perf_counter()
-        # wFinal = adam(nd.Gradient(self.errorHelper.error),self.getWeightsFlattened(),step_size=0.80085,num_iters=self.maxEpochs,callback=self.callbackFunctionAdam)
         wFinal = minimize(self.errorHelper.error,self.getWeightsFlattened(),args=(0),method='Powell',callback=self.callbackFunctionAdam, options={'maxiter': self.maxEpochs , 'xtol': 0.01, 'ftol': 0.01,}).x 
 
-        # #Actualizar los pesos de la red
-        # self.updateLayerWeights(wFinal)
-        
-        # return (epochs,executionTime,exception)
         self.wFinal = wFinal
         return (wFinal,self.errors[-1])
     
@@ -92,7 +86,6 @@ class AutoencoderManager:
         return np.array(weightsFlattened)
 
     def callbackFunctionAdam(self,w):
-        # print('W : '+str(w))
         endStepTime = time.perf_counter()
         print('Iteration : ',self.currentStep)
         error = self.errorHelper.error(w)
