@@ -39,9 +39,10 @@ class AutoencoderManager:
             layer.W = weights
             self.layers.append(layer)
     
-    def initilizeWeights(self, trainingSet , initialWeights):
+    def initilizeWeights(self, trainingSet , initialWeights,errors):
         self.errorHelper = ErrorHelper(trainingSet , self.layers)
         self.errorHelper.updateLayerWeights(initialWeights)
+        self.errors= errors
         
     def start(self,trainingSet):
         
